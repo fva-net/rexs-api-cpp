@@ -1,0 +1,675 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<model applicationId="FVA Workbench" applicationVersion="7.1 - DEV gültig bis 30.4.2022" date="2021-12-14T15:56:10+01:00" version="1.4">
+  <relations>
+    <!--Relation zwischen Schneckenstufe [3] und Schnecke [8] und stufenbezogenen Raddaten-Komponente Zahnraddaten  (Schneckenräder) [43]-->
+    <relation id="46" type="stage_gear_data">
+      <ref hint="worm_stage" id="3" role="stage"/>
+      <ref hint="worm_gear" id="8" role="gear"/>
+      <ref hint="worm_stage_gear_data" id="43" role="stage_gear_data"/>
+    </relation>
+    <!--Relation zwischen Schneckenstufe [3] und Schneckenrad [9] und stufenbezogenen Raddaten-Komponente Zahnraddaten  (Schneckenräder) [44]-->
+    <relation id="47" type="stage_gear_data">
+      <ref hint="worm_stage" id="3" role="stage"/>
+      <ref hint="worm_wheel" id="9" role="gear"/>
+      <ref hint="worm_stage_gear_data" id="44" role="stage_gear_data"/>
+    </relation>
+    <!--Stufen-Relation zwischen Schneckenstufe [3] und Schnecke [8] und Schneckenrad [9]-->
+    <relation id="10" type="stage">
+      <ref hint="worm_stage" id="3" role="stage"/>
+      <ref hint="worm_gear" id="8" role="gear_1"/>
+      <ref hint="worm_wheel" id="9" role="gear_2"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Getriebeeinheit [1] und der Unterkomponente Gehäuse [2]-->
+    <relation id="2" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="gear_casing" id="2" role="part"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Getriebeeinheit [1] und der Unterkomponente Schneckenstufe [3]-->
+    <relation id="3" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="worm_stage" id="3" role="part"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Getriebeeinheit [1] und der Unterkomponente Welle [4]-->
+    <relation id="5" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="shaft" id="4" role="part"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Getriebeeinheit [1] und der Unterkomponente Welle [6]-->
+    <relation id="7" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="shaft" id="6" role="part"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Welle [4] und der Unterkomponente Schnecke [8]-->
+    <relation id="8" type="assembly">
+      <ref hint="shaft" id="4" role="assembly"/>
+      <ref hint="worm_gear" id="8" role="part"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Welle [6] und der Unterkomponente Schneckenrad [9]-->
+    <relation id="9" type="assembly">
+      <ref hint="shaft" id="6" role="assembly"/>
+      <ref hint="worm_wheel" id="9" role="part"/>
+    </relation>
+    <!--Side-Relation zwischen Wälzlager [17] und Welle [6] und Gehäuse [2]-->
+    <relation id="28" type="side">
+      <ref hint="gear_casing" id="2" role="outer_part"/>
+      <ref hint="shaft" id="6" role="inner_part"/>
+      <ref hint="concept_bearing" id="17" role="assembly"/>
+    </relation>
+    <!--Side-Relation zwischen Wälzlager [15] und Welle [4] und Gehäuse [2]-->
+    <relation id="29" type="side">
+      <ref hint="gear_casing" id="2" role="outer_part"/>
+      <ref hint="shaft" id="4" role="inner_part"/>
+      <ref hint="concept_bearing" id="15" role="assembly"/>
+    </relation>
+    <!--Side-Relation zwischen Wälzlager [16] und Welle [6] und Gehäuse [2]-->
+    <relation id="30" type="side">
+      <ref hint="gear_casing" id="2" role="outer_part"/>
+      <ref hint="shaft" id="6" role="inner_part"/>
+      <ref hint="concept_bearing" id="16" role="assembly"/>
+    </relation>
+    <!--Side-Relation zwischen Wälzlager [14] und Welle [4] und Gehäuse [2]-->
+    <relation id="31" type="side">
+      <ref hint="gear_casing" id="2" role="outer_part"/>
+      <ref hint="shaft" id="4" role="inner_part"/>
+      <ref hint="concept_bearing" id="14" role="assembly"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Welle [4] und der Unterkomponente Belastung [36]-->
+    <relation id="32" type="assembly">
+      <ref hint="shaft" id="4" role="assembly"/>
+      <ref hint="external_load" id="36" role="part"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Welle [6] und der Unterkomponente Belastung [37]-->
+    <relation id="33" type="assembly">
+      <ref hint="shaft" id="6" role="assembly"/>
+      <ref hint="external_load" id="37" role="part"/>
+    </relation>
+    <!--Referenz Relation von Gehäuse [2] zu S2/220 [38] -->
+    <relation id="52" type="reference">
+      <ref hint="gear_casing" id="2" role="origin"/>
+      <ref hint="lubricant" id="38" role="referenced"/>
+    </relation>
+    <!--Referenz Relation von Wälzlager [14] zu S2/220 [38] -->
+    <relation id="53" type="reference">
+      <ref hint="concept_bearing" id="14" role="origin"/>
+      <ref hint="lubricant" id="38" role="referenced"/>
+    </relation>
+    <!--Referenz Relation von Wälzlager [15] zu S2/220 [38] -->
+    <relation id="54" type="reference">
+      <ref hint="concept_bearing" id="15" role="origin"/>
+      <ref hint="lubricant" id="38" role="referenced"/>
+    </relation>
+    <!--Referenz Relation von Wälzlager [16] zu S2/220 [38] -->
+    <relation id="55" type="reference">
+      <ref hint="concept_bearing" id="16" role="origin"/>
+      <ref hint="lubricant" id="38" role="referenced"/>
+    </relation>
+    <!--Referenz Relation von Wälzlager [17] zu S2/220 [38] -->
+    <relation id="56" type="reference">
+      <ref hint="concept_bearing" id="17" role="origin"/>
+      <ref hint="lubricant" id="38" role="referenced"/>
+    </relation>
+    <!--Referenz Relation von Schneckenstufe [3] zu S2/220 [38] -->
+    <relation id="57" type="reference">
+      <ref hint="worm_stage" id="3" role="origin"/>
+      <ref hint="lubricant" id="38" role="referenced"/>
+    </relation>
+    <!--Referenz Relation von Schnecke [8] zu 16MnCr5 [239] -->
+    <relation id="58" type="reference">
+      <ref hint="worm_gear" id="8" role="origin"/>
+      <ref hint="material" id="239" role="referenced"/>
+    </relation>
+    <!--Referenz Relation von Schneckenrad [9] zu 16MnCr5 [239] -->
+    <relation id="59" type="reference">
+      <ref hint="worm_wheel" id="9" role="origin"/>
+      <ref hint="material" id="239" role="referenced"/>
+    </relation>
+    <!--Referenz Relation von Welle [4] zu 42CrMo4 [238] -->
+    <relation id="60" type="reference">
+      <ref hint="shaft" id="4" role="origin"/>
+      <ref hint="material" id="238" role="referenced"/>
+    </relation>
+    <!--Referenz Relation von Welle [6] zu 42CrMo4 [238] -->
+    <relation id="61" type="reference">
+      <ref hint="shaft" id="6" role="origin"/>
+      <ref hint="material" id="238" role="referenced"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Welle [4] und der Unterkomponente section [240]-->
+    <relation id="62" type="assembly">
+      <ref hint="shaft" id="4" role="assembly"/>
+      <ref hint="shaft_section" id="240" role="part"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Welle [4] und der Unterkomponente section [241]-->
+    <relation id="63" type="assembly">
+      <ref hint="shaft" id="4" role="assembly"/>
+      <ref hint="shaft_section" id="241" role="part"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Welle [4] und der Unterkomponente section [242]-->
+    <relation id="64" type="assembly">
+      <ref hint="shaft" id="4" role="assembly"/>
+      <ref hint="shaft_section" id="242" role="part"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Welle [6] und der Unterkomponente section [243]-->
+    <relation id="65" type="assembly">
+      <ref hint="shaft" id="6" role="assembly"/>
+      <ref hint="shaft_section" id="243" role="part"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Welle [6] und der Unterkomponente section [244]-->
+    <relation id="66" type="assembly">
+      <ref hint="shaft" id="6" role="assembly"/>
+      <ref hint="shaft_section" id="244" role="part"/>
+    </relation>
+    <!--Relation zwischen der Haupt-Komponente Welle [6] und der Unterkomponente section [245]-->
+    <relation id="67" type="assembly">
+      <ref hint="shaft" id="6" role="assembly"/>
+      <ref hint="shaft_section" id="245" role="part"/>
+    </relation>
+    <!--Flanken-Relation zwischen Rad Schnecke [8], linke Flanke worm_gear_flank [246] und rechte Flanke worm_gear_flank [247]-->
+    <relation id="68" type="flank">
+      <ref hint="worm_gear" id="8" role="gear"/>
+      <ref hint="worm_gear_flank" id="246" role="left"/>
+      <ref hint="worm_gear_flank" id="247" role="right"/>
+    </relation>
+    <!--Flanken-Relation zwischen Rad Schneckenrad [9], linke Flanke worm_gear_flank [248] und rechte Flanke worm_gear_flank [249]-->
+    <relation id="69" type="flank">
+      <ref hint="worm_wheel" id="9" role="gear"/>
+      <ref hint="worm_gear_flank" id="248" role="left"/>
+      <ref hint="worm_gear_flank" id="249" role="right"/>
+    </relation>
+    <!--Manufacturing-Step-Relation zwischen worm_gear_flank [246] und SCHLEIF_SNETRA_a [35] und worm_gear_manufacturing_settings [250]-->
+    <relation id="70" order="1" type="manufacturing_step">
+      <ref hint="worm_gear_flank" id="246" role="workpiece"/>
+      <ref hint="worm_grinding_disc_tool" id="35" role="tool"/>
+      <ref hint="worm_gear_manufacturing_settings" id="250" role="manufacturing_settings"/>
+    </relation>
+    <!--Manufacturing-Step-Relation zwischen worm_gear_flank [247] und SCHLEIF_SNETRA_a [35] und worm_gear_manufacturing_settings [250]-->
+    <relation id="71" order="1" type="manufacturing_step">
+      <ref hint="worm_gear_flank" id="247" role="workpiece"/>
+      <ref hint="worm_grinding_disc_tool" id="35" role="tool"/>
+      <ref hint="worm_gear_manufacturing_settings" id="250" role="manufacturing_settings"/>
+    </relation>
+    <!--Manufacturing-Step-Relation zwischen worm_gear_flank [248] und FRAES_SNETRA_a [31] und worm_gear_manufacturing_settings [251]-->
+    <relation id="72" order="1" type="manufacturing_step">
+      <ref hint="worm_gear_flank" id="248" role="workpiece"/>
+      <ref hint="worm_wheel_hob_tool" id="31" role="tool"/>
+      <ref hint="worm_gear_manufacturing_settings" id="251" role="manufacturing_settings"/>
+    </relation>
+    <!--Manufacturing-Step-Relation zwischen worm_gear_flank [249] und FRAES_SNETRA_a [31] und worm_gear_manufacturing_settings [251]-->
+    <relation id="73" order="1" type="manufacturing_step">
+      <ref hint="worm_gear_flank" id="249" role="workpiece"/>
+      <ref hint="worm_wheel_hob_tool" id="31" role="tool"/>
+      <ref hint="worm_gear_manufacturing_settings" id="251" role="manufacturing_settings"/>
+    </relation>
+  </relations>
+  <components>
+    <component id="44" name="Zahnraddaten  (Schneckenräder) [44]" type="worm_stage_gear_data">
+      <attribute id="is_driving_gear" unit="none">false</attribute>
+    </component>
+    <component id="238" name="42CrMo4 [238]" type="material">
+      <attribute id="basic_strength_root" unit="N / mm^2">612.0</attribute>
+      <attribute id="core_hardness_vickers" unit="HV">550.0</attribute>
+      <attribute id="density" unit="kg / dm^3">7.85</attribute>
+      <attribute id="elastic_modulus" unit="N / mm^2">210000.0</attribute>
+      <attribute id="endurance_limit_flank" unit="N / mm^2">740.64</attribute>
+      <attribute id="endurance_limit_root" unit="N / mm^2">306.0</attribute>
+      <attribute id="fatigue_limit_bending" unit="MPa">525.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">495.0</attribute>
+      <attribute id="fatigue_limit_torsion" unit="MPa">315.0</attribute>
+      <attribute id="heat_treated_material_type_iso_6336_2006" unit="none">through_hardened_wrought_steel</attribute>
+      <attribute id="is_material_austenitic_and_solution_annealed_fkm_2012" unit="none">false</attribute>
+      <attribute id="is_material_austenitic_steel_fkm_2012" unit="none">false</attribute>
+      <attribute id="is_material_hardable_fkm_2012" unit="none">false</attribute>
+      <attribute id="material_category_vdi_2736_2014" unit="none">steel</attribute>
+      <attribute id="material_designation" unit="none">42CrMo4</attribute>
+      <attribute id="material_hardening_method_fkm_2012" unit="none">unhardened</attribute>
+      <attribute id="material_type_din_743_2012" unit="none">2</attribute>
+      <attribute id="material_type_fkm_2012" unit="none">heat_treatable_steel_quenched_tempered_condition</attribute>
+      <attribute id="poisson_ratio" unit="none">0.3</attribute>
+      <attribute id="surface_hardness_brinell" unit="HB">266.0</attribute>
+      <attribute id="surface_hardness_vickers" unit="HV">750.0</attribute>
+      <attribute id="tensile_strength" unit="N / mm^2">1100.0</attribute>
+      <attribute id="thermal_capacity" unit="J / (kg K)">430.0</attribute>
+      <attribute id="thermal_conductivity" unit="W / (m K)">40.0</attribute>
+      <attribute id="thermal_expansion_coefficient_minus" unit="1e-6 / C">-8.0</attribute>
+      <attribute id="thermal_expansion_coefficient_plus" unit="1e-6 / C">11.0</attribute>
+      <attribute id="yield_strength" unit="N / mm^2">900.0</attribute>
+    </component>
+    <component id="239" name="16MnCr5 [239]" type="material">
+      <attribute id="basic_strength_root" unit="N / mm^2">922.0</attribute>
+      <attribute id="core_hardness_vickers" unit="HV">550.0</attribute>
+      <attribute id="density" unit="kg / dm^3">7.85</attribute>
+      <attribute id="elastic_modulus" unit="N / mm^2">210000.0</attribute>
+      <attribute id="endurance_limit_flank" unit="N / mm^2">1500.0</attribute>
+      <attribute id="endurance_limit_root" unit="N / mm^2">461.0</attribute>
+      <attribute id="fatigue_limit_bending" unit="MPa">430.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">400.0</attribute>
+      <attribute id="fatigue_limit_torsion" unit="MPa">255.0</attribute>
+      <attribute id="heat_treated_material_type_iso_6336_2006" unit="none">case_hardened_wrought_steel</attribute>
+      <attribute id="is_material_austenitic_and_solution_annealed_fkm_2012" unit="none">false</attribute>
+      <attribute id="is_material_austenitic_steel_fkm_2012" unit="none">false</attribute>
+      <attribute id="is_material_hardable_fkm_2012" unit="none">false</attribute>
+      <attribute id="material_category_vdi_2736_2014" unit="none">steel</attribute>
+      <attribute id="material_designation" unit="none">16MnCr5</attribute>
+      <attribute id="material_hardening_method_fkm_2012" unit="none">unhardened</attribute>
+      <attribute id="material_type_din_743_2012" unit="none">3</attribute>
+      <attribute id="material_type_fkm_2012" unit="none">case_hardening_steel_blank_hardened_condition</attribute>
+      <attribute id="poisson_ratio" unit="none">0.3</attribute>
+      <attribute id="surface_hardness_brinell" unit="HB">693.5</attribute>
+      <attribute id="surface_hardness_vickers" unit="HV">750.0</attribute>
+      <attribute id="tensile_strength" unit="N / mm^2">1000.0</attribute>
+      <attribute id="thermal_capacity" unit="J / (kg K)">430.0</attribute>
+      <attribute id="thermal_conductivity" unit="W / (m K)">40.0</attribute>
+      <attribute id="thermal_expansion_coefficient_minus" unit="1e-6 / C">-8.0</attribute>
+      <attribute id="thermal_expansion_coefficient_plus" unit="1e-6 / C">11.0</attribute>
+      <attribute id="yield_strength" unit="N / mm^2">695.0</attribute>
+    </component>
+    <component id="31" name="FRAES_SNETRA_a [31]" type="worm_wheel_hob_tool"/>
+    <component id="35" name="SCHLEIF_SNETRA_a [35]" type="worm_grinding_disc_tool">
+      <attribute id="grinding_disk_diameter" unit="mm">320.0</attribute>
+    </component>
+    <component id="14" name="Wälzlager [14]" type="concept_bearing">
+      <attribute id="axial_force_absorption" unit="none">negative</attribute>
+      <attribute id="inner_diameter" unit="mm">30.0</attribute>
+      <attribute id="outer_diameter" unit="mm">62.0</attribute>
+      <attribute id="radial_force_absorption" unit="none">true</attribute>
+      <attribute id="width" unit="mm">16.0</attribute>
+      <attribute id="misalignment_in_v_direction" unit="mum">0.0</attribute>
+      <attribute id="misalignment_in_w_direction" unit="mum">0.0</attribute>
+      <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>70.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_coordinate_on_shaft_inner_side" unit="mm">70.0</attribute>
+      <attribute id="u_coordinate_on_shaft_outer_side" unit="mm">70.0</attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+      <attribute id="axial_stiffness" unit="N / m">1.0E20</attribute>
+      <attribute id="radial_stiffness" unit="N / m">1.0E20</attribute>
+      <attribute id="bending_stiffness" unit="N mm / rad">0.0</attribute>
+    </component>
+    <component id="36" name="Belastung [36]" type="external_load">
+      <attribute id="transmits_torque" unit="none">true</attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">0.0</attribute>
+      <attribute id="force_u_direction" unit="N">0.0</attribute>
+    </component>
+    <component id="15" name="Wälzlager [15]" type="concept_bearing">
+      <attribute id="axial_force_absorption" unit="none">positive</attribute>
+      <attribute id="inner_diameter" unit="mm">30.0</attribute>
+      <attribute id="outer_diameter" unit="mm">62.0</attribute>
+      <attribute id="radial_force_absorption" unit="none">true</attribute>
+      <attribute id="width" unit="mm">16.0</attribute>
+      <attribute id="misalignment_in_v_direction" unit="mum">0.0</attribute>
+      <attribute id="misalignment_in_w_direction" unit="mum">0.0</attribute>
+      <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>230.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_coordinate_on_shaft_inner_side" unit="mm">230.0</attribute>
+      <attribute id="u_coordinate_on_shaft_outer_side" unit="mm">230.0</attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+      <attribute id="axial_stiffness" unit="N / m">1.0E20</attribute>
+      <attribute id="radial_stiffness" unit="N / m">1.0E20</attribute>
+      <attribute id="bending_stiffness" unit="N mm / rad">0.0</attribute>
+    </component>
+    <component id="37" name="Belastung [37]" type="external_load">
+      <attribute id="torque_around_u_axis" unit="N m">300.0</attribute>
+      <attribute id="transmits_torque" unit="none">true</attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">0.0</attribute>
+      <attribute id="defines_torque" unit="none">true</attribute>
+      <attribute id="force_u_direction" unit="N">0.0</attribute>
+    </component>
+    <component id="16" name="Wälzlager [16]" type="concept_bearing">
+      <attribute id="axial_force_absorption" unit="none">positive</attribute>
+      <attribute id="inner_diameter" unit="mm">40.0</attribute>
+      <attribute id="outer_diameter" unit="mm">75.0</attribute>
+      <attribute id="radial_force_absorption" unit="none">true</attribute>
+      <attribute id="width" unit="mm">26.0</attribute>
+      <attribute id="misalignment_in_v_direction" unit="mum">0.0</attribute>
+      <attribute id="misalignment_in_w_direction" unit="mum">0.0</attribute>
+      <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>150.0</c>
+          <c>100.0</c>
+          <c>-40.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_coordinate_on_shaft_inner_side" unit="mm">60.0</attribute>
+      <attribute id="u_coordinate_on_shaft_outer_side" unit="mm">60.0</attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>1.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="axial_stiffness" unit="N / m">1.0E20</attribute>
+      <attribute id="radial_stiffness" unit="N / m">1.0E20</attribute>
+      <attribute id="bending_stiffness" unit="N mm / rad">0.0</attribute>
+    </component>
+    <component id="38" name="S2/220 [38]" type="lubricant">
+      <attribute id="density_at_15_degree_celsius" unit="kg / dm^3">1.02</attribute>
+      <attribute id="lubricant_type_iso_6336_2006" unit="none">non_water_soluble_polyglycol</attribute>
+      <attribute id="name" unit="none">PG</attribute>
+      <attribute id="viscosity_at_100_degree_celsius" unit="mm^2 / s">37.0</attribute>
+      <attribute id="viscosity_at_40_degree_celsius" unit="mm^2 / s">220.0</attribute>
+    </component>
+    <component id="17" name="Wälzlager [17]" type="concept_bearing">
+      <attribute id="axial_force_absorption" unit="none">negative</attribute>
+      <attribute id="inner_diameter" unit="mm">40.0</attribute>
+      <attribute id="outer_diameter" unit="mm">75.0</attribute>
+      <attribute id="radial_force_absorption" unit="none">true</attribute>
+      <attribute id="width" unit="mm">26.0</attribute>
+      <attribute id="misalignment_in_v_direction" unit="mum">0.0</attribute>
+      <attribute id="misalignment_in_w_direction" unit="mum">0.0</attribute>
+      <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>150.0</c>
+          <c>100.0</c>
+          <c>40.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_coordinate_on_shaft_inner_side" unit="mm">140.0</attribute>
+      <attribute id="u_coordinate_on_shaft_outer_side" unit="mm">140.0</attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>1.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="axial_stiffness" unit="N / m">1.0E20</attribute>
+      <attribute id="radial_stiffness" unit="N / m">1.0E20</attribute>
+      <attribute id="bending_stiffness" unit="N mm / rad">0.0</attribute>
+    </component>
+    <component id="1" name="Getriebeeinheit [1]" type="gear_unit">
+      <attribute id="account_for_gravity" unit="none">true</attribute>
+      <attribute id="account_for_shear_deformation" unit="none">true</attribute>
+      <attribute id="direction_vector_gravity_u" unit="none">0.0</attribute>
+      <attribute id="direction_vector_gravity_v" unit="none">1.0</attribute>
+      <attribute id="direction_vector_gravity_w" unit="none">0.0</attribute>
+      <attribute id="gear_shift_index" unit="none">1</attribute>
+      <attribute id="gravitational_acceleration" unit="m / s^2">9.81</attribute>
+      <attribute id="number_of_gears" unit="none">1</attribute>
+      <attribute id="number_of_nodes_in_mesh_width_for_loaddistribution" unit="none">18</attribute>
+      <attribute id="operating_time" unit="h">100000.0</attribute>
+      <attribute id="operating_time_vdi_2736_2014" unit="h">100000.0</attribute>
+      <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+    </component>
+    <component id="2" name="Gehäuse [2]" type="gear_casing">
+      <attribute id="temperature_lubricant" unit="C">73.2</attribute>
+      <attribute id="type_of_gear_casing_construction_vdi_2736_2014" unit="none">closed</attribute>
+    </component>
+    <component id="3" name="Schneckenstufe [3]" type="worm_stage">
+      <attribute id="temperature_lubricant" unit="C">73.2</attribute>
+      <attribute id="application_factor_din_3996_2019" unit="none">1.0</attribute>
+      <attribute id="center_distance" unit="mm">100.0</attribute>
+      <attribute id="center_distance_offset" unit="mm">0.0</attribute>
+      <attribute id="determination_of_bulk_temperature_din_3996_2019" unit="none">method_b</attribute>
+      <attribute id="determination_of_cooling_power_din_3996_2019" unit="none">method_b</attribute>
+      <attribute id="determination_of_deflection_din_3996_2019" unit="none">method_b</attribute>
+      <attribute id="determination_of_flank_loss_din_3996_2019" unit="none">method_b</attribute>
+      <attribute id="determination_of_mean_hertzian_stress_din_3996_2019" unit="none">method_b</attribute>
+      <attribute id="determination_of_mean_minimum_lubricant_film_thickness_din_3996_2019" unit="none">method_b</attribute>
+      <attribute id="determination_of_oil_sump_temperature_din_3996_2019" unit="none">method_b</attribute>
+      <attribute id="determination_of_sliding_path_din_3996_2019" unit="none">method_b</attribute>
+      <attribute id="determination_of_tooth_root_safety_din_3996_2019" unit="none">method_b</attribute>
+      <attribute id="inclination_angle_offset" unit="deg">0.0</attribute>
+      <attribute id="intersection_angle_offset" unit="deg">0.0</attribute>
+      <attribute id="lubrication_type_din_3996_2019" unit="none">injection_lubrication</attribute>
+      <attribute id="width_offset" unit="mm">0.0</attribute>
+    </component>
+    <component id="4" name="Welle [4]" type="shaft">
+      <attribute id="rotational_speed" unit="1 / min">1000.0</attribute>
+      <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+      <attribute id="defines_speed" unit="none">true</attribute>
+    </component>
+    <component id="6" name="Welle [6]" type="shaft">
+      <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>150.0</c>
+          <c>100.0</c>
+          <c>-100.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>1.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+    </component>
+    <component id="8" name="Schnecke [8]" type="worm_gear">
+      <attribute id="axial_module" unit="mm">4.0</attribute>
+      <attribute id="flank_form" unit="none">zi</attribute>
+      <attribute id="lead_angle_worm_gear" unit="deg">-12.5288</attribute>
+      <attribute id="length_worm_gear" unit="mm">160.0</attribute>
+      <attribute id="normal_module" unit="mm">3.90475</attribute>
+      <attribute id="number_of_teeth" unit="none">2</attribute>
+      <attribute id="pressure_angle_worm_gear" unit="deg">20.0</attribute>
+      <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="reference_diameter_worm_gear" unit="mm">36.0</attribute>
+      <attribute id="root_diameter_worm_gear" unit="mm">26.4</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>150.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="tip_diameter_worm_gear" unit="mm">44.0</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">150.0</attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+    </component>
+    <component id="9" name="Schneckenrad [9]" type="worm_wheel">
+      <attribute id="axial_module" unit="mm">18.000019008375062</attribute>
+      <attribute id="effective_face_width_worm_wheel" unit="mm">30.0</attribute>
+      <attribute id="flank_form" unit="none">zi</attribute>
+      <attribute id="number_of_teeth" unit="none">41</attribute>
+      <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="reference_diameter_worm_gear" unit="mm">164.0</attribute>
+      <attribute id="rim_width_worm_wheel" unit="mm">30.0</attribute>
+      <attribute id="root_diameter_worm_gear" unit="mm">154.4</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>150.0</c>
+          <c>100.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="throat_radius_worm_wheel" unit="mm">0.0</attribute>
+      <attribute id="tip_diameter_worm_gear" unit="mm">172.0</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">100.0</attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>1.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="lead_angle_worm_gear" unit="deg">-77.4712</attribute>
+    </component>
+    <component id="43" name="Zahnraddaten  (Schneckenräder) [43]" type="worm_stage_gear_data">
+      <attribute id="is_driving_gear" unit="none">false</attribute>
+    </component>
+    <component id="240" name="section [240]" type="shaft_section">
+      <attribute id="inner_diameter_begin" unit="mm">0.0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0.0</attribute>
+      <attribute id="length" unit="mm">111.125</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">30.0</attribute>
+      <attribute id="outer_diameter_end" unit="mm">30.0</attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">0.0</attribute>
+    </component>
+    <component id="241" name="section [241]" type="shaft_section">
+      <attribute id="inner_diameter_begin" unit="mm">0.0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0.0</attribute>
+      <attribute id="length" unit="mm">77.75</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">30.0</attribute>
+      <attribute id="outer_diameter_end" unit="mm">30.0</attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">111.125</attribute>
+    </component>
+    <component id="242" name="section [242]" type="shaft_section">
+      <attribute id="inner_diameter_begin" unit="mm">0.0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0.0</attribute>
+      <attribute id="length" unit="mm">111.125</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">30.0</attribute>
+      <attribute id="outer_diameter_end" unit="mm">30.0</attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">188.875</attribute>
+    </component>
+    <component id="243" name="section [243]" type="shaft_section">
+      <attribute id="inner_diameter_begin" unit="mm">0.0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0.0</attribute>
+      <attribute id="length" unit="mm">73.0</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">40.0</attribute>
+      <attribute id="outer_diameter_end" unit="mm">40.0</attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">0.0</attribute>
+    </component>
+    <component id="244" name="section [244]" type="shaft_section">
+      <attribute id="inner_diameter_begin" unit="mm">0.0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0.0</attribute>
+      <attribute id="length" unit="mm">54.0</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">45.0</attribute>
+      <attribute id="outer_diameter_end" unit="mm">45.0</attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">73.0</attribute>
+    </component>
+    <component id="245" name="section [245]" type="shaft_section">
+      <attribute id="inner_diameter_begin" unit="mm">0.0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0.0</attribute>
+      <attribute id="length" unit="mm">73.0</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">40.0</attribute>
+      <attribute id="outer_diameter_end" unit="mm">40.0</attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">127.0</attribute>
+    </component>
+    <component id="246" name="" type="worm_gear_flank"/>
+    <component id="247" name="" type="worm_gear_flank"/>
+    <component id="248" name="" type="worm_gear_flank"/>
+    <component id="249" name="" type="worm_gear_flank"/>
+    <component id="250" name="" type="worm_gear_manufacturing_settings">
+      <attribute id="center_distance_correction" unit="mm">0.0</attribute>
+      <attribute id="pressure_angle_correction" unit="deg">0.0</attribute>
+    </component>
+    <component id="251" name="" type="worm_gear_manufacturing_settings">
+      <attribute id="center_distance_correction" unit="mm">0.0</attribute>
+      <attribute id="lyra_angle" unit="deg">0.0</attribute>
+      <attribute id="hobbing_procedure" unit="none">radial</attribute>
+    </component>
+  </components>
+</model>

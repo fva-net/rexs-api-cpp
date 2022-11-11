@@ -1,0 +1,948 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<model applicationId="Bearinx" applicationVersion="12.0.9241 (sandbox development)" date="2022-04-21T11:42:31+01:00" version="1.4">
+
+  <relations>
+    <relation id="5" type="assembly">
+      <ref hint="shaft" id="12" role="assembly"/>
+      <ref hint="cylindrical_gear" id="15" role="part"/>
+    </relation>
+    <relation id="6" type="assembly">
+      <ref hint="shaft" id="14" role="assembly"/>
+      <ref hint="cylindrical_gear" id="18" role="part"/>
+    </relation>
+    <relation id="7" type="assembly">
+      <ref hint="shaft" id="13" role="assembly"/>
+      <ref hint="cylindrical_gear" id="17" role="part"/>
+    </relation>
+    <relation id="8" type="assembly">
+      <ref hint="shaft" id="13" role="assembly"/>
+      <ref hint="cylindrical_gear" id="16" role="part"/>
+    </relation>
+    <relation id="1" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="cylindrical_stage" id="19" role="part"/>
+    </relation>
+    <relation id="2" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="cylindrical_stage" id="20" role="part"/>
+    </relation>
+    <relation id="36" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="gear_casing" id="2" role="part"/>
+    </relation>
+    <relation id="9" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="shaft" id="12" role="part"/>
+    </relation>
+    <relation id="10" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="shaft" id="14" role="part"/>
+    </relation>
+    <relation id="11" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="shaft" id="13" role="part"/>
+    </relation>
+    <relation id="127" type="stage">
+      <ref hint="cylindrical_stage" id="19" role="stage"/>
+      <ref hint="cylindrical_gear" id="15" role="gear_1"/>
+      <ref hint="cylindrical_gear" id="17" role="gear_2"/>
+    </relation>
+    <relation id="128" type="stage">
+      <ref hint="cylindrical_stage" id="20" role="stage"/>
+      <ref hint="cylindrical_gear" id="16" role="gear_1"/>
+      <ref hint="cylindrical_gear" id="18" role="gear_2"/>
+    </relation>
+    <relation id="14" type="assembly">
+      <ref hint="shaft" id="12" role="assembly"/>
+      <ref hint="shaft_section" id="21" role="part"/>
+    </relation>
+    <relation id="15" type="assembly">
+      <ref hint="shaft" id="12" role="assembly"/>
+      <ref hint="shaft_section" id="22" role="part"/>
+    </relation>
+    <relation id="16" type="assembly">
+      <ref hint="shaft" id="12" role="assembly"/>
+      <ref hint="shaft_section" id="23" role="part"/>
+    </relation>
+    <relation id="17" type="assembly">
+      <ref hint="shaft" id="14" role="assembly"/>
+      <ref hint="shaft_section" id="24" role="part"/>
+    </relation>
+    <relation id="18" type="assembly">
+      <ref hint="shaft" id="14" role="assembly"/>
+      <ref hint="shaft_section" id="25" role="part"/>
+    </relation>
+    <relation id="19" type="assembly">
+      <ref hint="shaft" id="14" role="assembly"/>
+      <ref hint="shaft_section" id="26" role="part"/>
+    </relation>
+    <relation id="20" type="assembly">
+      <ref hint="shaft" id="14" role="assembly"/>
+      <ref hint="shaft_section" id="27" role="part"/>
+    </relation>
+    <relation id="21" type="assembly">
+      <ref hint="shaft" id="14" role="assembly"/>
+      <ref hint="shaft_section" id="28" role="part"/>
+    </relation>
+    <relation id="22" type="assembly">
+      <ref hint="shaft" id="14" role="assembly"/>
+      <ref hint="shaft_section" id="29" role="part"/>
+    </relation>
+    <relation id="23" type="assembly">
+      <ref hint="shaft" id="13" role="assembly"/>
+      <ref hint="shaft_section" id="30" role="part"/>
+    </relation>
+    <relation id="24" type="assembly">
+      <ref hint="shaft" id="13" role="assembly"/>
+      <ref hint="shaft_section" id="31" role="part"/>
+    </relation>
+    <relation id="25" type="assembly">
+      <ref hint="shaft" id="13" role="assembly"/>
+      <ref hint="shaft_section" id="32" role="part"/>
+    </relation>
+    <relation id="32" type="assembly">
+      <ref hint="shaft" id="12" role="assembly"/>
+      <ref hint="external_load" id="40" role="part"/>
+    </relation>
+    <relation id="33" type="assembly">
+      <ref hint="shaft" id="14" role="assembly"/>
+      <ref hint="external_load" id="41" role="part"/>
+    </relation>
+    <relation id="34" type="assembly">
+      <ref hint="shaft" id="12" role="assembly"/>
+      <ref hint="external_load" id="42" role="part"/>
+    </relation>
+    <relation id="35" type="assembly">
+      <ref hint="shaft" id="14" role="assembly"/>
+      <ref hint="external_load" id="43" role="part"/>
+    </relation>
+    <relation id="121" type="side">
+      <ref hint="concept_bearing" id="36" role="assembly"/>
+      <ref hint="shaft" id="12" role="inner_part"/>
+      <ref hint="shaft" id="14" role="outer_part"/>
+    </relation>
+    <relation id="122" type="side">
+      <ref hint="concept_bearing" id="37" role="assembly"/>
+      <ref hint="shaft" id="13" role="inner_part"/>
+      <ref hint="gear_casing" id="2" role="outer_part"/>
+    </relation>
+    <relation id="123" type="side">
+      <ref hint="concept_bearing" id="38" role="assembly"/>
+      <ref hint="shaft" id="13" role="inner_part"/>
+      <ref hint="gear_casing" id="2" role="outer_part"/>
+    </relation>
+    <relation id="124" type="side">
+      <ref hint="rolling_bearing_with_catalog_geometry" id="33" role="assembly"/>
+      <ref hint="shaft" id="12" role="inner_part"/>
+      <ref hint="gear_casing" id="2" role="outer_part"/>
+    </relation>
+    <relation id="125" type="side">
+      <ref hint="rolling_bearing_with_catalog_geometry" id="34" role="assembly"/>
+      <ref hint="shaft" id="14" role="inner_part"/>
+      <ref hint="gear_casing" id="2" role="outer_part"/>
+    </relation>
+    <relation id="126" type="side">
+      <ref hint="rolling_bearing_with_catalog_geometry" id="35" role="assembly"/>
+      <ref hint="shaft" id="14" role="inner_part"/>
+      <ref hint="gear_casing" id="2" role="outer_part"/>
+    </relation>
+    <relation id="129" type="stage_gear_data">
+      <ref hint="cylindrical_stage" id="19" role="stage"/>
+      <ref hint="cylindrical_gear" id="15" role="gear"/>
+      <ref hint="cylindrical_stage_gear_data" id="44" role="stage_gear_data"/>
+    </relation>
+    <relation id="130" type="stage_gear_data">
+      <ref hint="cylindrical_stage" id="19" role="stage"/>
+      <ref hint="cylindrical_gear" id="17" role="gear"/>
+      <ref hint="cylindrical_stage_gear_data" id="45" role="stage_gear_data"/>
+    </relation>
+    <relation id="131" type="stage_gear_data">
+      <ref hint="cylindrical_stage" id="20" role="stage"/>
+      <ref hint="cylindrical_gear" id="16" role="gear"/>
+      <ref hint="cylindrical_stage_gear_data" id="46" role="stage_gear_data"/>
+    </relation>
+    <relation id="132" type="stage_gear_data">
+      <ref hint="cylindrical_stage" id="20" role="stage"/>
+      <ref hint="cylindrical_gear" id="18" role="gear"/>
+      <ref hint="cylindrical_stage_gear_data" id="47" role="stage_gear_data"/>
+    </relation>
+    <relation id="133" type="flank">
+      <ref hint="cylindrical_gear" id="15" role="gear"/>
+      <ref hint="cylindrical_gear_flank" id="48" role="left"/>
+      <ref hint="cylindrical_gear_flank" id="49" role="right"/>
+    </relation>
+    <relation id="134" type="flank">
+      <ref hint="cylindrical_gear" id="18" role="gear"/>
+      <ref hint="cylindrical_gear_flank" id="50" role="left"/>
+      <ref hint="cylindrical_gear_flank" id="51" role="right"/>
+    </relation>
+    <relation id="135" type="flank">
+      <ref hint="cylindrical_gear" id="17" role="gear"/>
+      <ref hint="cylindrical_gear_flank" id="52" role="left"/>
+      <ref hint="cylindrical_gear_flank" id="53" role="right"/>
+    </relation>
+    <relation id="136" type="flank">
+      <ref hint="cylindrical_gear" id="16" role="gear"/>
+      <ref hint="cylindrical_gear_flank" id="54" role="left"/>
+      <ref hint="cylindrical_gear_flank" id="55" role="right"/>
+    </relation>
+    <relation id="137" type="reference">
+      <ref hint="gear_casing" id="2" role="origin"/>
+      <ref hint="lubricant" id="56" role="referenced"/>
+    </relation>
+    <relation id="138" type="reference">
+      <ref hint="shaft" id="12" role="origin"/>
+      <ref hint="material" id="57" role="referenced"/>
+    </relation>
+    <relation id="139" type="reference">
+      <ref hint="shaft" id="13" role="origin"/>
+      <ref hint="material" id="58" role="referenced"/>
+    </relation>
+    <relation id="140" type="reference">
+      <ref hint="shaft" id="14" role="origin"/>
+      <ref hint="material" id="59" role="referenced"/>
+    </relation>
+  </relations>
+
+  <components>
+    <component id="1" name="Gear unit [1]" type="gear_unit">
+      <attribute id="EIGENGEWICHT" unit="">false</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+      <attribute id="reference_temperature" unit="C">20</attribute>
+      <attribute id="custom_bearinx_account_for_centrifugal_forces" unit="">false</attribute>
+      <attribute id="gear_shift_index" unit="">1</attribute>
+      <attribute id="number_of_gears" unit="">1</attribute>
+    </component>
+    <component id="12" name="Shaft [6]" type="shaft">
+      <attribute id="defines_speed" unit="">true</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>-70</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+      <attribute id="mean_operating_temperature" unit="C">20</attribute>
+    </component>
+    <component id="13" name="Shaft [25]" type="shaft">
+      <attribute id="defines_speed" unit="">false</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>-25</c>
+          <c>0</c>
+          <c>-190</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+      <attribute id="mean_operating_temperature" unit="C">20</attribute>
+    </component>
+    <component id="14" name="Shaft [42]" type="shaft">
+      <attribute id="defines_speed" unit="">false</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>90</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+      <attribute id="mean_operating_temperature" unit="C">20</attribute>
+    </component>
+    <component id="15" name="Cylindrical gear [27]" type="cylindrical_gear">
+      <attribute id="u_coordinate_on_shaft" unit="mm">117</attribute>
+      <attribute id="face_width" unit="mm">50</attribute>
+      <attribute id="number_of_teeth" unit="">27</attribute>
+      <attribute id="normal_module" unit="mm">4.5</attribute>
+      <attribute id="helix_angle_reference_diameter" unit="deg">21</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>47</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+    </component>
+    <component id="16" name="Cylindrical gear [44]" type="cylindrical_gear">
+      <attribute id="u_coordinate_on_shaft" unit="mm">180</attribute>
+      <attribute id="face_width" unit="mm">74</attribute>
+      <attribute id="tip_diameter" unit="mm">1</attribute>
+      <attribute id="number_of_teeth" unit="">23</attribute>
+      <attribute id="normal_module" unit="mm">6.5</attribute>
+      <attribute id="helix_angle_reference_diameter" unit="deg">-10</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>155</c>
+          <c>0</c>
+          <c>-190</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+    </component>
+    <component id="17" name="Cylindrical gear [28]" type="cylindrical_gear">
+      <attribute id="u_coordinate_on_shaft" unit="mm">72</attribute>
+      <attribute id="face_width" unit="mm">50</attribute>
+      <attribute id="number_of_teeth" unit="">51</attribute>
+      <attribute id="normal_module" unit="mm">4.5</attribute>
+      <attribute id="helix_angle_reference_diameter" unit="deg">-21</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>47</c>
+          <c>0</c>
+          <c>-190</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+    </component>
+    <component id="18" name="Cylindrical gear [45]" type="cylindrical_gear">
+      <attribute id="u_coordinate_on_shaft" unit="mm">65</attribute>
+      <attribute id="face_width" unit="mm">74</attribute>
+      <attribute id="number_of_teeth" unit="">34</attribute>
+      <attribute id="normal_module" unit="mm">6.5</attribute>
+      <attribute id="helix_angle_reference_diameter" unit="deg">10</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>155</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+    </component>
+    <component id="19" name="Cylindrical stage [24]" type="cylindrical_stage">
+      <attribute id="center_distance" unit="mm">190</attribute>
+      <attribute id="rotating_angle_around_neg_u_axis" unit="deg">180</attribute>
+      <attribute id="custom_bearinx_gear_meshing_model" unit="none">point_load_for_gear_meshing_model</attribute>
+      <attribute id="custom_bearinx_calculation_of_gear_meshing_stiffness" unit="none">gear_meshing_stiffness_according_ISO_6336</attribute>
+      <attribute id="flag_designation_addendum_modification" unit="none">entry_of_addendum_modification_coefficient</attribute>
+    </component>
+    <component id="20" name="Cylindrical stage [41]" type="cylindrical_stage">
+      <attribute id="center_distance" unit="mm">190</attribute>
+      <attribute id="rotating_angle_around_neg_u_axis" unit="deg">-0</attribute>
+      <attribute id="custom_bearinx_gear_meshing_model" unit="none">point_load_for_gear_meshing_model</attribute>
+      <attribute id="custom_bearinx_calculation_of_gear_meshing_stiffness" unit="none">gear_meshing_stiffness_according_ISO_6336</attribute>
+      <attribute id="flag_designation_addendum_modification" unit="none">entry_of_addendum_modification_coefficient</attribute>
+    </component>
+    <component id="21" name="Segment 1" type="shaft_section">
+      <attribute id="u_coordinate_on_shaft" unit="mm">0</attribute>
+      <attribute id="inner_diameter_begin" unit="mm">0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0</attribute>
+      <attribute id="length" unit="mm">80</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">50</attribute>
+      <attribute id="outer_diameter_end" unit="mm">50</attribute>
+    </component>
+    <component id="22" name="Segment 2" type="shaft_section">
+      <attribute id="u_coordinate_on_shaft" unit="mm">80</attribute>
+      <attribute id="inner_diameter_begin" unit="mm">0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0</attribute>
+      <attribute id="length" unit="mm">80</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">60</attribute>
+      <attribute id="outer_diameter_end" unit="mm">60</attribute>
+    </component>
+    <component id="23" name="Segment 3" type="shaft_section">
+      <attribute id="u_coordinate_on_shaft" unit="mm">160</attribute>
+      <attribute id="inner_diameter_begin" unit="mm">0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0</attribute>
+      <attribute id="length" unit="mm">30</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">50</attribute>
+      <attribute id="outer_diameter_end" unit="mm">50</attribute>
+    </component>
+    <component id="24" name="Segment 1" type="shaft_section">
+      <attribute id="u_coordinate_on_shaft" unit="mm">0</attribute>
+      <attribute id="inner_diameter_begin" unit="mm">58</attribute>
+      <attribute id="inner_diameter_end" unit="mm">58</attribute>
+      <attribute id="length" unit="mm">20</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">70</attribute>
+      <attribute id="outer_diameter_end" unit="mm">70</attribute>
+    </component>
+    <component id="25" name="Segment 2" type="shaft_section">
+      <attribute id="u_coordinate_on_shaft" unit="mm">20</attribute>
+      <attribute id="inner_diameter_begin" unit="mm">58</attribute>
+      <attribute id="inner_diameter_end" unit="mm">58</attribute>
+      <attribute id="length" unit="mm">8</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">70</attribute>
+      <attribute id="outer_diameter_end" unit="mm">70</attribute>
+    </component>
+    <component id="26" name="Segment 3" type="shaft_section">
+      <attribute id="u_coordinate_on_shaft" unit="mm">28</attribute>
+      <attribute id="inner_diameter_begin" unit="mm">58</attribute>
+      <attribute id="inner_diameter_end" unit="mm">58</attribute>
+      <attribute id="length" unit="mm">3</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">70</attribute>
+      <attribute id="outer_diameter_end" unit="mm">70</attribute>
+    </component>
+    <component id="27" name="Segment 4" type="shaft_section">
+      <attribute id="u_coordinate_on_shaft" unit="mm">31</attribute>
+      <attribute id="inner_diameter_begin" unit="mm">0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0</attribute>
+      <attribute id="length" unit="mm">82</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">70</attribute>
+      <attribute id="outer_diameter_end" unit="mm">70</attribute>
+    </component>
+    <component id="28" name="Segment 5" type="shaft_section">
+      <attribute id="u_coordinate_on_shaft" unit="mm">113</attribute>
+      <attribute id="inner_diameter_begin" unit="mm">0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0</attribute>
+      <attribute id="length" unit="mm">10</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">80</attribute>
+      <attribute id="outer_diameter_end" unit="mm">80</attribute>
+    </component>
+    <component id="29" name="Segment 6" type="shaft_section">
+      <attribute id="u_coordinate_on_shaft" unit="mm">123</attribute>
+      <attribute id="inner_diameter_begin" unit="mm">0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0</attribute>
+      <attribute id="length" unit="mm">100</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">60</attribute>
+      <attribute id="outer_diameter_end" unit="mm">60</attribute>
+    </component>
+    <component id="30" name="Segment 1" type="shaft_section">
+      <attribute id="u_coordinate_on_shaft" unit="mm">0</attribute>
+      <attribute id="inner_diameter_begin" unit="mm">0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0</attribute>
+      <attribute id="length" unit="mm">45</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">80</attribute>
+      <attribute id="outer_diameter_end" unit="mm">80</attribute>
+    </component>
+    <component id="31" name="Segment 2" type="shaft_section">
+      <attribute id="u_coordinate_on_shaft" unit="mm">45</attribute>
+      <attribute id="inner_diameter_begin" unit="mm">0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0</attribute>
+      <attribute id="length" unit="mm">60</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">90</attribute>
+      <attribute id="outer_diameter_end" unit="mm">90</attribute>
+    </component>
+    <component id="32" name="Segment 3" type="shaft_section">
+      <attribute id="u_coordinate_on_shaft" unit="mm">105</attribute>
+      <attribute id="inner_diameter_begin" unit="mm">0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0</attribute>
+      <attribute id="length" unit="mm">165</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">80</attribute>
+      <attribute id="outer_diameter_end" unit="mm">80</attribute>
+    </component>
+    <component id="33" name="6210-2Z (Rolling bearing [33])" type="rolling_bearing_with_catalog_geometry">
+      <attribute id="u_coordinate_on_shaft_inner_side" unit="mm">65</attribute>
+      <attribute id="u_coordinate_on_shaft_outer_side" unit="mm">-5</attribute>
+      <attribute id="axial_force_absorption" unit="">both_directions</attribute>
+      <attribute id="radial_force_absorption" unit="">true</attribute>
+      <attribute id="catalogue_designation" unit="">6210-2Z</attribute>
+      <attribute id="bearing_type" unit="">radial_grooved_ball_bearing</attribute>
+      <attribute id="manufacturer" unit="">FAG</attribute>
+      <attribute id="contamination_factor_according_to_iso_281_2007" unit="">0.5</attribute>
+      <attribute id="custom_bearinx_lubricant_with_proven_effective_ep_additives" unit="">false</attribute>
+      <attribute id="preload_distance" unit="mum">0</attribute>
+      <attribute id="misalignment_in_v_direction" unit="mum">0</attribute>
+      <attribute id="misalignment_in_w_direction" unit="mum">0</attribute>
+      <attribute id="angular_misalignment_around_v_axis" unit="deg">0</attribute>
+      <attribute id="angular_misalignment_around_w_axis" unit="deg">0</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>-5</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+    </component>
+    <component id="34" name="33014 (Rolling bearing [90])" type="rolling_bearing_with_catalog_geometry">
+      <attribute id="u_coordinate_on_shaft_inner_side" unit="mm">13</attribute>
+      <attribute id="u_coordinate_on_shaft_outer_side" unit="mm">103</attribute>
+      <attribute id="axial_force_absorption" unit="">negative</attribute>
+      <attribute id="radial_force_absorption" unit="">true</attribute>
+      <attribute id="catalogue_designation" unit="">33014</attribute>
+      <attribute id="bearing_type" unit="">radial_tapered_roller_bearing</attribute>
+      <attribute id="manufacturer" unit="">FAG</attribute>
+      <attribute id="contamination_factor_according_to_iso_281_2007" unit="">0.5</attribute>
+      <attribute id="custom_bearinx_lubricant_with_proven_effective_ep_additives" unit="">false</attribute>
+      <attribute id="preload_distance" unit="mum">0</attribute>
+      <attribute id="misalignment_in_v_direction" unit="mum">0</attribute>
+      <attribute id="misalignment_in_w_direction" unit="mum">0</attribute>
+      <attribute id="angular_misalignment_around_v_axis" unit="deg">0</attribute>
+      <attribute id="angular_misalignment_around_w_axis" unit="deg">0</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>103</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+    </component>
+    <component id="35" name="33012 (Rolling bearing [49])" type="rolling_bearing_with_catalog_geometry">
+      <attribute id="u_coordinate_on_shaft_inner_side" unit="mm">140</attribute>
+      <attribute id="u_coordinate_on_shaft_outer_side" unit="mm">230</attribute>
+      <attribute id="axial_force_absorption" unit="">positive</attribute>
+      <attribute id="radial_force_absorption" unit="">true</attribute>
+      <attribute id="catalogue_designation" unit="">33012</attribute>
+      <attribute id="bearing_type" unit="">radial_tapered_roller_bearing</attribute>
+      <attribute id="manufacturer" unit="">FAG</attribute>
+      <attribute id="contamination_factor_according_to_iso_281_2007" unit="">0.5</attribute>
+      <attribute id="custom_bearinx_lubricant_with_proven_effective_ep_additives" unit="">false</attribute>
+      <attribute id="preload_distance" unit="mum">0</attribute>
+      <attribute id="misalignment_in_v_direction" unit="mum">0</attribute>
+      <attribute id="misalignment_in_w_direction" unit="mum">0</attribute>
+      <attribute id="angular_misalignment_around_v_axis" unit="deg">0</attribute>
+      <attribute id="angular_misalignment_around_w_axis" unit="deg">0</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>230</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+    </component>
+    <component id="36" name="not a catalogue bearing: K 50x58x25 (Rolling bearing [86])" type="concept_bearing">
+      <attribute id="u_coordinate_on_shaft_inner_side" unit="mm">175</attribute>
+      <attribute id="u_coordinate_on_shaft_outer_side" unit="mm">15</attribute>
+      <attribute id="axial_force_absorption" unit="">no_direction</attribute>
+      <attribute id="radial_force_absorption" unit="">true</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>105</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+      <attribute id="bending_stiffness" unit="N mm / rad">1e+15</attribute>
+    </component>
+    <component id="37" name="not a catalogue bearing: 33016 (Rolling bearing [35])" type="concept_bearing">
+      <attribute id="u_coordinate_on_shaft_inner_side" unit="mm">20</attribute>
+      <attribute id="u_coordinate_on_shaft_outer_side" unit="mm">-5</attribute>
+      <attribute id="axial_force_absorption" unit="">negative</attribute>
+      <attribute id="radial_force_absorption" unit="">true</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>-5</c>
+          <c>0</c>
+          <c>-190</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+      <attribute id="bending_stiffness" unit="N mm / rad">1e+15</attribute>
+    </component>
+    <component id="38" name="not a catalogue bearing: 33016 (Rolling bearing [60])" type="concept_bearing">
+      <attribute id="u_coordinate_on_shaft_inner_side" unit="mm">250</attribute>
+      <attribute id="u_coordinate_on_shaft_outer_side" unit="mm">225</attribute>
+      <attribute id="axial_force_absorption" unit="">positive</attribute>
+      <attribute id="radial_force_absorption" unit="">true</attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </array>
+      </attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>225</c>
+          <c>0</c>
+          <c>-190</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+        </array>
+      </attribute>
+      <attribute id="reference_component_for_position" unit="">1</attribute>
+      <attribute id="bending_stiffness" unit="N mm / rad">1e+15</attribute>
+    </component>
+    <component id="2" name="Casing [2]" type="gear_casing"/>
+    <component id="40" name="Load [70]" type="external_load">
+      <attribute id="u_coordinate_on_shaft" unit="mm">0</attribute>
+      <attribute id="transmits_torque" unit="">true</attribute>
+      <attribute id="defines_torque" unit="">true</attribute>
+    </component>
+    <component id="41" name="Load [64]" type="external_load">
+      <attribute id="u_coordinate_on_shaft" unit="mm">170</attribute>
+      <attribute id="transmits_torque" unit="">true</attribute>
+      <attribute id="defines_torque" unit="">false</attribute>
+    </component>
+    <component id="42" name="Load [70]" type="external_load">
+      <attribute id="u_coordinate_on_shaft" unit="mm">0</attribute>
+      <attribute id="transmits_torque" unit="">false</attribute>
+    </component>
+    <component id="43" name="Load [64]" type="external_load">
+      <attribute id="u_coordinate_on_shaft" unit="mm">170</attribute>
+      <attribute id="transmits_torque" unit="">false</attribute>
+    </component>
+    <component id="44" name="Cylindrical stage [24] data Cylindrical gear [27]" type="cylindrical_stage_gear_data"/>
+    <component id="45" name="Cylindrical stage [24] data Cylindrical gear [28]" type="cylindrical_stage_gear_data"/>
+    <component id="46" name="Cylindrical stage [41] data Cylindrical gear [44]" type="cylindrical_stage_gear_data"/>
+    <component id="47" name="Cylindrical stage [41] data Cylindrical gear [45]" type="cylindrical_stage_gear_data"/>
+    <component id="48" name="Cylindrical gear [27] (left flank)" type="cylindrical_gear_flank">
+      <attribute id="normal_pressure_angle" unit="deg">20</attribute>
+      <attribute id="addendum_modification_coefficient" unit="">0.231415</attribute>
+    </component>
+    <component id="49" name="Cylindrical gear [27] (right flank)" type="cylindrical_gear_flank">
+      <attribute id="normal_pressure_angle" unit="deg">20</attribute>
+      <attribute id="addendum_modification_coefficient" unit="">0.231415</attribute>
+    </component>
+    <component id="50" name="Cylindrical gear [45] (left flank)" type="cylindrical_gear_flank">
+      <attribute id="normal_pressure_angle" unit="deg">20</attribute>
+      <attribute id="addendum_modification_coefficient" unit="">0.15074</attribute>
+    </component>
+    <component id="51" name="Cylindrical gear [45] (right flank)" type="cylindrical_gear_flank">
+      <attribute id="normal_pressure_angle" unit="deg">20</attribute>
+      <attribute id="addendum_modification_coefficient" unit="">0.15074</attribute>
+    </component>
+    <component id="52" name="Cylindrical gear [28] (left flank)" type="cylindrical_gear_flank">
+      <attribute id="normal_pressure_angle" unit="deg">20</attribute>
+      <attribute id="addendum_modification_coefficient" unit="">0.231415</attribute>
+    </component>
+    <component id="53" name="Cylindrical gear [28] (right flank)" type="cylindrical_gear_flank">
+      <attribute id="normal_pressure_angle" unit="deg">20</attribute>
+      <attribute id="addendum_modification_coefficient" unit="">0.231415</attribute>
+    </component>
+    <component id="54" name="Cylindrical gear [44] (left flank)" type="cylindrical_gear_flank">
+      <attribute id="normal_pressure_angle" unit="deg">20</attribute>
+      <attribute id="addendum_modification_coefficient" unit="">0.15074</attribute>
+    </component>
+    <component id="55" name="Cylindrical gear [44] (right flank)" type="cylindrical_gear_flank">
+      <attribute id="normal_pressure_angle" unit="deg">20</attribute>
+      <attribute id="addendum_modification_coefficient" unit="">0.15074</attribute>
+    </component>
+    <component id="56" name="Lubricant" type="lubricant">
+      <attribute id="density_at_15_degree_celsius" unit="kg / dm^3">0.88</attribute>
+      <attribute id="kind" unit="">oil</attribute>
+      <attribute id="viscosity_at_40_degree_celsius" unit="mm^2 / s">100</attribute>
+      <attribute id="viscosity_at_100_degree_celsius" unit="mm^2 / s">11</attribute>
+    </component>
+    <component id="57" name="Material 1" type="material">
+      <attribute id="elastic_modulus" unit="N / mm^2">210000</attribute>
+      <attribute id="material_designation" unit="">Material 1</attribute>
+      <attribute id="poisson_ratio" unit="">0.3</attribute>
+      <attribute id="density" unit="kg / dm^3">7.85</attribute>
+      <attribute id="thermal_expansion_coefficient_plus" unit="1e-6 / C">11</attribute>
+      <attribute id="thermal_expansion_coefficient_minus" unit="1e-6 / C">-11</attribute>
+      <attribute id="tensile_strength" unit="N / mm^2">1100</attribute>
+    </component>
+    <component id="58" name="Material 2" type="material">
+      <attribute id="elastic_modulus" unit="N / mm^2">210000</attribute>
+      <attribute id="material_designation" unit="">Material 2</attribute>
+      <attribute id="poisson_ratio" unit="">0.3</attribute>
+      <attribute id="density" unit="kg / dm^3">7.85</attribute>
+      <attribute id="thermal_expansion_coefficient_plus" unit="1e-6 / C">11</attribute>
+      <attribute id="thermal_expansion_coefficient_minus" unit="1e-6 / C">-11</attribute>
+      <attribute id="tensile_strength" unit="N / mm^2">1100</attribute>
+    </component>
+    <component id="59" name="Material 3" type="material">
+      <attribute id="elastic_modulus" unit="N / mm^2">210000</attribute>
+      <attribute id="material_designation" unit="">Material 3</attribute>
+      <attribute id="poisson_ratio" unit="">0.3</attribute>
+      <attribute id="density" unit="kg / dm^3">7.85</attribute>
+      <attribute id="thermal_expansion_coefficient_plus" unit="1e-6 / C">11</attribute>
+      <attribute id="thermal_expansion_coefficient_minus" unit="1e-6 / C">-11</attribute>
+      <attribute id="tensile_strength" unit="N / mm^2">1100</attribute>
+    </component>
+  </components>
+
+  <load_spectrum id="1">
+    <load_case id="1">
+      <component id="1" name="Gear unit [1]" type="gear_unit">
+        <attribute id="load_duration_fraction" unit="%">20</attribute>
+      </component>
+      <component id="12" name="Shaft [6]" type="shaft">
+        <attribute id="rotational_speed" unit="1 / min">543</attribute>
+      </component>
+      <component id="2" name="Casing [2]" type="gear_casing">
+        <attribute id="temperature_lubricant" unit="C">70</attribute>
+      </component>
+      <component id="40" name="Load [70]" type="external_load">
+        <attribute id="torque_around_u_axis" unit="N m">567</attribute>
+      </component>
+      <component id="42" name="Load [70]" type="external_load">
+        <attribute id="force_u_direction" unit="N">0</attribute>
+        <attribute id="force_v_direction" unit="N">456</attribute>
+        <attribute id="force_w_direction" unit="N">0</attribute>
+        <attribute id="torque_around_v_axis" unit="N m">0</attribute>
+        <attribute id="torque_around_w_axis" unit="N m">0</attribute>
+      </component>
+      <component id="43" name="Load [64]" type="external_load">
+        <attribute id="force_u_direction" unit="N">0</attribute>
+        <attribute id="force_v_direction" unit="N">123</attribute>
+        <attribute id="force_w_direction" unit="N">0</attribute>
+        <attribute id="torque_around_v_axis" unit="N m">0</attribute>
+        <attribute id="torque_around_w_axis" unit="N m">0</attribute>
+      </component>
+    </load_case>
+    <load_case id="2">
+      <component id="1" name="Gear unit [1]" type="gear_unit">
+        <attribute id="load_duration_fraction" unit="%">30</attribute>
+      </component>
+      <component id="12" name="Shaft [6]" type="shaft">
+        <attribute id="rotational_speed" unit="1 / min">3456</attribute>
+      </component>
+      <component id="2" name="Casing [2]" type="gear_casing">
+        <attribute id="temperature_lubricant" unit="C">70</attribute>
+      </component>
+      <component id="40" name="Load [70]" type="external_load">
+        <attribute id="torque_around_u_axis" unit="N m">345</attribute>
+      </component>
+      <component id="42" name="Load [70]" type="external_load">
+        <attribute id="force_u_direction" unit="N">0</attribute>
+        <attribute id="force_v_direction" unit="N">678</attribute>
+        <attribute id="force_w_direction" unit="N">0</attribute>
+        <attribute id="torque_around_v_axis" unit="N m">0</attribute>
+        <attribute id="torque_around_w_axis" unit="N m">0</attribute>
+      </component>
+      <component id="43" name="Load [64]" type="external_load">
+        <attribute id="force_u_direction" unit="N">123</attribute>
+        <attribute id="force_v_direction" unit="N">0</attribute>
+        <attribute id="force_w_direction" unit="N">0</attribute>
+        <attribute id="torque_around_v_axis" unit="N m">0</attribute>
+        <attribute id="torque_around_w_axis" unit="N m">0</attribute>
+      </component>
+    </load_case>
+    <load_case id="3">
+      <component id="1" name="Gear unit [1]" type="gear_unit">
+        <attribute id="load_duration_fraction" unit="%">35</attribute>
+      </component>
+      <component id="12" name="Shaft [6]" type="shaft">
+        <attribute id="rotational_speed" unit="1 / min">1234</attribute>
+      </component>
+      <component id="2" name="Casing [2]" type="gear_casing">
+        <attribute id="temperature_lubricant" unit="C">70</attribute>
+      </component>
+      <component id="40" name="Load [70]" type="external_load">
+        <attribute id="torque_around_u_axis" unit="N m">456</attribute>
+      </component>
+      <component id="42" name="Load [70]" type="external_load">
+        <attribute id="force_u_direction" unit="N">0</attribute>
+        <attribute id="force_v_direction" unit="N">876</attribute>
+        <attribute id="force_w_direction" unit="N">0</attribute>
+        <attribute id="torque_around_v_axis" unit="N m">0</attribute>
+        <attribute id="torque_around_w_axis" unit="N m">0</attribute>
+      </component>
+      <component id="43" name="Load [64]" type="external_load">
+        <attribute id="force_u_direction" unit="N">0</attribute>
+        <attribute id="force_v_direction" unit="N">345</attribute>
+        <attribute id="force_w_direction" unit="N">0</attribute>
+        <attribute id="torque_around_v_axis" unit="N m">0</attribute>
+        <attribute id="torque_around_w_axis" unit="N m">0</attribute>
+      </component>
+    </load_case>
+    <load_case id="4">
+      <component id="1" name="Gear unit [1]" type="gear_unit">
+        <attribute id="load_duration_fraction" unit="%">15</attribute>
+      </component>
+      <component id="12" name="Shaft [6]" type="shaft">
+        <attribute id="rotational_speed" unit="1 / min">789</attribute>
+      </component>
+      <component id="2" name="Casing [2]" type="gear_casing">
+        <attribute id="temperature_lubricant" unit="C">70</attribute>
+      </component>
+      <component id="40" name="Load [70]" type="external_load">
+        <attribute id="torque_around_u_axis" unit="N m">789</attribute>
+      </component>
+      <component id="42" name="Load [70]" type="external_load">
+        <attribute id="force_u_direction" unit="N">0</attribute>
+        <attribute id="force_v_direction" unit="N">1233</attribute>
+        <attribute id="force_w_direction" unit="N">0</attribute>
+        <attribute id="torque_around_v_axis" unit="N m">0</attribute>
+        <attribute id="torque_around_w_axis" unit="N m">0</attribute>
+      </component>
+      <component id="43" name="Load [64]" type="external_load">
+        <attribute id="force_u_direction" unit="N">567</attribute>
+        <attribute id="force_v_direction" unit="N">0</attribute>
+        <attribute id="force_w_direction" unit="N">0</attribute>
+        <attribute id="torque_around_v_axis" unit="N m">0</attribute>
+        <attribute id="torque_around_w_axis" unit="N m">0</attribute>
+      </component>
+    </load_case>
+  </load_spectrum>
+
+</model>
