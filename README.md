@@ -63,7 +63,7 @@ The `TModelLoader` class can load json and xml REXS model files. If successful, 
 
 The Model itself provides methods for accessing every aspect of a model.
 
-```
+```c++
 const rexsapi::TModel model = loadModel();
 for (const auto& relation : model.getRelations()) {
   for (const auto& ref : relation.getReferences()) {
