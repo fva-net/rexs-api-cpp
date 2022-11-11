@@ -1,0 +1,446 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://www.rexs.info/rexs-schema.json",
+  "type": "object",
+  "required": ["model"],
+  "properties": {
+    "model": {
+      "type": "object",
+      "required": [
+        "version",
+        "applicationId",
+        "applicationVersion",
+        "date",
+        "relations",
+        "components"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+.\\d+$"
+        },
+        "applicationId": {
+          "type": "string"
+        },
+        "applicationVersion": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}$"
+        },
+        "applicationLanguage": {
+          "type": "string"
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "type", "refs"],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "type": {
+                "type": "string"
+              },
+              "order": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "refs": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": ["id", "role"],
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "role": {
+                      "type": "string"
+                    },
+                    "hint": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "type", "attributes"],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "type": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "attributes": { "$ref": "#/$defs/attributes" }
+            }
+          }
+        },
+        "load_spectrum": {
+          "type": "object",
+          "required": ["id", "load_cases"],
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "load_cases": {
+              "type": "array",
+              "default": [],
+              "items": {
+                "type": "object",
+                "required": ["id", "components"],
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "components": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["id", "attributes"],
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "attributes": { "$ref": "#/$defs/attributes" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "accumulation": {
+          "type": "object",
+          "required": ["components"],
+          "properties": {
+            "components": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "attributes"],
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "attributes": { "$ref": "#/$defs/attributes" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "attributes": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string"
+          }
+        },
+        "unevaluatedProperties": false,
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "boolean": {
+                "type": ["null", "boolean"]
+              }
+            },
+            "required": ["boolean"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "string": {
+                "type": ["null", "string"]
+              }
+            },
+            "required": ["string"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "integer": {
+                "type": ["null", "integer"]
+              }
+            },
+            "required": ["integer"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "floating_point": {
+                "type": ["null", "number"]
+              }
+            },
+            "required": ["floating_point"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "enum": {
+                "type": ["null", "string"]
+              }
+            },
+            "required": ["enum"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "reference_component": {
+                "type": ["null", "integer"]
+              }
+            },
+            "required": ["reference_component"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "file_reference": {
+                "type": ["null", "string"]
+              }
+            },
+            "required": ["file_reference"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "floating_point_array": {
+                "type": ["null", "array"],
+                "items": {
+                  "type": "number"
+                }
+              }
+            },
+            "required": ["floating_point_array"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "floating_point_array_coded": {
+                "type": "object",
+                "required": ["code", "value"],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "enum": ["float32", "float64"]
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": ["floating_point_array_coded"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "integer_array": {
+                "type": ["null", "array"],
+                "items": {
+                  "type": "integer"
+                }
+              }
+            },
+            "required": ["integer_array"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "integer_array_coded": {
+                "type": "object",
+                "required": ["code", "value"],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "enum": ["int32"]
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": ["integer_array_coded"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "boolean_array": {
+                "type": ["null", "array"],
+                "items": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "required": ["boolean_array"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "string_array": {
+                "type": ["null", "array"],
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["string_array"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "enum_array": {
+                "type": ["null", "array"],
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["enum_array"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "floating_point_matrix": {
+                "type": ["null", "array"],
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "required": ["floating_point_matrix"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "floating_point_matrix_coded": {
+                "type": "object",
+                "required": ["code", "value", "rows", "columns"],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "enum": ["float32", "float64"]
+                  },
+                  "value": {
+                    "type": "string"
+                  },
+                  "rows": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "columns": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
+            },
+            "required": ["floating_point_matrix_coded"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "integer_matrix": {
+                "type": ["null", "array"],
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                }
+              }
+            },
+            "required": ["integer_matrix"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "boolean_matrix": {
+                "type": ["null", "array"],
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "required": ["boolean_matrix"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "string_matrix": {
+                "type": ["null", "array"],
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": ["string_matrix"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "array_of_integer_arrays": {
+                "type": ["null", "array"],
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                }
+              }
+            },
+            "required": ["array_of_integer_arrays"]
+          }
+        ]
+      }
+    }
+  }
+}
