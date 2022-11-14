@@ -4,7 +4,6 @@
 ![Version:](https://img.shields.io/badge/version-1.0.0-green)
 [![GitHub Build Status](https://github.com/fva-net/rexs-api-cpp/workflows/CMake%20Build%20Matrix/badge.svg)](https://github.com/fva-net/rexs-api-cpp/actions)
 [![Coverage Status](https://coveralls.io/repos/github/BearinxSimulationSuite/REXSapi/badge.svg?branch=main)](https://coveralls.io/github/BearinxSimulationSuite/REXSapi?branch=main)
-[![CodeFactor](https://www.codefactor.io/repository/github/bearinxsimulationsuite/rexsapi/badge)](https://www.codefactor.io/repository/github/bearinxsimulationsuite/rexsapi)
 
 # rexs-api-cpp
 
