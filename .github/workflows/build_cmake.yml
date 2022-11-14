@@ -180,7 +180,8 @@ jobs:
     name: Create release
     if: startsWith( github.ref, 'refs/tags/')
     runs-on: ubuntu-20.04
-    needs: [build-linux, build-windows, build-macos]
+#    needs: [build-linux, build-windows, build-macos]
+    needs: [build-linux]
     steps:
       - uses: actions/checkout@v3
       - name: Extract release notes
