@@ -16,14 +16,17 @@ env:
 
 jobs:
   build-linux:
+    permissions: write-all
     name: ${{ matrix.os }} ${{ matrix.build_type }} ${{ matrix.cxx }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        build_type: [Debug, Release]
-        cxx: [g++, g++-10, clang++-10]
+#        build_type: [Debug, Release]
+#        cxx: [g++, g++-10, clang++-10]
+        build_type: [Debug]
+        cxx: [g++]
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
@@ -90,88 +93,88 @@ jobs:
           name: rexsapi-${{env.VERSION}}
           path: build/rexsapi-linux-*.zip
 
-  build-macos:
-    name: ${{ matrix.os }} ${{ matrix.build_type }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-11]
-        build_type: [Debug, Release]
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: brew install doxygen
-      - name: Configure
-        run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ..
-      - name: Build
-        run: cmake --build build --config ${{ matrix.build_type }}
-      - name: Test
-        run: cd build && ctest --output-on-failure -C ${{ matrix.build_type }}
-      - name: Create distribution zip
-        if: ${{ matrix.build_type == 'Release' }}
-        run: |
-            cmake --build build --target docs
-            cd build && cpack --config CPackConfig.cmake
-      - name: Get package name
-        if: ${{ matrix.build_type == 'Release' }}
-        run: |
-          version=$(grep "project("  CMakeLists.txt | cut -d ' ' -f3)
-          echo "VERSION=$version" >> "$GITHUB_ENV"
-      - name: Upload rexsapi package
-        if: ${{ matrix.build_type == 'Release' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: rexsapi-${{env.VERSION}}
-          path: build/rexsapi-darwin-*.zip
+  # build-macos:
+  #   name: ${{ matrix.os }} ${{ matrix.build_type }}
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [macos-11]
+  #       build_type: [Debug, Release]
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Install dependencies
+  #       run: brew install doxygen
+  #     - name: Configure
+  #       run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ..
+  #     - name: Build
+  #       run: cmake --build build --config ${{ matrix.build_type }}
+  #     - name: Test
+  #       run: cd build && ctest --output-on-failure -C ${{ matrix.build_type }}
+  #     - name: Create distribution zip
+  #       if: ${{ matrix.build_type == 'Release' }}
+  #       run: |
+  #           cmake --build build --target docs
+  #           cd build && cpack --config CPackConfig.cmake
+  #     - name: Get package name
+  #       if: ${{ matrix.build_type == 'Release' }}
+  #       run: |
+  #         version=$(grep "project("  CMakeLists.txt | cut -d ' ' -f3)
+  #         echo "VERSION=$version" >> "$GITHUB_ENV"
+  #     - name: Upload rexsapi package
+  #       if: ${{ matrix.build_type == 'Release' }}
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: rexsapi-${{env.VERSION}}
+  #         path: build/rexsapi-darwin-*.zip
 
-  build-windows:
-    name: ${{ matrix.os }} ${{ matrix.build_type }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-2019]
-        build_type: [Debug, Release]
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: choco install doxygen.install
-      - name: Configure
-        run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ..
-      - name: Build
-        run: cmake --build build --config ${{ matrix.build_type }}
-      - name: Test
-        run: cd build && ctest --output-on-failure -C ${{ matrix.build_type }}
-      - name: Create distribution zip
-        if: ${{ matrix.build_type == 'Release'}}
-        run: |
-          cmake --build build --target docs
-          cd build
-          cpack --config CPackConfig.cmake
-      - name: Get package name
-        if: ${{ matrix.build_type == 'Release'}}
-        run: |
-          import os
-          import re
+  # build-windows:
+  #   name: ${{ matrix.os }} ${{ matrix.build_type }}
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [windows-2019]
+  #       build_type: [Debug, Release]
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Install dependencies
+  #       run: choco install doxygen.install
+  #     - name: Configure
+  #       run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ..
+  #     - name: Build
+  #       run: cmake --build build --config ${{ matrix.build_type }}
+  #     - name: Test
+  #       run: cd build && ctest --output-on-failure -C ${{ matrix.build_type }}
+  #     - name: Create distribution zip
+  #       if: ${{ matrix.build_type == 'Release'}}
+  #       run: |
+  #         cmake --build build --target docs
+  #         cd build
+  #         cpack --config CPackConfig.cmake
+  #     - name: Get package name
+  #       if: ${{ matrix.build_type == 'Release'}}
+  #       run: |
+  #         import os
+  #         import re
 
-          p = re.compile(r"project\(rexsapi VERSION (\d+.\d+.\d+) LANGUAGES CXX\)")
-          env_file = os.getenv('GITHUB_ENV')
-          entry = "VERSION={}"
+  #         p = re.compile(r"project\(rexsapi VERSION (\d+.\d+.\d+) LANGUAGES CXX\)")
+  #         env_file = os.getenv('GITHUB_ENV')
+  #         entry = "VERSION={}"
 
-          with open(env_file, "a") as env:
-              with open('CMakeLists.txt') as f:
-                  for line in f:
-                      m = p.match(line)
-                      if m:
-                        env.write(entry.format(m.group(1)))
-        shell: python
-      - name: Upload rexsapi package
-        if: ${{ matrix.build_type == 'Release' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: rexsapi-${{env.VERSION}}
-          path: build/rexsapi-*.zip
+  #         with open(env_file, "a") as env:
+  #             with open('CMakeLists.txt') as f:
+  #                 for line in f:
+  #                     m = p.match(line)
+  #                     if m:
+  #                       env.write(entry.format(m.group(1)))
+  #       shell: python
+  #     - name: Upload rexsapi package
+  #       if: ${{ matrix.build_type == 'Release' }}
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: rexsapi-${{env.VERSION}}
+  #         path: build/rexsapi-*.zip
 
   create_release:
     name: Create release
