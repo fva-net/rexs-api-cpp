@@ -288,4 +288,4 @@ REXSapi uses the following thirdparty open source software
 # License
 REXsapi is licensed under the Apache-2.0 license.
 
-See the LICENSE.txt file for more information.
+See the LICENSE file for more information.
