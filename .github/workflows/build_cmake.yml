@@ -16,7 +16,6 @@ env:
 
 jobs:
   build-linux:
-    permissions: write-all
     name: ${{ matrix.os }} ${{ matrix.build_type }} ${{ matrix.cxx }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -177,6 +176,7 @@ jobs:
   #         path: build/rexsapi-*.zip
 
   create_release:
+    permissions: write-all
     name: Create release
     if: startsWith( github.ref, 'refs/tags/')
     runs-on: ubuntu-20.04
