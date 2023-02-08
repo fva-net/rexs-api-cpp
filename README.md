@@ -56,7 +56,7 @@ if (result) {
 }
 ```
 
-The `TModelLoader` class can load json and xml REXS model files. If successful, the result will convert to true and the model optional will contain a model. In case of a failure, the result will contain a collection of messages, describing the issues. The issues can either be errors or warnings. It is perfectly possible, that the result converts to false, a failure, but the model optional contains a model. This means that the model could be loaded in general, but that there are issues with the model like incorrect value types, missing references, etc.
+The `TModelLoader` class can load json and xml REXS model files. If successful, the result will convert to true and the model optional will contain a model. In case of a failure, the result will contain a collection of messages describing the issues. The issues can either be errors or warnings. It is perfectly possible that the result converts to false, a failure, but the model optional contains a model. This means that the model could be loaded in general, but that there are issues with the model like incorrect value types, missing references, etc.
 
 ## Working With a REXS Model
 
@@ -105,7 +105,7 @@ auto model = modelBuilder.build("REXSApi Model Builder", "1.0", "en");
 ```
 First you add components and attributes to the model. The last added component or attribute are the so called active component or attribute. All following method calls always affect the currently active component or attribute. The same is true for relations. Attributes need real C++ types as values.
 
-If all necessary components have been added, you can start to add relations that reference these components via unique string ids. Alternatively, you can also use automatically generated ids that can be retrieved from the model builder after adding a component. You have to specify the correct roles for a specifc relation type. The model builder will check all components, attributes, and relations against the chosen REXS database model version and will throw exceptions on any error in order to guarantee the construction of a standard compliant model.
+If all necessary components have been added, you can start to add relations that reference these components via unique string ids. Alternatively, you can also use automatically generated ids that can be retrieved from the model builder after adding a component. You have to specify the correct roles for a specific relation type. The model builder will check all components, attributes, and relations against the chosen REXS database model version and will throw exceptions on any error in order to guarantee the construction of a standard compliant model.
 
 ## Save a REXS Model to a File
 
@@ -225,8 +225,8 @@ Alternatively, you can use CMakes FetchContent module to download REXSapi and ma
 include(FetchContent)
 FetchContent_Declare(
   rexsapi
-  GIT_REPOSITORY https://github.com/BearinxSimulationSuite/REXSapi.git
-  GIT_TAG origin/main
+  GIT_REPOSITORY https://github.com/fva-net/rexs-api-cpp.git
+  GIT_TAG origin/v1.0.0
 )
 
 FetchContent_MakeAvailable(rexsapi)
