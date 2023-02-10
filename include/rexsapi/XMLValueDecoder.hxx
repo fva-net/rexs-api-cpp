@@ -264,38 +264,39 @@ namespace rexsapi::detail
       std::pair<TValue, TDecoderResult> onDecode(const std::optional<const database::TEnumValues>& enumValue,
                                                  const pugi::xml_node& node) const override
       {
+        size_t rows = 0;
+        size_t columns = 0;
         const auto child = node.first_child();
         TValue value;
         const auto codedType = rexsapi::detail::codedValueFromString(detail::getStringAttribute(child, "code"));
+        if (codedType != detail::TCodedValueType::None) {
+          rows = convertToUint64(detail::getStringAttribute(child, "rows"));
+          columns = convertToUint64(detail::getStringAttribute(child, "columns"));
+        }
         switch (codedType) {
           case detail::TCodedValueType::None:
             return TMatrixDecoder<ElementDecoder>::onDecode(enumValue, node);
           case detail::TCodedValueType::Int32: {
             value = detail::TCodedValueMatrixDecoder<
               typename TMatrixDecoder<ElementDecoder>::type,
-              detail::Enum2type<detail::to_underlying(detail::TCodedValueType::Int32)>>::decode(child.child_value());
+              detail::Enum2type<detail::to_underlying(detail::TCodedValueType::Int32)>>::decode(child.child_value(), columns, rows);
             break;
           }
           case detail::TCodedValueType::Float32: {
             value = detail::TCodedValueMatrixDecoder<
               typename TMatrixDecoder<ElementDecoder>::type,
-              detail::Enum2type<detail::to_underlying(detail::TCodedValueType::Float32)>>::decode(child.child_value());
+              detail::Enum2type<detail::to_underlying(detail::TCodedValueType::Float32)>>::decode(child.child_value(), columns, rows);
             break;
           }
           case detail::TCodedValueType::Float64: {
             value = detail::TCodedValueMatrixDecoder<
               typename TMatrixDecoder<ElementDecoder>::type,
-              detail::Enum2type<detail::to_underlying(detail::TCodedValueType::Float64)>>::decode(child.child_value());
+              detail::Enum2type<detail::to_underlying(detail::TCodedValueType::Float64)>>::decode(child.child_value(), columns, rows);
             break;
           }
         }
         if (codedType != detail::TCodedValueType::None) {
-          const auto rows = convertToUint64(detail::getStringAttribute(child, "rows"));
-          const auto columns = convertToUint64(detail::getStringAttribute(child, "columns"));
-          if (rows != columns) {
-            throw TException{"matrix rows != columns"};
-          }
-          if (value.getValue<TMatrix<typename TMatrixDecoder<ElementDecoder>::type>>().m_Values.size() != rows) {
+          if (value.getValue<TMatrix<typename TMatrixDecoder<ElementDecoder>::type>>().m_Values.size() != rows || value.getValue<TMatrix<typename TMatrixDecoder<ElementDecoder>::type>>().m_Values[0].size() != columns) {
             throw TException{"decoded matrix size does not correspond to configured size"};
           }
         }

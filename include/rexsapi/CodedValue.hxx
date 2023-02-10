@@ -68,9 +68,10 @@ namespace rexsapi::detail
       const auto count = matrix.m_Values.size() * matrix.m_Values.size() * sizeof(T);
       std::vector<T> array;
       array.reserve(count);
-      for (const auto& row : matrix.m_Values) {
-        for (const auto& column : row) {
-          array.emplace_back(column);
+
+      for (size_t c = 0; c < matrix.m_Values[0].size(); ++c) {
+        for (size_t r = 0; r < matrix.m_Values.size(); ++r) {
+          array.emplace_back(matrix.m_Values[r][c]);
         }
       }
       const auto* data = reinterpret_cast<const uint8_t*>(array.data());
@@ -78,19 +79,25 @@ namespace rexsapi::detail
       return base64Encode(data, len);
     }
 
-    static TMatrix<T> decode(std::string_view value)
+    static TMatrix<T> decode(std::string_view value, size_t columns, size_t rows)
     {
       TMatrix<T> matrix;
       const auto data = base64Decode(value);
       const auto count = data.size() / sizeof(T);
-      const auto elementCount = static_cast<size_t>(::sqrt(static_cast<double>(count)));
       const auto values = reinterpret_cast<const T*>(data.data());
-      matrix.m_Values.reserve(elementCount);
-      for (size_t row = 0; row < elementCount; ++row) {
+      if (count != columns * rows) {
+        throw TException{
+          fmt::format("matrix does not have the correct element count: {} rows: {} columns: {}", count, rows, columns)};
+      }
+      if (count == 0) {
+        throw TException{"matrix does not have any elements"};
+      }
+      matrix.m_Values.reserve(rows);
+      for (size_t row = 0; row < rows; ++row) {
         std::vector<T> col;
-        col.reserve(elementCount);
-        for (size_t column = 0; column < elementCount; ++column) {
-          col.emplace_back(values[(row * elementCount) + column]);
+        col.reserve(columns);
+        for (size_t column = 0; column < columns; ++column) {
+          col.emplace_back(values[row + (columns * column)]);
         }
         matrix.m_Values.emplace_back(std::move(col));
       }
@@ -222,12 +229,12 @@ namespace rexsapi::detail
 
   template<typename T1, typename T2>
   struct TCodedValueMatrixDecoder {
-    static TValue decode(std::string_view value)
+    static TValue decode(std::string_view value, size_t columns, size_t rows)
     {
       if (!std::is_same_v<T1, typename ValueTypeForCodedValueType<T2>::Type>) {
         throw TException{"coded value type does not correspond to attribute value type"};
       }
-      auto result = TCodedValueMatrix<typename TypeForCodedValueType<T2>::Type>::decode(value);
+      auto result = TCodedValueMatrix<typename TypeForCodedValueType<T2>::Type>::decode(value, columns, rows);
       TValue val{TMatrix<T1>{result}};
       val.coded(getCodedType(TCodedValueType{T2::value}));
       return val;
