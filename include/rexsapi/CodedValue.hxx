@@ -33,7 +33,7 @@ namespace rexsapi::detail
   static std::string toCodedValueString(TCodedValueType type);
 
 
-  template<typename T, std::enable_if_t<std::is_integral<T>::value || std::is_floating_point<T>::value>* = nullptr>
+  template<typename T, std::enable_if_t<std::is_integral_v<T> || std::is_floating_point_v<T>>* = nullptr>
   class TCodedValueArray
   {
   public:
@@ -59,13 +59,13 @@ namespace rexsapi::detail
     }
   };
 
-  template<typename T, std::enable_if_t<std::is_integral<T>::value || std::is_floating_point<T>::value>* = nullptr>
+  template<typename T, std::enable_if_t<std::is_integral_v<T> || std::is_floating_point_v<T>>* = nullptr>
   class TCodedValueMatrix
   {
   public:
     static std::string encode(const TMatrix<T>& matrix)
     {
-      const auto count = matrix.m_Values.size() * matrix.m_Values.size() * sizeof(T);
+      const auto count = matrix.m_Values.size() * matrix.m_Values[0].size();
       std::vector<T> array;
       array.reserve(count);
 
@@ -97,7 +97,7 @@ namespace rexsapi::detail
         std::vector<T> col;
         col.reserve(columns);
         for (size_t column = 0; column < columns; ++column) {
-          col.emplace_back(values[row + (columns * column)]);
+          col.emplace_back(values[row + (rows * column)]);
         }
         matrix.m_Values.emplace_back(std::move(col));
       }
