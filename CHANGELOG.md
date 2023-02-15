@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Switched matrix encoding from row-major to column-major order (#9)
+- JSON model files will now be written with a UTF-8 BOM (#11)
 
 ## [1.0.0] - 2022-11-09
 
