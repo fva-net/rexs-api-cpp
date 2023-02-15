@@ -83,7 +83,9 @@ namespace rexsapi
      */
     void serialize(const ordered_json& doc)
     {
+      constexpr static uint8_t bom[] = {0xEF, 0xBB, 0xBF};
       std::ofstream stream{m_File};
+      stream.write(reinterpret_cast<const char*>(bom), sizeof(bom));
       stream << doc.dump(m_Indent);
       stream.flush();
       if (!stream) {
