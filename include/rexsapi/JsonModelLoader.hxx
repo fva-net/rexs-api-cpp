@@ -105,8 +105,7 @@ namespace rexsapi
   {
     try {
       const json j = json::parse(buffer);
-      std::vector<std::string> errors;
-      if (!m_Validator.validate(j, errors)) {
+      if (std::vector<std::string> errors; !m_Validator.validate(j, errors)) {
         for (const auto& error : errors) {
           result.addError(TError{TErrorLevel::CRIT, error});
         }
@@ -123,7 +122,7 @@ namespace rexsapi
                       j["/model/date"_json_pointer].get<std::string>(),
                       TRexsVersion{j["/model/version"_json_pointer].get<std::string>()}, language};
 
-      const auto& dbModel = registry.getModel(info.getVersion(), language.has_value() ? *language : "en");
+      const auto& dbModel = registry.getModel(info.getVersion(), language.value_or("en"));
 
       detail::ComponentMapping componentMapping;
       TComponents components = getComponents(result, componentMapping, dbModel, j);

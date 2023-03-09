@@ -81,7 +81,7 @@ namespace rexsapi
      * @param doc The json obejct containing the REXS json model
      * @throws TException if the file cannot be written
      */
-    void serialize(const ordered_json& doc)
+    void serialize(const ordered_json& doc) const
     {
       constexpr static uint8_t bom[] = {0xEF, 0xBB, 0xBF};
       std::ofstream stream{m_File};
