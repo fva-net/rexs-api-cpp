@@ -95,11 +95,14 @@ namespace rexsapi::database
 
     if (!strict) {
       // no exact model was found, find the latest model for the given language
+      // otherwise choose english
       const TRexsVersion baseVersion{1, 0};
       const TModel* baseModel{nullptr};
       std::for_each(m_Models.begin(), m_Models.end(), [&baseModel, &baseVersion, &language](const auto& model) mutable {
-        if ((model.getLanguage() == language || model.getLanguage() == "en") &&
-            model.getVersion() > (baseModel ? baseModel->getVersion() : baseVersion)) {
+        if (model.getLanguage() == language && model.getVersion() >= (baseModel ? baseModel->getVersion() : baseVersion)) {
+          baseModel = &model;
+        }
+        if (model.getLanguage() == "en" && model.getVersion() > (baseModel ? baseModel->getVersion() : baseVersion)) {
           baseModel = &model;
         }
       });
