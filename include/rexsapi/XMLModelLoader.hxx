@@ -96,22 +96,28 @@ namespace rexsapi
     }
 
     const auto rexsModel = *doc.select_nodes("/model").begin();
-    auto language = detail::getStringAttribute(rexsModel, "applicationLanguage", "");
-    TModelInfo info{detail::getStringAttribute(rexsModel, "applicationId"),
-                    detail::getStringAttribute(rexsModel, "applicationVersion"),
-                    detail::getStringAttribute(rexsModel, "date"),
-                    TRexsVersion{detail::getStringAttribute(rexsModel, "version")},
-                    language.empty() ? std::optional<std::string>{} : language};
+    const auto language = detail::getStringAttribute(rexsModel, "applicationLanguage", "");
+    const TModelInfo info{detail::getStringAttribute(rexsModel, "applicationId"),
+                          detail::getStringAttribute(rexsModel, "applicationVersion"),
+                          detail::getStringAttribute(rexsModel, "date"),
+                          TRexsVersion{detail::getStringAttribute(rexsModel, "version")},
+                          language.empty() ? std::optional<std::string>{} : language};
 
-    const auto& dbModel = registry.getModel(info.getVersion(), language.empty() ? "en" : language);
+    const auto& dbModel =
+      registry.getModel(info.getVersion(), language.empty() ? "en" : language, m_Mode.getMode() == TMode::STRICT_MODE);
+
+    if (dbModel.getVersion() != info.getVersion()) {
+      result.addError(TError{TErrorLevel::WARN, fmt::format("exact database model for version not available, using {}",
+                                                            dbModel.getVersion().asString())});
+    }
+
     detail::ComponentMapping componentsMapping;
-
     TComponents components;
     components.reserve(10);
     std::set<uint64_t> usedComponents;
 
     for (const auto& component : doc.select_nodes("/model/components/component")) {
-      auto componentId = detail::getStringAttribute(component, "id");
+      const auto componentId = detail::getStringAttribute(component, "id");
       std::string componentName = detail::getStringAttribute(component, "name", "");
       try {
         const auto& componentType = dbModel.findComponentById(detail::getStringAttribute(component, "type"));

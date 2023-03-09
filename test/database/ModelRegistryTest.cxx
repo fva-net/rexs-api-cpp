@@ -22,9 +22,9 @@
 
 TEST_CASE("Test rexs model registry")
 {
-  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-dbmodel.xsd"};
-  rexsapi::database::TFileResourceLoader resourceLoader{projectDir() / "models"};
-  rexsapi::database::TXmlModelLoader modelLoader{resourceLoader, schemaLoader};
+  const rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-dbmodel.xsd"};
+  const rexsapi::database::TFileResourceLoader resourceLoader{projectDir() / "models"};
+  const rexsapi::database::TXmlModelLoader modelLoader{resourceLoader, schemaLoader};
   const auto [registry, success] = rexsapi::database::TModelRegistry::createModelRegistry(modelLoader);
   REQUIRE(success);
 
@@ -47,7 +47,21 @@ TEST_CASE("Test rexs model registry")
   {
     CHECK_THROWS_WITH((void)registry.getModel(rexsapi::TRexsVersion{"1.4"}, "es"),
                       "cannot find a database model for version '1.4' and locale 'es'");
-    CHECK_THROWS_WITH((void)registry.getModel(rexsapi::TRexsVersion{"1.99"}, "en"),
-                      "cannot find a database model for version '1.99' and locale 'en'");
+    CHECK_THROWS_WITH((void)registry.getModel(rexsapi::TRexsVersion{"1.99"}, "es"),
+                      "cannot find a database model for version '1.99' and locale 'es'");
+  }
+
+  SUBCASE("Get non existing model non-strict mode")
+  {
+    const auto& model = registry.getModel(rexsapi::TRexsVersion{"1.99"}, "de", false);
+    CHECK(model.getVersion() == rexsapi::TRexsVersion{"1.4"});
+    CHECK(model.getLanguage() == "de");
+  }
+
+  SUBCASE("Get non existing model non-strict mode with unknown language")
+  {
+    const auto& model = registry.getModel(rexsapi::TRexsVersion{"1.99"}, "es", false);
+    CHECK(model.getVersion() == rexsapi::TRexsVersion{"1.4"});
+    CHECK(model.getLanguage() == "en");
   }
 }

@@ -148,7 +148,7 @@ namespace rexsapi::detail
       return std::make_pair(TCodedValueMatrix<double>::encode(matrix), TCodedValueType::Float64);
     }
     if (type == TCodeType::Optimized) {
-      TMatrix<float> tmp{matrix};
+      const TMatrix<float> tmp{matrix};
       return std::make_pair(TCodedValueMatrix<float>::encode(tmp), TCodedValueType::Float32);
     }
     throw TException{"should never reach this"};
@@ -157,7 +157,7 @@ namespace rexsapi::detail
   template<>
   inline std::pair<std::string, TCodedValueType> encodeMatrix(const TMatrix<int64_t>& matrix, TCodeType)
   {
-    TMatrix<int32_t> tmp{matrix};
+    const TMatrix<int32_t> tmp{matrix};
     return std::make_pair(TCodedValueMatrix<int32_t>::encode(tmp), TCodedValueType::Int32);
   }
 

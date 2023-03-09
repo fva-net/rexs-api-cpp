@@ -117,12 +117,19 @@ namespace rexsapi
         language = j["/model/applicationLanguage"_json_pointer].get<std::string>();
       }
 
-      TModelInfo info{j["/model/applicationId"_json_pointer].get<std::string>(),
-                      j["/model/applicationVersion"_json_pointer].get<std::string>(),
-                      j["/model/date"_json_pointer].get<std::string>(),
-                      TRexsVersion{j["/model/version"_json_pointer].get<std::string>()}, language};
+      const TModelInfo info{j["/model/applicationId"_json_pointer].get<std::string>(),
+                            j["/model/applicationVersion"_json_pointer].get<std::string>(),
+                            j["/model/date"_json_pointer].get<std::string>(),
+                            TRexsVersion{j["/model/version"_json_pointer].get<std::string>()}, language};
 
-      const auto& dbModel = registry.getModel(info.getVersion(), language.value_or("en"));
+      const auto& dbModel =
+        registry.getModel(info.getVersion(), language.value_or("en"), m_Mode.getMode() == TMode::STRICT_MODE);
+
+      if (dbModel.getVersion() != info.getVersion()) {
+        result.addError(
+          TError{TErrorLevel::WARN, fmt::format("exact database model for version not available, using {}",
+                                                dbModel.getVersion().asString())});
+      }
 
       detail::ComponentMapping componentMapping;
       TComponents components = getComponents(result, componentMapping, dbModel, j);

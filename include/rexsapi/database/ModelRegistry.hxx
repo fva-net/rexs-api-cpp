@@ -19,6 +19,7 @@
 
 #include <rexsapi/database/Model.hxx>
 
+
 /** @file */
 
 namespace rexsapi::database
@@ -45,10 +46,13 @@ namespace rexsapi::database
      *
      * @param version The database model version to retrieve
      * @param language The language of the database model to retrieve
+     * @param strict Determines if the latest available model version shall be returned if an exact one was not found.
+     * If set to true, will throw an exception if the exact version could not be found.
      * @return const TModel& to the found database model
-     * @throws TException if the specific version or language is not available
+     * @throws TException if the specific version or language is not available and strict mode was set to true
      */
-    [[nodiscard]] const TModel& getModel(const TRexsVersion& version, const std::string& language) const;
+    [[nodiscard]] const TModel& getModel(const TRexsVersion& version, const std::string& language,
+                                         bool strict = true) const;
 
     /**
      * @brief Creates a model registry
@@ -78,18 +82,35 @@ namespace rexsapi::database
   // Implementation
   /////////////////////////////////////////////////////////////////////////////
 
-  inline const TModel& TModelRegistry::getModel(const TRexsVersion& version, const std::string& language) const
+  inline const TModel& TModelRegistry::getModel(const TRexsVersion& version, const std::string& language,
+                                                bool strict) const
   {
     const auto it = std::find_if(m_Models.begin(), m_Models.end(), [&version, &language](const auto& model) {
       return model.getVersion() == version && model.getLanguage() == language;
     });
 
-    if (it == m_Models.end()) {
-      throw TException{
-        fmt::format("cannot find a database model for version '{}' and locale '{}'", version.asString(), language)};
+    if (it != m_Models.end()) {
+      return *it;
     }
 
-    return *it;
+    if (!strict) {
+      // no exact model was found, find the latest model for the given language
+      const TRexsVersion baseVersion{1, 0};
+      const TModel* baseModel{nullptr};
+      std::for_each(m_Models.begin(), m_Models.end(), [&baseModel, &baseVersion, &language](const auto& model) mutable {
+        if ((model.getLanguage() == language || model.getLanguage() == "en") &&
+            model.getVersion() > (baseModel ? baseModel->getVersion() : baseVersion)) {
+          baseModel = &model;
+        }
+      });
+
+      if (baseModel) {
+        return *baseModel;
+      }
+    }
+
+    throw TException{
+      fmt::format("cannot find a database model for version '{}' and locale '{}'", version.asString(), language)};
   }
 
   template<typename TModelLoader>
