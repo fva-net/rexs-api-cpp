@@ -35,18 +35,8 @@ namespace
                                                                                                        path};
     return loader.load(mode, result, registry);
   }
-}
 
-TEST_CASE("Json model loader test")
-{
-  rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
-  rexsapi::TJsonSchemaValidator validator{schemaLoader};
-  rexsapi::TResult result;
-  const auto registry = createModelRegistry();
-
-  SUBCASE("Load valid document from buffer")
-  {
-    std::string buffer = R"({
+  const std::string MemModel = R"({
   "model":{
     "applicationId":"Bearinx",
     "applicationVersion":"12.0.8823",
@@ -211,9 +201,19 @@ TEST_CASE("Json model loader test")
     }
   }
 })";
+}
 
+TEST_CASE("Json model loader test")
+{
+  rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
+  rexsapi::TJsonSchemaValidator validator{schemaLoader};
+  rexsapi::TResult result;
+  const auto registry = createModelRegistry();
+
+  SUBCASE("Load valid document from buffer")
+  {
     rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
-                                                                                                         buffer};
+                                                                                                         MemModel};
     auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
     CHECK_FALSE(result);
     REQUIRE(result.getErrors().size() == 4);
@@ -502,5 +502,20 @@ TEST_CASE("Json model loader test")
     CHECK_FALSE(result);
     CHECK(result.isCritical());
     CHECK_FALSE(model);
+  }
+
+  SUBCASE("Load valid document with unkown version")
+  {
+    std::string buffer{MemModel};
+    replace(buffer, R"("version":"1.4")", R"("version":"1.99")");
+    rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
+                                                                                                         buffer};
+    auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+    CHECK_FALSE(result);
+    CHECK_FALSE(result.isCritical());
+    REQUIRE(model);
+    result.reset();
+
+    CHECK_THROWS((void)loader.load(rexsapi::TMode::STRICT_MODE, result, registry));
   }
 }

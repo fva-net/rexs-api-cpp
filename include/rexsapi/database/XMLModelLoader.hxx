@@ -85,7 +85,8 @@ namespace rexsapi::database
   TXmlModelLoader<TResourceLoader, TSchemaLoader>::load(const std::function<void(TModel&&)>& callback) const
   {
     return m_ResourceLoader.load([this, &callback](TResult& result, std::vector<uint8_t>& buffer) {
-      pugi::xml_document doc = rexsapi::detail::loadXMLDocument(result, buffer, TXSDSchemaValidator{m_SchemaLoader});
+      const pugi::xml_document doc =
+        rexsapi::detail::loadXMLDocument(result, buffer, TXSDSchemaValidator{m_SchemaLoader});
       if (!result) {
         return;
       }
@@ -163,12 +164,12 @@ namespace rexsapi::database
     TIntervalEndpoint min;
     TIntervalEndpoint max;
 
-    if (auto att = node.node().attribute("rangeMin"); !att.empty()) {
-      auto open = rexsapi::detail::getBoolAttribute(node, "rangeMinIntervalOpen", true);
+    if (const auto att = node.node().attribute("rangeMin"); !att.empty()) {
+      const auto open = rexsapi::detail::getBoolAttribute(node, "rangeMinIntervalOpen", true);
       min = TIntervalEndpoint{convertToDouble(att.value()), open ? TIntervalType::OPEN : TIntervalType::CLOSED};
     }
-    if (auto att = node.node().attribute("rangeMax"); !att.empty()) {
-      auto open = rexsapi::detail::getBoolAttribute(node, "rangeMaxIntervalOpen", true);
+    if (const auto att = node.node().attribute("rangeMax"); !att.empty()) {
+      const auto open = rexsapi::detail::getBoolAttribute(node, "rangeMaxIntervalOpen", true);
       max = TIntervalEndpoint{convertToDouble(att.value()), open ? TIntervalType::OPEN : TIntervalType::CLOSED};
     }
 
