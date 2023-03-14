@@ -1,6 +1,6 @@
 FetchContent_Declare(
   miniz
-  URL https://github.com/richgel999/miniz/archive/refs/tags/2.2.0.tar.gz
+  URL https://github.com/richgel999/miniz/archive/refs/tags/3.0.2.tar.gz
 )
 
 FetchContent_GetProperties(miniz)
@@ -31,6 +31,9 @@ if(NOT miniz_POPULATED)
     string(REPLACE "#include \"${REPLACE_STRING}.h\"" "" AMAL_MINIZ_H "${AMAL_MINIZ_H}")
     string(REPLACE "#include \"${REPLACE_STRING}.h\"" "" AMAL_MINIZ_C "${AMAL_MINIZ_C}")
   endforeach()
+
+  string(REPLACE "static const mz_uint s_tdefl_num_probes[11] = { 0, 1, 6, 32, 16, 32, 128, 256, 512, 768, 1500 };" "" AMAL_MINIZ_C "${AMAL_MINIZ_C}")
+  string(REPLACE "static const mz_uint s_tdefl_num_probes[11];" "static inline const mz_uint s_tdefl_num_probes[11] = {0, 1, 6, 32, 16, 32, 128, 256, 512, 768, 1500};" AMAL_MINIZ_C "${AMAL_MINIZ_C}")
 
   string(CONCAT AMAL_MINIZ_H "#define MINIZ_EXPORT\n" "${AMAL_MINIZ_H}")
 

@@ -147,7 +147,7 @@ TEST_CASE("Json schema validator test")
     CHECK(errors.empty());
 
     CHECK_FALSE(validator.validate(rexsapi::json::parse(invalidValue), errors));
-    CHECK(errors.size() == 5);
+    CHECK(errors.size() == 6);
   }
 
   SUBCASE("Valid complex schema")

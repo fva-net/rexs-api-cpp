@@ -1,6 +1,6 @@
 FetchContent_Declare(
   valijson
-  URL https://github.com/tristanpenman/valijson/archive/refs/tags/v0.6.tar.gz
+  URL https://github.com/tristanpenman/valijson/archive/refs/tags/v1.0.tar.gz
 )
 
 FetchContent_GetProperties(valijson)
