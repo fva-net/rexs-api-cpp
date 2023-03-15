@@ -16,7 +16,7 @@
 
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
+#include <doctest.h>
+
 #define REXSAPI_MINIZ_IMPL
 #include <rexsapi/ZipArchive.hxx>
-
-#include <doctest.h>
