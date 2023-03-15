@@ -283,7 +283,7 @@ REXSapi uses the following thirdparty open source software
 - [miniz 3.0.2](https://github.com/richgel999/miniz)
 - [pugixml 1.13](https://github.com/zeux/pugixml)
 - [valijson 1.0](https://github.com/tristanpenman/valijson)
-- [doctest 2.4.9](https://github.com/doctest/doctest)
+- [doctest 2.4.10](https://github.com/doctest/doctest)
 
 # License
 REXsapi is licensed under the Apache-2.0 license.
