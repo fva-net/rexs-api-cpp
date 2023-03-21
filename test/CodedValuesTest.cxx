@@ -50,7 +50,7 @@ TEST_CASE("Coded values test")
   {
     rexsapi::TMatrix<double> matrix{{{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}}};
     const auto encoded = rexsapi::detail::TCodedValueMatrix<double>::encode(matrix);
-    const auto decoded = rexsapi::detail::TCodedValueMatrix<double>::decode(encoded);
+    const auto decoded = rexsapi::detail::TCodedValueMatrix<double>::decode(encoded, 3, 3);
     REQUIRE(decoded.m_Values.size() == 3);
     REQUIRE(decoded.m_Values[0].size() == 3);
     CHECK(decoded.m_Values[0][0] == doctest::Approx{1.0});
@@ -65,7 +65,26 @@ TEST_CASE("Coded values test")
     CHECK(decoded.m_Values[2][1] == doctest::Approx{8.0});
     CHECK(decoded.m_Values[2][2] == doctest::Approx{9.0});
     CHECK(encoded ==
-          "AAAAAAAA8D8AAAAAAAAAQAAAAAAAAAhAAAAAAAAAEEAAAAAAAAAUQAAAAAAAABhAAAAAAAAAHEAAAAAAAAAgQAAAAAAAACJA");
+          "AAAAAAAA8D8AAAAAAAAQQAAAAAAAABxAAAAAAAAAAEAAAAAAAAAUQAAAAAAAACBAAAAAAAAACEAAAAAAAAAYQAAAAAAAACJA");
+  }
+
+  SUBCASE("int64 matrix")
+  {
+    rexsapi::TMatrix<int64_t> matrix{{{1, 2, 3, 4}, {5, 6, 7, 8}}};
+    const auto encoded = rexsapi::detail::TCodedValueMatrix<int64_t>::encode(matrix);
+    const auto decoded = rexsapi::detail::TCodedValueMatrix<int64_t>::decode(encoded, 4, 2);
+    REQUIRE(decoded.m_Values.size() == 2);
+    REQUIRE(decoded.m_Values[0].size() == 4);
+    CHECK(decoded.m_Values[0][0] == 1);
+    CHECK(decoded.m_Values[0][1] == 2);
+    CHECK(decoded.m_Values[0][2] == 3);
+    CHECK(decoded.m_Values[0][3] == 4);
+    REQUIRE(decoded.m_Values[1].size() == 4);
+    CHECK(decoded.m_Values[1][0] == 5);
+    CHECK(decoded.m_Values[1][1] == 6);
+    CHECK(decoded.m_Values[1][2] == 7);
+    CHECK(decoded.m_Values[1][3] == 8);
+    CHECK(encoded == "AQAAAAAAAAAFAAAAAAAAAAIAAAAAAAAABgAAAAAAAAADAAAAAAAAAAcAAAAAAAAABAAAAAAAAAAIAAAAAAAAAA==");
   }
 
   SUBCASE("Encode int64 array")
@@ -99,10 +118,32 @@ TEST_CASE("Coded values test")
 
   SUBCASE("Encode double matrix")
   {
-    const auto [value, type] = rexsapi::detail::encodeMatrix(
-      rexsapi::TMatrix<double>{{{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}}}, rexsapi::TCodeType::Default);
-    CHECK(type == rexsapi::detail::TCodedValueType::Float64);
-    CHECK(value == "AAAAAAAA8D8AAAAAAAAAQAAAAAAAAAhAAAAAAAAAEEAAAAAAAAAUQAAAAAAAABhAAAAAAAAAHEAAAAAAAAAgQAAAAAAAACJA");
+    {
+      const auto [value, type] = rexsapi::detail::encodeMatrix(
+        rexsapi::TMatrix<double>{{{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}}}, rexsapi::TCodeType::Default);
+      CHECK(type == rexsapi::detail::TCodedValueType::Float64);
+      CHECK(value ==
+            "AAAAAAAA8D8AAAAAAAAQQAAAAAAAABxAAAAAAAAAAEAAAAAAAAAUQAAAAAAAACBAAAAAAAAACEAAAAAAAAAYQAAAAAAAACJA");
+    }
+
+    {
+      const auto [value, type] = rexsapi::detail::encodeMatrix(
+        rexsapi::TMatrix<double>{{{1.0, 5.0, 54.125738867291}, {4.0, 3.0, 0.0}, {2.0, 6.0, -259.10672159143496}}},
+        rexsapi::TCodeType::Default);
+      CHECK(type == rexsapi::detail::TCodedValueType::Float64);
+      CHECK(value ==
+            "AAAAAAAA8D8AAAAAAAAQQAAAAAAAAABAAAAAAAAAFEAAAAAAAAAIQAAAAAAAABhA62wRNhgQS0AAAAAAAAAAANgPsyG1MXDA");
+    }
+  }
+
+  SUBCASE("Encode integer matrix")
+  {
+    {
+      const auto [value, type] = rexsapi::detail::encodeMatrix(
+        rexsapi::TMatrix<int64_t>{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}}, rexsapi::TCodeType::Default);
+      CHECK(type == rexsapi::detail::TCodedValueType::Int32);
+      CHECK(value == "AQAAAAQAAAAHAAAAAgAAAAUAAAAIAAAAAwAAAAYAAAAJAAAA");
+    }
   }
 
   SUBCASE("Encode double matrix optimized")
@@ -110,13 +151,14 @@ TEST_CASE("Coded values test")
     const auto [value, type] = rexsapi::detail::encodeMatrix(
       rexsapi::TMatrix<double>{{{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}}}, rexsapi::TCodeType::Optimized);
     CHECK(type == rexsapi::detail::TCodedValueType::Float32);
-    CHECK(value == "AACAPwAAAEAAAEBAAACAQAAAoEAAAMBAAADgQAAAAEEAABBB");
+    CHECK(value == "AACAPwAAgEAAAOBAAAAAQAAAoEAAAABBAABAQAAAwEAAABBB");
   }
 
   SUBCASE("Encode matrix failure")
   {
     CHECK_THROWS(rexsapi::detail::encodeMatrix(
       rexsapi::TMatrix<double>{{{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}}}, rexsapi::TCodeType::None));
+    CHECK_THROWS(rexsapi::detail::encodeMatrix(rexsapi::TMatrix<double>{{}}, rexsapi::TCodeType::None));
   }
 }
 
@@ -153,7 +195,7 @@ TEST_CASE("Coded value decoder test")
   {
     auto val = rexsapi::detail::TCodedValueMatrixDecoder<
       double, rexsapi::detail::Enum2type<rexsapi::detail::to_underlying(rexsapi::detail::TCodedValueType::Float64)>>::
-      decode("AAAAAAAA8D8AAAAAAAAAQAAAAAAAAAhAAAAAAAAAEEAAAAAAAAAUQAAAAAAAABhAAAAAAAAAHEAAAAAAAAAgQAAAAAAAACJA");
+      decode("AAAAAAAA8D8AAAAAAAAQQAAAAAAAABxAAAAAAAAAAEAAAAAAAAAUQAAAAAAAACBAAAAAAAAACEAAAAAAAAAYQAAAAAAAACJA", 3, 3);
     CHECK(val.coded() == rexsapi::TCodeType::Default);
     CHECK_NOTHROW(val.getValue<rexsapi::TFloatMatrixType>());
   }

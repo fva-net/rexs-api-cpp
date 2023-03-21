@@ -67,3 +67,13 @@ public:
 private:
   const rexsapi::TComponent& m_Component;
 };
+
+static inline bool replace(std::string& str, std::string_view from, std::string_view to)
+{
+  size_t startPos = str.find(from);
+  if (startPos == std::string::npos) {
+    return false;
+  }
+  str.replace(startPos, from.length(), to);
+  return true;
+}

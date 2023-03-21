@@ -35,18 +35,8 @@ namespace
     rexsapi::detail::TFileModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator, path};
     return loader.load(mode, result, registry);
   }
-}
 
-TEST_CASE("XML model loader test")
-{
-  const auto registry = createModelRegistry();
-  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
-  rexsapi::TXSDSchemaValidator validator{schemaLoader};
-  rexsapi::TResult result;
-
-  SUBCASE("Load model from buffer")
-  {
-    std::string buffer = R"(
+  const std::string MemModel = R"(
       <?xml version="1.0" encoding="UTF-8" standalone="no"?>
       <model applicationId="REXSApi Unit Test" applicationVersion="1.0" date="2022-05-05T10:35:00+02:00" version="1.4" applicationLanguage="de">
         <relations>
@@ -132,9 +122,19 @@ TEST_CASE("XML model loader test")
         </load_spectrum>
       </model>
     )";
+}
 
+TEST_CASE("XML model loader test")
+{
+  const auto registry = createModelRegistry();
+  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
+  rexsapi::TXSDSchemaValidator validator{schemaLoader};
+  rexsapi::TResult result;
+
+  SUBCASE("Load model from buffer")
+  {
     rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
-                                                                                                       buffer};
+                                                                                                       MemModel};
     auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
     CHECK_FALSE(result);
     REQUIRE(result.getErrors().size() == 1);
@@ -458,5 +458,23 @@ TEST_CASE("XML model loader test")
     CHECK_FALSE(result.isCritical());
     CHECK(result.hasIssues());
     CHECK(model);
+  }
+
+  SUBCASE("Load valid document with unkown version")
+  {
+    std::string buffer{MemModel};
+    replace(buffer, R"(version="1.4")", R"(version="1.99")");
+    {
+      rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
+                                                                                                         buffer};
+      auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+      CHECK(result);
+      REQUIRE(model);
+    }
+    result.reset();
+
+    rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
+                                                                                                       buffer};
+    CHECK_THROWS((void)loader.load(rexsapi::TMode::STRICT_MODE, result, registry));
   }
 }

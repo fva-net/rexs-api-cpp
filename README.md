@@ -199,6 +199,10 @@ Relations
 ...
 ```
 
+# Changelog
+
+See CHANGELOG.md for detailed changelog information.
+
 # Integration
 
 The library is header only and can be easily integrated into existing projects. Using CMake is the recommended way to use the library. However, the library also comes as a zip package which can be used without CMake. You have to set the C++ standard of your project to C++17 in order to build with the library. 
@@ -277,13 +281,13 @@ The library is header only. A build is only necessary if you want to run the tes
 
 REXSapi uses the following thirdparty open source software
 
-- [cli11 2.2.0](https://github.com/CLIUtils/CLI11)
-- [fmt 8.1.1](https://github.com/fmtlib/fmt)
-- [nlohmann json 3.10.5](https://github.com/nlohmann/json)
-- [miniz 2.2.0](https://github.com/richgel999/miniz)
-- [pugixml 1.12.1](https://github.com/zeux/pugixml)
-- [valijson 0.6](https://github.com/tristanpenman/valijson)
-- [doctest 2.4.8](https://github.com/doctest/doctest)
+- [cli11 2.3.2](https://github.com/CLIUtils/CLI11)
+- [fmt 9.1.0](https://github.com/fmtlib/fmt)
+- [nlohmann json 3.11.2](https://github.com/nlohmann/json)
+- [miniz 3.0.2](https://github.com/richgel999/miniz)
+- [pugixml 1.13](https://github.com/zeux/pugixml)
+- [valijson 1.0](https://github.com/tristanpenman/valijson)
+- [doctest 2.4.10](https://github.com/doctest/doctest)
 
 # License
 REXsapi is licensed under the Apache-2.0 license.

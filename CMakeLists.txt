@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(rexsapi VERSION 1.0.0 LANGUAGES CXX)
+project(rexsapi VERSION 1.1.0 LANGUAGES CXX)
 
 include(FetchContent)
 
@@ -75,4 +75,10 @@ if(BUILD_WITH_TOOLS)
   message(STATUS "Building with tools")
   add_subdirectory(tools)
 endif(
+)
+
+install(
+  FILES
+  ${CMAKE_SOURCE_DIR}/CHANGELOG.md
+  DESTINATION .
 )

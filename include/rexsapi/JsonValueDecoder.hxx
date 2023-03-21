@@ -402,23 +402,23 @@ namespace rexsapi::detail
             case detail::TCodedValueType::None:
               throw TException{"unknown code"};
             case detail::TCodedValueType::Int32: {
-              value =
-                detail::TCodedValueMatrixDecoder<Type,
-                                                 Enum2type<to_underlying(detail::TCodedValueType::Int32)>>::decode(val);
+              value = detail::TCodedValueMatrixDecoder<
+                Type, Enum2type<to_underlying(detail::TCodedValueType::Int32)>>::decode(val, columns, rows);
               break;
             }
             case detail::TCodedValueType::Float32: {
               value = detail::TCodedValueMatrixDecoder<
-                Type, Enum2type<to_underlying(detail::TCodedValueType::Float32)>>::decode(val);
+                Type, Enum2type<to_underlying(detail::TCodedValueType::Float32)>>::decode(val, columns, rows);
               break;
             }
             case detail::TCodedValueType::Float64: {
               value = detail::TCodedValueMatrixDecoder<
-                Type, Enum2type<to_underlying(detail::TCodedValueType::Float64)>>::decode(val);
+                Type, Enum2type<to_underlying(detail::TCodedValueType::Float64)>>::decode(val, columns, rows);
               break;
             }
           }
-          if (value.getValue<TMatrix<Type>>().m_Values.size() != rows) {
+          if (value.getValue<TMatrix<Type>>().m_Values.size() != rows ||
+              value.getValue<TMatrix<Type>>().m_Values[0].size() != columns) {
             throw TException{"decoded matrix size does not correspond to configured size"};
           }
           return std::make_pair(std::move(value), TDecoderResult::SUCCESS);
