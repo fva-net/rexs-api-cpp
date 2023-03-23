@@ -352,6 +352,10 @@ namespace rexsapi
     if (type == "array_of_integer_arrays") {
       return TValueType::ARRAY_OF_INTEGER_ARRAYS;
     }
+    if (type == "date_time") {
+      // TODO(LCF): just to make the 1.5 version working
+      return TValueType::STRING;
+    }
     throw TException{fmt::format("unknown value type '{}'", type)};
   }
 
