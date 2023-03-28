@@ -38,6 +38,7 @@
 			<xsd:attribute name="status" type="versionStatusType" use="required"/>
 			<xsd:attribute name="language" type="xsd:string" use="required"/>
 			<xsd:attribute name="createdDate" type="xsd:string" use="required"/>
+			<xsd:attribute name="provider" type="xsd:string" use="optional"/>
 		</xsd:complexType>
 	</xsd:element>
 
@@ -107,6 +108,7 @@
 		<xsd:complexType>
 			<xsd:attribute name="componentId" type="xsd:string" use="required"/>
 			<xsd:attribute name="name" type="xsd:string" use="required"/>
+			<xsd:attribute name="databaseId" type="xsd:integer" use="optional"/>
 		</xsd:complexType>
 	</xsd:element>
 
@@ -125,6 +127,7 @@
 			<xsd:attribute name="rangeMinIntervalOpen" type="xsd:boolean" use="optional"/>
 			<xsd:attribute name="rangeMax" type="xsd:decimal" use="optional"/>
 			<xsd:attribute name="rangeMaxIntervalOpen" type="xsd:boolean" use="optional"/>
+			<xsd:attribute name="databaseId" type="xsd:integer" use="optional"/>
 		</xsd:complexType>
 	</xsd:element>
 
