@@ -28,8 +28,8 @@ namespace
                                            const rexsapi::database::TModelRegistry& registry,
                                            rexsapi::TMode mode = rexsapi::TMode::STRICT_MODE)
   {
-    rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
-    rexsapi::TJsonSchemaValidator jsonValidator{schemaLoader};
+    const rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
+    const rexsapi::TJsonSchemaValidator jsonValidator{schemaLoader};
 
     rexsapi::detail::TFileModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{jsonValidator,
                                                                                                        path};
@@ -41,7 +41,7 @@ namespace
     "applicationId":"Bearinx",
     "applicationVersion":"12.0.8823",
     "date":"2021-07-01T12:18:38+01:00",
-    "version":"1.4",
+    "version":"1.5",
     "relations":[
       {
         "id":48,
@@ -104,6 +104,10 @@ namespace
           {
             "id":"account_for_gravity",
             "boolean":true
+          },
+          {
+            "id":"modification_date",
+            "date_time":"2023-03-29T11:46:00+02:00"
           },
           {
             "id":"u_axis_vector",
@@ -205,8 +209,8 @@ namespace
 
 TEST_CASE("Json model loader test")
 {
-  rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
-  rexsapi::TJsonSchemaValidator validator{schemaLoader};
+  const rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
+  const rexsapi::TJsonSchemaValidator validator{schemaLoader};
   rexsapi::TResult result;
   const auto registry = createModelRegistry();
 
@@ -214,7 +218,7 @@ TEST_CASE("Json model loader test")
   {
     rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
                                                                                                          MemModel};
-    auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
     CHECK_FALSE(result);
     REQUIRE(result.getErrors().size() == 4);
     CHECK(result.getErrors()[0].getMessage() ==
@@ -226,20 +230,27 @@ TEST_CASE("Json model loader test")
           "load_case id=1: attribute id=load_duration_fraction is not part of component gear_unit id=1");
     CHECK_FALSE(result.isCritical());
     REQUIRE(model);
+    CHECK(model->getInfo().getVersion() == rexsapi::TRexsVersion{1, 5});
     REQUIRE(model->getComponents().size() == 4);
+    CHECK(model->getComponents()[0].getName() == "Transmission unit");
+    REQUIRE(model->getComponents()[0].getAttributes().size() == 8);
+    CHECK(model->getComponents()[0].getAttributes()[4].getName() == "Modification date");
+    CHECK(model->getComponents()[0].getAttributes()[4].getValue<rexsapi::TDatetime>().asUTCString() ==
+          "2023-03-29T09:46:00+00:00");
     REQUIRE(model->getRelations().size() == 2);
     CHECK(model->getLoadSpectrum().hasLoadCases());
     REQUIRE(model->getLoadSpectrum().getLoadCases().size() == 1);
     REQUIRE(model->getLoadSpectrum().getLoadCases()[0].getLoadComponents().size() == 2);
-    CHECK(model->getLoadSpectrum().getLoadCases()[0].getLoadComponents()[0].getAttributes().size() == 8);
+    CHECK(model->getLoadSpectrum().getLoadCases()[0].getLoadComponents()[0].getAttributes().size() == 9);
     CHECK(model->getLoadSpectrum().getLoadCases()[0].getLoadComponents()[0].getLoadAttributes().size() == 1);
     REQUIRE(model->getLoadSpectrum().hasAccumulation());
   }
 
   SUBCASE("Load complex model from file in strict mode")
   {
-    auto model = loadModel(result, projectDir() / "test" / "example_models" / "FVA-Industriegetriebe_2stufig_1-4.rexsj",
-                           registry, rexsapi::TMode::STRICT_MODE);
+    const auto model =
+      loadModel(result, projectDir() / "test" / "example_models" / "FVA-Industriegetriebe_2stufig_1-4.rexsj", registry,
+                rexsapi::TMode::STRICT_MODE);
     REQUIRE(model);
     CHECK_FALSE(result);
     CHECK_FALSE(result.isCritical());
@@ -273,8 +284,9 @@ TEST_CASE("Json model loader test")
 
   SUBCASE("Load complex model from file in relaxed mode")
   {
-    auto model = loadModel(result, projectDir() / "test" / "example_models" / "FVA-Industriegetriebe_2stufig_1-4.rexsj",
-                           registry, rexsapi::TMode::RELAXED_MODE);
+    const auto model =
+      loadModel(result, projectDir() / "test" / "example_models" / "FVA-Industriegetriebe_2stufig_1-4.rexsj", registry,
+                rexsapi::TMode::RELAXED_MODE);
     REQUIRE(model);
     CHECK(result);
     CHECK_FALSE(result.isCritical());
@@ -308,8 +320,8 @@ TEST_CASE("Json model loader test")
 
   SUBCASE("Load complex model without loadmodel from file")
   {
-    auto model = loadModel(result, projectDir() / "test" / "example_models" / "FVA_worm_stage_1-4.rexsj", registry,
-                           rexsapi::TMode::RELAXED_MODE);
+    const auto model = loadModel(result, projectDir() / "test" / "example_models" / "FVA_worm_stage_1-4.rexsj",
+                                 registry, rexsapi::TMode::RELAXED_MODE);
     REQUIRE(model);
     CHECK(result);
     CHECK_FALSE(result.isCritical());
@@ -318,7 +330,7 @@ TEST_CASE("Json model loader test")
 
   SUBCASE("Load model from non-existent file failure")
   {
-    auto model = loadModel(result, "non-exising-file.rexsj", registry);
+    const auto model = loadModel(result, "non-exising-file.rexsj", registry);
     CHECK_FALSE(model);
     CHECK_FALSE(result);
     CHECK(result.isCritical());
@@ -328,7 +340,7 @@ TEST_CASE("Json model loader test")
 
   SUBCASE("Load model from directory failure")
   {
-    auto model = loadModel(result, projectDir(), registry);
+    const auto model = loadModel(result, projectDir(), registry);
     CHECK_FALSE(model);
     CHECK_FALSE(result);
     CHECK(result.isCritical());
@@ -338,7 +350,7 @@ TEST_CASE("Json model loader test")
 
   SUBCASE("Load incorrect json document")
   {
-    std::string buffer = R"({
+    const std::string buffer = R"({
   "model":{
     "applicationId":"Bearinx",
     "applicationVersion":"12.0.8823",
@@ -460,7 +472,7 @@ TEST_CASE("Json model loader test")
 
     rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
                                                                                                          buffer};
-    auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
     CHECK(result);
     CHECK(result.getErrors().size() == 10);
     CHECK_FALSE(result.isCritical());
@@ -469,7 +481,7 @@ TEST_CASE("Json model loader test")
 
   SUBCASE("Load invalid json document")
   {
-    std::string buffer = R"({
+    const std::string buffer = R"({
   "model":{
     "applicationId":"Bearinx",
     "applicationVersion":"12.0.8823",
@@ -481,7 +493,7 @@ TEST_CASE("Json model loader test")
 
     rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
                                                                                                          buffer};
-    auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
     CHECK_FALSE(result);
     CHECK(result.isCritical());
     CHECK_FALSE(model);
@@ -489,7 +501,7 @@ TEST_CASE("Json model loader test")
 
   SUBCASE("Load broken json document")
   {
-    std::string buffer = R"({
+    const std::string buffer = R"({
   "model":{
     "applicationId":"Bearinx",
     "applicationVersion":"12.0.8823",
@@ -498,7 +510,7 @@ TEST_CASE("Json model loader test")
 
     rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
                                                                                                          buffer};
-    auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
     CHECK_FALSE(result);
     CHECK(result.isCritical());
     CHECK_FALSE(model);
@@ -507,10 +519,10 @@ TEST_CASE("Json model loader test")
   SUBCASE("Load valid document with unkown version")
   {
     std::string buffer{MemModel};
-    replace(buffer, R"("version":"1.4")", R"("version":"1.99")");
+    replace(buffer, R"("version":"1.5")", R"("version":"1.99")");
     rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
                                                                                                          buffer};
-    auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
     CHECK_FALSE(result);
     CHECK_FALSE(result.isCritical());
     REQUIRE(model);

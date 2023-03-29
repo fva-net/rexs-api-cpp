@@ -65,7 +65,7 @@ TEST_CASE("Component builder test")
   const auto registry = createModelRegistry();
   rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
   rexsapi::TXSDSchemaValidator validator{schemaLoader};
-  rexsapi::TComponentBuilder builder{registry.getModel({1, 4}, "de")};
+  rexsapi::TComponentBuilder builder{registry.getModel({1, 5}, "de")};
 
   SUBCASE("Component builder")
   {
@@ -78,8 +78,12 @@ TEST_CASE("Component builder test")
       .value(rexsapi::TFloatArrayType{0.0, 65.0, 0.0})
       .coded(rexsapi::TCodeType::Optimized);
     builder.addCustomAttribute("custom_hutzli", rexsapi::TValueType::BOOLEAN).value(true);
-    auto casingId =
-      builder.addComponent("gear_casing", "my-id").addAttribute("temperature_lubricant").value(128.0).id();
+    auto casingId = builder.addComponent("gear_casing", "my-id")
+                      .addAttribute("temperature_lubricant")
+                      .value(128.0)
+                      .addAttribute("modification_date")
+                      .value(rexsapi::TDatetime{"2022-06-05T08:50:27+03:00"})
+                      .id();
     CHECK(casingId == rexsapi::TComponentId{"my-id"});
     auto components = builder.build();
     REQUIRE(components.size() == 2);

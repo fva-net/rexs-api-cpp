@@ -17,9 +17,11 @@
 #ifndef REXSAPI_TYPES_HXX
 #define REXSAPI_TYPES_HXX
 
+#include <rexsapi/ConversionHelper.hxx>
 #include <rexsapi/Exception.hxx>
 #include <rexsapi/Format.hxx>
 
+#include <date/date.h>
 #include <vector>
 
 namespace rexsapi
@@ -29,23 +31,24 @@ namespace rexsapi
    *
    */
   enum class TValueType : uint8_t {
-    FLOATING_POINT,          //!< floating_point
-    BOOLEAN,                 //!< boolean
-    INTEGER,                 //!< integer
-    ENUM,                    //!< enum
-    STRING,                  //!< string
-    FILE_REFERENCE,          //!< file_reference
-    FLOATING_POINT_ARRAY,    //!< floating_point_array
-    BOOLEAN_ARRAY,           //!< boolean_array
-    INTEGER_ARRAY,           //!< integer_array
-    STRING_ARRAY,            //!< string_array
-    ENUM_ARRAY,              //!< enum_array
-    REFERENCE_COMPONENT,     //!< reference_component
-    FLOATING_POINT_MATRIX,   //!< floating_point_matrix
-    INTEGER_MATRIX,          //!< integer_matrix
-    BOOLEAN_MATRIX,          //!< boolean_matrix
-    STRING_MATRIX,           //!< string_matrix
-    ARRAY_OF_INTEGER_ARRAYS  //!< array_of_integer_arrays
+    FLOATING_POINT,           //!< floating_point
+    BOOLEAN,                  //!< boolean
+    INTEGER,                  //!< integer
+    ENUM,                     //!< enum
+    STRING,                   //!< string
+    FILE_REFERENCE,           //!< file_reference
+    FLOATING_POINT_ARRAY,     //!< floating_point_array
+    BOOLEAN_ARRAY,            //!< boolean_array
+    INTEGER_ARRAY,            //!< integer_array
+    STRING_ARRAY,             //!< string_array
+    ENUM_ARRAY,               //!< enum_array
+    REFERENCE_COMPONENT,      //!< reference_component
+    FLOATING_POINT_MATRIX,    //!< floating_point_matrix
+    INTEGER_MATRIX,           //!< integer_matrix
+    BOOLEAN_MATRIX,           //!< boolean_matrix
+    STRING_MATRIX,            //!< string_matrix
+    ARRAY_OF_INTEGER_ARRAYS,  //!< array_of_integer_arrays
+    DATE_TIME                 //!< date_time
   };
 
   /**
@@ -184,6 +187,94 @@ namespace rexsapi
      *
      */
     std::vector<std::vector<T>> m_Values;
+  };
+
+
+  /**
+   * @brief Represents the REXS date_time type
+   *
+   */
+  class TDatetime
+  {
+  public:
+    using time_point = std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds>;
+
+    /**
+     * @brief Construct a new TDatetime object from a string
+     *
+     * @param datetime The string has to be in ISO8601 format `yyyy-mm-ddThh:mm:ss[+/-]<offset to UTC>`
+     * @throws std::exception if the string cannot be parsed or the date time is invalid
+     */
+    explicit TDatetime(const std::string& datetime)
+    {
+      auto op = date::parse("%FT%T%Ez", m_Timepoint);
+      std::istringstream in{datetime};
+      in >> op;
+
+      if (!in.good()) {
+        throw std::runtime_error{"illegal date specified: " + datetime};
+      }
+    }
+
+    /**
+     * @brief Construct a new TDatetime object from a std::chrono::time_point
+     *
+     * @param datetime A time point
+     */
+    explicit TDatetime(time_point datetime) noexcept
+    : m_Timepoint{datetime}
+    {
+    }
+
+    friend bool operator==(const TDatetime& lhs, const TDatetime& rhs) noexcept
+    {
+      return lhs.m_Timepoint == rhs.m_Timepoint;
+    }
+
+    /**
+     * @brief Returns a new TDatetime object constructed with the current date and time
+     *
+     * @return A new TDatetime object set to the current date and time
+     */
+    static TDatetime now() noexcept
+    {
+      return TDatetime{std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::now())};
+    }
+
+    /**
+     * @brief Returns the UTC string representation in ISO8601 format `yyyy-mm-ddThh:mm:ss[+/-]<offset to UTC>`.
+     *        The offset will always be +00:00.
+     *
+     * @return The UTC string representation
+     */
+    inline std::string asUTCString() const
+    {
+      return date::format("%FT%T%Ez", m_Timepoint);
+    }
+
+    /**
+     * @brief Returns the locale string representation in ISO8601 format `yyyy-mm-ddThh:mm:ss[+/-]<offset to UTC>`.
+     *        The offset will be set to the current timezone offset from UTC.
+     *
+     * @return The locale string representation
+     */
+    inline std::string asLocaleString() const
+    {
+      return getTimeStringISO8601(m_Timepoint);
+    }
+
+    /**
+     * @brief Returns the time point
+     *
+     * @return time_point
+     */
+    inline time_point asTimepoint() const noexcept
+    {
+      return m_Timepoint;
+    }
+
+  private:
+    time_point m_Timepoint;
   };
 
 
@@ -353,8 +444,7 @@ namespace rexsapi
       return TValueType::ARRAY_OF_INTEGER_ARRAYS;
     }
     if (type == "date_time") {
-      // TODO(LCF): just to make the 1.5 version working
-      return TValueType::STRING;
+      return TValueType::DATE_TIME;
     }
     throw TException{fmt::format("unknown value type '{}'", type)};
   }
@@ -396,6 +486,8 @@ namespace rexsapi
         return "string_matrix";
       case TValueType::ARRAY_OF_INTEGER_ARRAYS:
         return "array_of_integer_arrays";
+      case TValueType::DATE_TIME:
+        return "date_time";
     }
     throw TException{fmt::format("unknown value type '{}'", static_cast<int64_t>(type))};
   }

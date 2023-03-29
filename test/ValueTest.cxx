@@ -80,6 +80,13 @@ TEST_CASE("Value test")
     CHECK(val.asString() == "My std String!");
   }
 
+  SUBCASE("date time value")
+  {
+    rexsapi::TValue val{rexsapi::TDatetime{"2019-09-23T08:08:00+09:00"}};
+    CHECK_FALSE(val.isEmpty());
+    CHECK(val.getValue<rexsapi::TDatetime>().asUTCString() == "2019-09-22T23:08:00+00:00");
+  }
+
   SUBCASE("vector of integer")
   {
     std::vector<int64_t> aofi{42, 815, 4711};
@@ -207,6 +214,9 @@ TEST_CASE("Value test")
 
     val = std::string("My String!");
     CHECK(val.matchesValueType(rexsapi::TValueType::STRING));
+
+    val = rexsapi::TDatetime{"2023-03-29T14:25:39+02:00"};
+    CHECK(val.matchesValueType(rexsapi::TValueType::DATE_TIME));
 
     val = std::vector<int64_t>{42, 815, 4711};
     CHECK(val.matchesValueType(rexsapi::TValueType::INTEGER_ARRAY));

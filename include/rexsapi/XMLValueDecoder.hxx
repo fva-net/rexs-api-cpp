@@ -159,6 +159,23 @@ namespace rexsapi::detail
       }
     };
 
+    class TDatetimeDecoder : public TXMLDecoder
+    {
+    public:
+      using Type = std::string;
+
+    private:
+      std::pair<TValue, TDecoderResult> onDecode(const std::optional<const database::TEnumValues>&,
+                                                 const pugi::xml_node& node) const override
+      {
+        try {
+          return std::make_pair(TValue{TDatetime{node.child_value()}}, TDecoderResult::SUCCESS);
+        } catch (const std::exception&) {
+          return std::make_pair(TValue{}, TDecoderResult::FAILURE);
+        }
+      }
+    };
+
     template<typename ElementDecoder, typename ArrayType = typename ElementDecoder::Type>
     class TArrayDecoder : public TXMLDecoder
     {
@@ -170,7 +187,7 @@ namespace rexsapi::detail
                                                  const pugi::xml_node& node) const override
       {
         std::vector<type2> array;
-        ElementDecoder decoder;
+        const ElementDecoder decoder;
         TDecoderResult result{TDecoderResult::SUCCESS};
         for (const auto& arrayNode : node.select_nodes("array/c")) {
           const auto [value, res] = decoder.decode(enumValue, arrayNode.node());
@@ -232,7 +249,7 @@ namespace rexsapi::detail
                                                  const pugi::xml_node& node) const override
       {
         TMatrix<type2> matrix;
-        ElementDecoder decoder;
+        const ElementDecoder decoder;
         bool result{true};
 
         for (const auto& row : node.select_nodes("matrix/r")) {
@@ -279,24 +296,28 @@ namespace rexsapi::detail
           case detail::TCodedValueType::Int32: {
             value = detail::TCodedValueMatrixDecoder<
               typename TMatrixDecoder<ElementDecoder>::type,
-              detail::Enum2type<detail::to_underlying(detail::TCodedValueType::Int32)>>::decode(child.child_value(), columns, rows);
+              detail::Enum2type<detail::to_underlying(detail::TCodedValueType::Int32)>>::decode(child.child_value(),
+                                                                                                columns, rows);
             break;
           }
           case detail::TCodedValueType::Float32: {
             value = detail::TCodedValueMatrixDecoder<
               typename TMatrixDecoder<ElementDecoder>::type,
-              detail::Enum2type<detail::to_underlying(detail::TCodedValueType::Float32)>>::decode(child.child_value(), columns, rows);
+              detail::Enum2type<detail::to_underlying(detail::TCodedValueType::Float32)>>::decode(child.child_value(),
+                                                                                                  columns, rows);
             break;
           }
           case detail::TCodedValueType::Float64: {
             value = detail::TCodedValueMatrixDecoder<
               typename TMatrixDecoder<ElementDecoder>::type,
-              detail::Enum2type<detail::to_underlying(detail::TCodedValueType::Float64)>>::decode(child.child_value(), columns, rows);
+              detail::Enum2type<detail::to_underlying(detail::TCodedValueType::Float64)>>::decode(child.child_value(),
+                                                                                                  columns, rows);
             break;
           }
         }
         if (codedType != detail::TCodedValueType::None) {
-          if (value.getValue<TMatrix<typename TMatrixDecoder<ElementDecoder>::type>>().m_Values.size() != rows || value.getValue<TMatrix<typename TMatrixDecoder<ElementDecoder>::type>>().m_Values[0].size() != columns) {
+          if (value.getValue<TMatrix<typename TMatrixDecoder<ElementDecoder>::type>>().m_Values.size() != rows ||
+              value.getValue<TMatrix<typename TMatrixDecoder<ElementDecoder>::type>>().m_Values[0].size() != columns) {
             throw TException{"decoded matrix size does not correspond to configured size"};
           }
         }
@@ -314,7 +335,7 @@ namespace rexsapi::detail
                                                  const pugi::xml_node& node) const override
       {
         std::vector<std::vector<type>> arrays;
-        ElementDecoder decoder;
+        const ElementDecoder decoder;
         TDecoderResult result{TDecoderResult::SUCCESS};
 
         for (const auto& row : node.select_nodes("array_of_arrays/array")) {
@@ -350,6 +371,7 @@ namespace rexsapi::detail
     m_Decoder[TValueType::FLOATING_POINT] = std::make_unique<xml::TFloatDecoder>();
     m_Decoder[TValueType::STRING] = std::make_unique<xml::TStringDecoder>();
     m_Decoder[TValueType::ENUM] = std::make_unique<xml::TEnumDecoder>();
+    m_Decoder[TValueType::DATE_TIME] = std::make_unique<xml::TDatetimeDecoder>();
     m_Decoder[TValueType::INTEGER_ARRAY] = std::make_unique<xml::TCodedArrayDecoder<xml::TIntegerDecoder>>();
     m_Decoder[TValueType::FLOATING_POINT_ARRAY] = std::make_unique<xml::TCodedArrayDecoder<xml::TFloatDecoder>>();
     m_Decoder[TValueType::BOOLEAN_ARRAY] = std::make_unique<xml::TArrayDecoder<xml::TBooleanDecoder, Bool>>();

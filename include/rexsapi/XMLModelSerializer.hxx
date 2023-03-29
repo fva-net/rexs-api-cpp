@@ -243,6 +243,9 @@ namespace rexsapi
        [&attNode](rexsapi::TFileReferenceTag, const auto& s) -> void {
          attNode.append_child(pugi::node_pcdata).set_value(s.c_str());
        },
+       [&attNode](rexsapi::TDatetimeTag, const auto& d) -> void {
+         attNode.append_child(pugi::node_pcdata).set_value(d.asUTCString().data());
+       },
        [&attNode, &attribute](rexsapi::TFloatArrayTag, const auto& a) -> void {
          xmlEncodeCodedArray(attNode, attribute.getValue(), a, [](double element) {
            return format(element);

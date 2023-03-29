@@ -29,8 +29,8 @@ namespace
                                            const rexsapi::database::TModelRegistry& registry,
                                            rexsapi::TMode mode = rexsapi::TMode::STRICT_MODE)
   {
-    rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
-    rexsapi::TXSDSchemaValidator validator{schemaLoader};
+    const rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
+    const rexsapi::TXSDSchemaValidator validator{schemaLoader};
 
     rexsapi::detail::TFileModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator, path};
     return loader.load(mode, result, registry);
@@ -38,7 +38,7 @@ namespace
 
   const std::string MemModel = R"(
       <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-      <model applicationId="REXSApi Unit Test" applicationVersion="1.0" date="2022-05-05T10:35:00+02:00" version="1.4" applicationLanguage="de">
+      <model applicationId="REXSApi Unit Test" applicationVersion="1.0" date="2022-05-05T10:35:00+02:00" version="1.5" applicationLanguage="de">
         <relations>
           <relation id="1" type="assembly">
             <ref hint="gear_unit" id="1" role="assembly"/>
@@ -63,6 +63,7 @@ namespace
             <attribute id="operating_time" unit="h">100000.0</attribute>
             <attribute id="operating_time_vdi_2736_2014" unit="h">100000.0</attribute>
             <attribute id="reference_component_for_position" unit="none">1</attribute>
+            <attribute id="modification_date" unit="none">2023-03-29T11:46:00+02:00</attribute>
             <attribute id="support_vector" unit="mm">
               <array>
                 <c>0.0</c>
@@ -127,15 +128,15 @@ namespace
 TEST_CASE("XML model loader test")
 {
   const auto registry = createModelRegistry();
-  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
-  rexsapi::TXSDSchemaValidator validator{schemaLoader};
+  const rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
+  const rexsapi::TXSDSchemaValidator validator{schemaLoader};
   rexsapi::TResult result;
 
   SUBCASE("Load model from buffer")
   {
     rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
                                                                                                        MemModel};
-    auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
     CHECK_FALSE(result);
     REQUIRE(result.getErrors().size() == 1);
     CHECK(result.getErrors()[0].getMessage() ==
@@ -146,7 +147,7 @@ TEST_CASE("XML model loader test")
     CHECK(*model->getInfo().getApplicationLanguage() == "de");
     CHECK(model->getInfo().getApplicationVersion() == "1.0");
     CHECK(model->getInfo().getDate() == "2022-05-05T10:35:00+02:00");
-    CHECK(model->getInfo().getVersion() == rexsapi::TRexsVersion{1, 4});
+    CHECK(model->getInfo().getVersion() == rexsapi::TRexsVersion{1, 5});
     REQUIRE(model->getComponents().size() == 3);
     const auto& attribute = model->getComponents()[0].getAttributes()[0];
     CHECK(attribute.getAttributeId() == "account_for_gravity");
@@ -157,6 +158,16 @@ TEST_CASE("XML model loader test")
     REQUIRE(model->getRelations()[0].getReferences().size() == 2);
     CHECK(model->getRelations()[0].getReferences()[0].getComponent().getType() == "gear_unit");
     CHECK(model->getRelations()[0].getReferences()[0].getComponent().getName() == "Getriebeeinheit");
+    REQUIRE(model->getRelations()[0].getReferences()[0].getComponent().getAttributes().size() == 16);
+    CHECK(model->getRelations()[0].getReferences()[0].getComponent().getAttributes()[12].getName() ==
+          "Änderungszeitpunkt");
+    CHECK(model->getRelations()[0]
+            .getReferences()[0]
+            .getComponent()
+            .getAttributes()[12]
+            .getValue()
+            .getValue<rexsapi::TDatetime>()
+            .asUTCString() == "2023-03-29T09:46:00+00:00");
     CHECK(model->getLoadSpectrum().hasLoadCases());
     REQUIRE(model->getLoadSpectrum().getLoadCases().size() == 2);
     REQUIRE(model->getLoadSpectrum().getLoadCases()[0].getLoadComponents().size() == 2);
@@ -167,7 +178,8 @@ TEST_CASE("XML model loader test")
 
   SUBCASE("Load simple model from file")
   {
-    auto model = loadModel(result, projectDir() / "test" / "example_models" / "FVA_worm_stage_1-4.rexs", registry);
+    const auto model =
+      loadModel(result, projectDir() / "test" / "example_models" / "FVA_worm_stage_1-4.rexs", registry);
     CHECK(model);
     CHECK_FALSE(result);
     CHECK_FALSE(result.isCritical());
@@ -188,7 +200,7 @@ TEST_CASE("XML model loader test")
 
   SUBCASE("Load complex model from file in strict mode")
   {
-    auto model =
+    const auto model =
       loadModel(result, projectDir() / "test" / "example_models" / "FVA-Industriegetriebe_2stufig_1-4.rexs", registry);
     REQUIRE(model);
     CHECK_FALSE(result);
@@ -223,8 +235,9 @@ TEST_CASE("XML model loader test")
 
   SUBCASE("Load complex model from file in relaxed mode")
   {
-    auto model = loadModel(result, projectDir() / "test" / "example_models" / "FVA-Industriegetriebe_2stufig_1-4.rexs",
-                           registry, rexsapi::TMode::RELAXED_MODE);
+    const auto model =
+      loadModel(result, projectDir() / "test" / "example_models" / "FVA-Industriegetriebe_2stufig_1-4.rexs", registry,
+                rexsapi::TMode::RELAXED_MODE);
     REQUIRE(model);
     CHECK(result);
     CHECK_FALSE(result.isCritical());
@@ -258,7 +271,7 @@ TEST_CASE("XML model loader test")
 
   SUBCASE("Load model from non-existent file failure")
   {
-    auto model = loadModel(result, "non-exising-file.rexs", registry);
+    const auto model = loadModel(result, "non-exising-file.rexs", registry);
     CHECK_FALSE(model);
     CHECK_FALSE(result);
     CHECK(result.isCritical());
@@ -268,7 +281,7 @@ TEST_CASE("XML model loader test")
 
   SUBCASE("Load model from directory failure")
   {
-    auto model = loadModel(result, projectDir(), registry);
+    const auto model = loadModel(result, projectDir(), registry);
     CHECK_FALSE(model);
     CHECK_FALSE(result);
     CHECK(result.isCritical());
@@ -277,7 +290,7 @@ TEST_CASE("XML model loader test")
 
   SUBCASE("Load invalid xml document")
   {
-    std::string buffer = R"(
+    const std::string buffer = R"(
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <model applicationId="REXSApi Unit Test" applicationVersion="1.0" date="2022-05-05T10:35:00+02:00" version="1.4">
       <relations>
@@ -296,7 +309,7 @@ TEST_CASE("XML model loader test")
 
     rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
                                                                                                        buffer};
-    auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
     CHECK_FALSE(result);
     CHECK(result.isCritical());
     CHECK_FALSE(model);
@@ -304,7 +317,7 @@ TEST_CASE("XML model loader test")
 
   SUBCASE("Load invalid component")
   {
-    std::string buffer = R"(
+    const std::string buffer = R"(
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <model applicationId="REXSApi Unit Test" applicationVersion="1.0" date="2022-05-05T10:35:00+02:00" version="1.4">
       <relations>
@@ -322,7 +335,7 @@ TEST_CASE("XML model loader test")
 
     rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
                                                                                                        buffer};
-    auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
     CHECK_FALSE(result);
     CHECK_FALSE(result.isCritical());
     CHECK(model);
@@ -330,7 +343,7 @@ TEST_CASE("XML model loader test")
 
   SUBCASE("Load invalid relation order")
   {
-    std::string buffer = R"(
+    const std::string buffer = R"(
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <model applicationId="REXSApi Unit Test" applicationVersion="1.0" date="2022-05-05T10:35:00+02:00" version="1.4">
       <relations>
@@ -346,7 +359,7 @@ TEST_CASE("XML model loader test")
 
     rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
                                                                                                        buffer};
-    auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
     CHECK_FALSE(result);
     CHECK_FALSE(result.isCritical());
     CHECK(model);
@@ -354,7 +367,7 @@ TEST_CASE("XML model loader test")
 
   SUBCASE("Load invalid relation type")
   {
-    std::string buffer = R"(
+    const std::string buffer = R"(
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <model applicationId="REXSApi Unit Test" applicationVersion="1.0" date="2022-05-05T10:35:00+02:00" version="1.4">
       <relations>
@@ -370,7 +383,7 @@ TEST_CASE("XML model loader test")
 
     rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
                                                                                                        buffer};
-    auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
     CHECK_FALSE(result);
     CHECK_FALSE(result.isCritical());
     CHECK(model);
@@ -378,7 +391,7 @@ TEST_CASE("XML model loader test")
 
   SUBCASE("Load invalid reference type")
   {
-    std::string buffer = R"(
+    const std::string buffer = R"(
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <model applicationId="REXSApi Unit Test" applicationVersion="1.0" date="2022-05-05T10:35:00+02:00" version="1.4">
       <relations>
@@ -394,7 +407,7 @@ TEST_CASE("XML model loader test")
 
     rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
                                                                                                        buffer};
-    auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
     CHECK_FALSE(result);
     CHECK_FALSE(result.isCritical());
     CHECK(model);
@@ -402,7 +415,7 @@ TEST_CASE("XML model loader test")
 
   SUBCASE("Load non-existing reference component")
   {
-    std::string buffer = R"(
+    const std::string buffer = R"(
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <model applicationId="REXSApi Unit Test" applicationVersion="1.0" date="2022-05-05T10:35:00+02:00" version="1.4">
       <relations>
@@ -421,7 +434,7 @@ TEST_CASE("XML model loader test")
 
     rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
                                                                                                        buffer};
-    auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
     CHECK_FALSE(result);
     CHECK_FALSE(result.isCritical());
     CHECK(model);
@@ -429,7 +442,7 @@ TEST_CASE("XML model loader test")
 
   SUBCASE("Load non used component")
   {
-    std::string buffer = R"(
+    const std::string buffer = R"(
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <model applicationId="REXSApi Unit Test" applicationVersion="1.0" date="2022-05-05T10:35:00+02:00" version="1.4">
       <relations>
@@ -453,7 +466,7 @@ TEST_CASE("XML model loader test")
 
     rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
                                                                                                        buffer};
-    auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
+    const auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
     CHECK(result);
     CHECK_FALSE(result.isCritical());
     CHECK(result.hasIssues());
@@ -463,11 +476,11 @@ TEST_CASE("XML model loader test")
   SUBCASE("Load valid document with unkown version")
   {
     std::string buffer{MemModel};
-    replace(buffer, R"(version="1.4")", R"(version="1.99")");
+    replace(buffer, R"(version="1.5")", R"(version="1.99")");
     {
       rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
                                                                                                          buffer};
-      auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+      const auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
       CHECK(result);
       REQUIRE(model);
     }
