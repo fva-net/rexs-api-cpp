@@ -42,6 +42,7 @@ TEST_CASE("Json value decoder test")
     "enum": { "enum": "injection_lubrication" },
     "reference component": { "reference_component": 17 },
     "file reference": { "file_reference": "/root/my/path" },
+    "date time": { "date_time": "2022-06-05T04:50:27+04:00" },
     "float array": { "floating_point_array": [1.0, 2.0, 3.0] },
     "coded float array": { "floating_point_array_coded": { "code": "float32", "value": "MveeQZ6hM0I" } },
     "coded float64 array": { "floating_point_array_coded": { "code": "float64", "value": "AAAAAAAAHEAAAAAAAAAgQAAAAAAAACJA" } },
@@ -73,6 +74,12 @@ TEST_CASE("Json value decoder test")
   {
     CHECK(rexsapi::detail::json::getType(getNode(doc, "boolean")) == rexsapi::TValueType::BOOLEAN);
     CHECK(rexsapi::detail::json::getType(getNode(doc, "integer")) == rexsapi::TValueType::INTEGER);
+    CHECK(rexsapi::detail::json::getType(getNode(doc, "string")) == rexsapi::TValueType::STRING);
+    CHECK(rexsapi::detail::json::getType(getNode(doc, "enum")) == rexsapi::TValueType::ENUM);
+    CHECK(rexsapi::detail::json::getType(getNode(doc, "reference component")) ==
+          rexsapi::TValueType::REFERENCE_COMPONENT);
+    CHECK(rexsapi::detail::json::getType(getNode(doc, "file reference")) == rexsapi::TValueType::FILE_REFERENCE);
+    CHECK(rexsapi::detail::json::getType(getNode(doc, "date time")) == rexsapi::TValueType::DATE_TIME);
     CHECK(rexsapi::detail::json::getType(getNode(doc, "float array")) == rexsapi::TValueType::FLOATING_POINT_ARRAY);
     CHECK(rexsapi::detail::json::getType(getNode(doc, "coded float array")) ==
           rexsapi::TValueType::FLOATING_POINT_ARRAY);
@@ -139,6 +146,13 @@ TEST_CASE("Json value decoder test")
     const auto [value, result] = decoder.decode(rexsapi::TValueType::ENUM, enumValue, getNode(doc, "enum"));
     CHECK(result == rexsapi::detail::TDecoderResult::SUCCESS);
     CHECK(value.getValue<std::string>() == "injection_lubrication");
+  }
+
+  SUBCASE("Decode date time")
+  {
+    const auto [value, result] = decoder.decode(rexsapi::TValueType::DATE_TIME, enumValue, getNode(doc, "date time"));
+    CHECK(result == rexsapi::detail::TDecoderResult::SUCCESS);
+    CHECK(value.getValue<rexsapi::TDatetime>().asUTCString() == "2022-06-05T00:50:27+00:00");
   }
 
   SUBCASE("Decode integer array")
@@ -281,6 +295,7 @@ TEST_CASE("Json value decoder error test")
     "enum": { "enum": "unknown enum" },
     "reference component": { "reference_component": "PR" },
     "file reference": { "file_reference": 4711 },
+    "date time": { "date_time": "2023-02-31T11:11:11+00:00" },
     "float array": { "floating_point_array": ["a", "b", "c"] },
     "integer array": { "integer_array": ["a", "b", "c"] },
     "boolean array": { "boolean_array": ["true", "false", "false"] },
@@ -347,6 +362,12 @@ TEST_CASE("Json value decoder error test")
           rexsapi::detail::TDecoderResult::FAILURE);
     CHECK(decoder.decode(rexsapi::TValueType::ENUM, {}, getNode(doc, "enum")).second ==
           rexsapi::detail::TDecoderResult::SUCCESS);
+  }
+
+  SUBCASE("Decode date time")
+  {
+    CHECK(decoder.decode(rexsapi::TValueType::DATE_TIME, enumValue, getNode(doc, "date time")).second ==
+          rexsapi::detail::TDecoderResult::FAILURE);
   }
 
   SUBCASE("Decode integer array")

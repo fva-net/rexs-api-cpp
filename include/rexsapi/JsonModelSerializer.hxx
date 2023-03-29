@@ -217,6 +217,9 @@ namespace rexsapi
                              [&j](rexsapi::TFileReferenceTag, const auto& s) -> void {
                                j = s;
                              },
+                             [&j](rexsapi::TDatetimeTag, const auto& d) -> void {
+                               j = d.asUTCString();
+                             },
                              [&j, &attribute](rexsapi::TFloatArrayTag, const auto& a) -> void {
                                encodeCodedArray(j, attribute.getValue().coded(), a);
                              },

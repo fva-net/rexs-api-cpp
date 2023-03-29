@@ -90,7 +90,7 @@ namespace
 
 TEST_CASE("Model visitor")
 {
-  const auto model = createModel(loadModel("1.4"));
+  const auto model = createModel(loadModel("1.5"));
 
   SUBCASE("Visit model")
   {
@@ -101,7 +101,7 @@ TEST_CASE("Model visitor")
     CHECK(visitor.noRelations == 3);
     CHECK(visitor.noReferences == 7);
     CHECK(visitor.noComponents == 7);
-    CHECK(visitor.noAttributes == 19);
+    CHECK(visitor.noAttributes == 20);
     CHECK(visitor.noSpectrum == 1);
     CHECK(visitor.noCases == 1);
     CHECK(visitor.noAccumulation == 1);

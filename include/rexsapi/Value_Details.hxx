@@ -33,9 +33,9 @@ namespace rexsapi
     overload(Ts...) -> overload<Ts...>;
 
     using Variant =
-      std::variant<std::monostate, double, bool, int64_t, std::string, std::vector<double>, std::vector<Bool>,
-                   std::vector<int64_t>, std::vector<std::string>, std::vector<std::vector<int64_t>>, TMatrix<double>,
-                   TMatrix<int64_t>, TMatrix<Bool>, TMatrix<std::string>>;
+      std::variant<std::monostate, double, bool, int64_t, std::string, TDatetime, std::vector<double>,
+                   std::vector<Bool>, std::vector<int64_t>, std::vector<std::string>, std::vector<std::vector<int64_t>>,
+                   TMatrix<double>, TMatrix<int64_t>, TMatrix<Bool>, TMatrix<std::string>>;
 
     template<typename T>
     inline const auto& value_getter(const Variant& value)
@@ -88,6 +88,11 @@ namespace rexsapi
     template<>
     struct TypeForValueType<Enum2type<to_underlying(TValueType::STRING)>> {
       using Type = std::string;
+    };
+
+    template<>
+    struct TypeForValueType<Enum2type<to_underlying(TValueType::DATE_TIME)>> {
+      using Type = TDatetime;
     };
 
     template<>
@@ -161,6 +166,8 @@ namespace rexsapi
     Type;  //!< The C++ type for the enum value type. Should always be used instead of the actual C++ type.
   using TStringType = detail::TypeForValueType<detail::Enum2type<detail::to_underlying(TValueType::STRING)>>::
     Type;  //!< The C++ type for the string value type. Should always be used instead of the actual C++ type.
+  using TDatetimeType = detail::TypeForValueType<detail::Enum2type<detail::to_underlying(TValueType::DATE_TIME)>>::
+    Type;  //!< The C++ type for the date_time value type. Should always be used instead of the actual C++ type.
   using TFileReferenceType =
     detail::TypeForValueType<detail::Enum2type<detail::to_underlying(TValueType::FILE_REFERENCE)>>::
       Type;  //!< The C++ type for the file_reference value type. Should always be used instead of the actual C++ type.
@@ -200,6 +207,7 @@ namespace rexsapi
   using TBoolTag = detail::Enum2type<detail::to_underlying(TValueType::BOOLEAN)>;
   using TEnumTag = detail::Enum2type<detail::to_underlying(TValueType::ENUM)>;
   using TStringTag = detail::Enum2type<detail::to_underlying(TValueType::STRING)>;
+  using TDatetimeTag = detail::Enum2type<detail::to_underlying(TValueType::DATE_TIME)>;
   using TFileReferenceTag = detail::Enum2type<detail::to_underlying(TValueType::FILE_REFERENCE)>;
   using TFloatArrayTag = detail::Enum2type<detail::to_underlying(TValueType::FLOATING_POINT_ARRAY)>;
   using TBoolArrayTag = detail::Enum2type<detail::to_underlying(TValueType::BOOLEAN_ARRAY)>;

@@ -56,6 +56,11 @@ namespace
                                              stream << "file reference " << s;
                                              return stream.str();
                                            },
+                                           [](rexsapi::TDatetimeTag, const auto& d) -> std::string {
+                                             std::stringstream stream;
+                                             stream << "date time " << d.asUTCString();
+                                             return stream.str();
+                                           },
                                            [](rexsapi::TFloatArrayTag, const auto& a) -> std::string {
                                              return "float array " + std::to_string(a.size()) + " entries";
                                            },
@@ -109,6 +114,7 @@ namespace rexsapi
       CHECK(rexsapi::typeFromString("enum") == rexsapi::TValueType::ENUM);
       CHECK(rexsapi::typeFromString("string") == rexsapi::TValueType::STRING);
       CHECK(rexsapi::typeFromString("file_reference") == rexsapi::TValueType::FILE_REFERENCE);
+      CHECK(rexsapi::typeFromString("date_time") == rexsapi::TValueType::DATE_TIME);
       CHECK(rexsapi::typeFromString("boolean_array") == rexsapi::TValueType::BOOLEAN_ARRAY);
       CHECK(rexsapi::typeFromString("floating_point_array") == rexsapi::TValueType::FLOATING_POINT_ARRAY);
       CHECK(rexsapi::typeFromString("integer_array") == rexsapi::TValueType::INTEGER_ARRAY);
@@ -132,6 +138,7 @@ namespace rexsapi
       CHECK(rexsapi::toTypeString(rexsapi::TValueType::ENUM) == "enum");
       CHECK(rexsapi::toTypeString(rexsapi::TValueType::STRING) == "string");
       CHECK(rexsapi::toTypeString(rexsapi::TValueType::FILE_REFERENCE) == "file_reference");
+      CHECK(rexsapi::toTypeString(rexsapi::TValueType::DATE_TIME) == "date_time");
       CHECK(rexsapi::toTypeString(rexsapi::TValueType::BOOLEAN_ARRAY) == "boolean_array");
       CHECK(rexsapi::toTypeString(rexsapi::TValueType::FLOATING_POINT_ARRAY) == "floating_point_array");
       CHECK(rexsapi::toTypeString(rexsapi::TValueType::INTEGER_ARRAY) == "integer_array");
@@ -156,6 +163,8 @@ namespace rexsapi
         "enum heat_treatable_steel_quenched_tempered_condition");
       CHECK(::dispatch(rexsapi::TValueType::FILE_REFERENCE, rexsapi::TValue{"./gear.gde"}) ==
             "file reference ./gear.gde");
+      CHECK(::dispatch(rexsapi::TValueType::DATE_TIME, rexsapi::TValue{rexsapi::TDatetime{
+                                                         "2023-03-29T11:46:00+02:00"}}) == "date time 2023-03-29T09:46:00+00:00");
       CHECK(::dispatch(rexsapi::TValueType::REFERENCE_COMPONENT, rexsapi::TValue{15}) == "reference component 15");
       CHECK(::dispatch(rexsapi::TValueType::FLOATING_POINT_ARRAY,
                        rexsapi::TValue{rexsapi::TFloatArrayType{1.1, 2.1, 3.1, 4.1}}) == "float array 4 entries");
@@ -192,6 +201,7 @@ namespace rexsapi
       CHECK_THROWS(::dispatch_empty(rexsapi::TValueType::ENUM, rexsapi::TValue{}));
       CHECK_THROWS(::dispatch_empty(rexsapi::TValueType::STRING, rexsapi::TValue{}));
       CHECK_THROWS(::dispatch_empty(rexsapi::TValueType::FILE_REFERENCE, rexsapi::TValue{}));
+      CHECK_THROWS(::dispatch_empty(rexsapi::TValueType::DATE_TIME, rexsapi::TValue{}));
       CHECK_THROWS(::dispatch_empty(rexsapi::TValueType::FLOATING_POINT_ARRAY, rexsapi::TValue{}));
       CHECK_THROWS(::dispatch_empty(rexsapi::TValueType::BOOLEAN_ARRAY, rexsapi::TValue{}));
       CHECK_THROWS(::dispatch_empty(rexsapi::TValueType::INTEGER_ARRAY, rexsapi::TValue{}));

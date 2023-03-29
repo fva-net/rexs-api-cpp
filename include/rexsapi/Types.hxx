@@ -31,23 +31,24 @@ namespace rexsapi
    *
    */
   enum class TValueType : uint8_t {
-    FLOATING_POINT,          //!< floating_point
-    BOOLEAN,                 //!< boolean
-    INTEGER,                 //!< integer
-    ENUM,                    //!< enum
-    STRING,                  //!< string
-    FILE_REFERENCE,          //!< file_reference
-    FLOATING_POINT_ARRAY,    //!< floating_point_array
-    BOOLEAN_ARRAY,           //!< boolean_array
-    INTEGER_ARRAY,           //!< integer_array
-    STRING_ARRAY,            //!< string_array
-    ENUM_ARRAY,              //!< enum_array
-    REFERENCE_COMPONENT,     //!< reference_component
-    FLOATING_POINT_MATRIX,   //!< floating_point_matrix
-    INTEGER_MATRIX,          //!< integer_matrix
-    BOOLEAN_MATRIX,          //!< boolean_matrix
-    STRING_MATRIX,           //!< string_matrix
-    ARRAY_OF_INTEGER_ARRAYS  //!< array_of_integer_arrays
+    FLOATING_POINT,           //!< floating_point
+    BOOLEAN,                  //!< boolean
+    INTEGER,                  //!< integer
+    ENUM,                     //!< enum
+    STRING,                   //!< string
+    FILE_REFERENCE,           //!< file_reference
+    FLOATING_POINT_ARRAY,     //!< floating_point_array
+    BOOLEAN_ARRAY,            //!< boolean_array
+    INTEGER_ARRAY,            //!< integer_array
+    STRING_ARRAY,             //!< string_array
+    ENUM_ARRAY,               //!< enum_array
+    REFERENCE_COMPONENT,      //!< reference_component
+    FLOATING_POINT_MATRIX,    //!< floating_point_matrix
+    INTEGER_MATRIX,           //!< integer_matrix
+    BOOLEAN_MATRIX,           //!< boolean_matrix
+    STRING_MATRIX,            //!< string_matrix
+    ARRAY_OF_INTEGER_ARRAYS,  //!< array_of_integer_arrays
+    DATE_TIME                 //!< date_time
   };
 
   /**
@@ -220,9 +221,14 @@ namespace rexsapi
      *
      * @param datetime A time point
      */
-    explicit TDatetime(time_point datetime)
+    explicit TDatetime(time_point datetime) noexcept
     : m_Timepoint{datetime}
     {
+    }
+
+    friend bool operator==(const TDatetime& lhs, const TDatetime& rhs) noexcept
+    {
+      return lhs.m_Timepoint == rhs.m_Timepoint;
     }
 
     /**
@@ -230,7 +236,7 @@ namespace rexsapi
      *
      * @return A new TDatetime object set to the current date and time
      */
-    static TDatetime now()
+    static TDatetime now() noexcept
     {
       return TDatetime{std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::now())};
     }
@@ -262,7 +268,7 @@ namespace rexsapi
      *
      * @return time_point
      */
-    inline time_point asTimepoint() const
+    inline time_point asTimepoint() const noexcept
     {
       return m_Timepoint;
     }
@@ -438,8 +444,7 @@ namespace rexsapi
       return TValueType::ARRAY_OF_INTEGER_ARRAYS;
     }
     if (type == "date_time") {
-      // TODO(LCF): just to make the 1.5 version working
-      return TValueType::STRING;
+      return TValueType::DATE_TIME;
     }
     throw TException{fmt::format("unknown value type '{}'", type)};
   }
@@ -481,6 +486,8 @@ namespace rexsapi
         return "string_matrix";
       case TValueType::ARRAY_OF_INTEGER_ARRAYS:
         return "array_of_integer_arrays";
+      case TValueType::DATE_TIME:
+        return "date_time";
     }
     throw TException{fmt::format("unknown value type '{}'", static_cast<int64_t>(type))};
   }

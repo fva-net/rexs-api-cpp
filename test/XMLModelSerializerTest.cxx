@@ -94,7 +94,7 @@ TEST_CASE("XML model file serializer test")
 
 TEST_CASE("XML serialize new model")
 {
-  const auto& dbModel = loadModel("1.4");
+  const auto& dbModel = loadModel("1.5");
   rexsapi::TXMLStringSerializer stringSerializer;
   rexsapi::XMLModelSerializer modelSerializer;
 
@@ -107,7 +107,7 @@ TEST_CASE("XML serialize new model")
     CHECK(roundtripModel.getInfo().getApplicationId() == "REXSApi Unit Test");
     CHECK(roundtripModel.getInfo().getApplicationVersion() == "1.0");
     CHECK(roundtripModel.getInfo().getDate() == "2022-05-20T08:59:10+01:00");
-    CHECK(roundtripModel.getInfo().getVersion() == rexsapi::TRexsVersion{1, 4});
+    CHECK(roundtripModel.getInfo().getVersion() == rexsapi::TRexsVersion{1, 5});
     REQUIRE(roundtripModel.getInfo().getApplicationLanguage().has_value());
     CHECK(*roundtripModel.getInfo().getApplicationLanguage() == "en");
     CHECK(roundtripModel.getComponents().size() == 7);

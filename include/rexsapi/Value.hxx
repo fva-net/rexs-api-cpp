@@ -244,6 +244,8 @@ namespace rexsapi
           return std::holds_alternative<TEnumType>(m_Value);
         case TValueType::STRING:
           return std::holds_alternative<TStringType>(m_Value);
+        case TValueType::DATE_TIME:
+          return std::holds_alternative<TDatetimeType>(m_Value);
         case TValueType::FILE_REFERENCE:
           return std::holds_alternative<TFileReferenceType>(m_Value);
         case TValueType::FLOATING_POINT_ARRAY:
@@ -283,9 +285,9 @@ namespace rexsapi
     std::function<R(TFloatTag, const TFloatType&)>, std::function<R(TBoolTag, const bool&)>,
     std::function<R(TIntTag, const TIntType&)>, std::function<R(TEnumTag, const std::string&)>,
     std::function<R(TStringTag, const TStringType&)>, std::function<R(TFileReferenceTag, const TFileReferenceType&)>,
-    std::function<R(TFloatArrayTag, const TFloatArrayType&)>, std::function<R(TBoolArrayTag, const TBoolArrayType&)>,
-    std::function<R(TIntArrayTag, const TIntArrayType&)>, std::function<R(TEnumArrayTag, const TEnumArrayType&)>,
-    std::function<R(TStringArrayTag, const TStringArrayType&)>,
+    std::function<R(TDatetimeTag, const TDatetimeType&)>, std::function<R(TFloatArrayTag, const TFloatArrayType&)>,
+    std::function<R(TBoolArrayTag, const TBoolArrayType&)>, std::function<R(TIntArrayTag, const TIntArrayType&)>,
+    std::function<R(TEnumArrayTag, const TEnumArrayType&)>, std::function<R(TStringArrayTag, const TStringArrayType&)>,
     std::function<R(TReferenceComponentTag, const TReferenceComponentType&)>,
     std::function<R(TFloatMatrixTag, const TFloatMatrixType&)>, std::function<R(TIntMatrixTag, const TIntMatrixType&)>,
     std::function<R(TBoolMatrixTag, const TBoolMatrixType&)>,
@@ -384,6 +386,9 @@ namespace rexsapi
                                        [](const int64_t& i) -> std::string {
                                          return fmt::format("{}", i);
                                        },
+                                       [](const TDatetime& d) -> std::string {
+                                         return d.asLocaleString();
+                                       },
                                        [](const std::vector<double>& array) -> std::string {
                                          return detail::arrayToString(array, [](const auto& val) {
                                            return format(val);
@@ -469,6 +474,13 @@ namespace rexsapi
           auto c = std::get<std::function<R(TStringTag, const TStringType&)>>(funcs);
           if (c) {
             return c(TStringTag(), value.getValue<TStringType>());
+          }
+          break;
+        }
+        case TValueType::DATE_TIME: {
+          auto c = std::get<std::function<R(TDatetimeTag, const TDatetimeType&)>>(funcs);
+          if (c) {
+            return c(TDatetimeTag(), value.getValue<TDatetimeType>());
           }
           break;
         }

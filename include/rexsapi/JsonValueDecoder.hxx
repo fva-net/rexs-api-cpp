@@ -94,7 +94,8 @@ namespace rexsapi::detail
                                                  const rexsapi::json& node) const override
       {
         auto value = node.at("string").get<std::string>();
-        return std::make_pair(TValue{value}, !value.empty() ? TDecoderResult::SUCCESS : TDecoderResult::FAILURE);
+        auto empty = value.empty();
+        return std::make_pair(TValue{std::move(value)}, !empty ? TDecoderResult::SUCCESS : TDecoderResult::FAILURE);
       }
     };
 
@@ -113,7 +114,8 @@ namespace rexsapi::detail
                                                  const rexsapi::json& node) const override
       {
         auto value = node.at("file_reference").get<std::string>();
-        return std::make_pair(TValue{value}, !value.empty() ? TDecoderResult::SUCCESS : TDecoderResult::FAILURE);
+        auto empty = value.empty();
+        return std::make_pair(TValue{std::move(value)}, !empty ? TDecoderResult::SUCCESS : TDecoderResult::FAILURE);
       }
     };
 
@@ -206,11 +208,29 @@ namespace rexsapi::detail
         auto value = node.at("enum").get<std::string>();
 
         if (enumValue) {
-          return std::make_pair(TValue{value},
-                                enumValue->check(value) ? TDecoderResult::SUCCESS : TDecoderResult::FAILURE);
+          auto check = enumValue->check(value);
+          return std::make_pair(TValue{std::move(value)}, check ? TDecoderResult::SUCCESS : TDecoderResult::FAILURE);
         }
         /// No enum values means this is a custom enum attribute, so accept any text
-        return std::make_pair(TValue{value}, TDecoderResult::SUCCESS);
+        return std::make_pair(TValue{std::move(value)}, TDecoderResult::SUCCESS);
+      }
+    };
+
+    class TDatetimeDecoder : public TJsonDecoder
+    {
+    public:
+      using Type = double;
+
+      bool isEmpty(const rexsapi::json& node) const noexcept override
+      {
+        return node.at("date_time").is_null();
+      }
+
+    private:
+      std::pair<TValue, TDecoderResult> onDecode(const std::optional<const database::TEnumValues>&,
+                                                 const rexsapi::json& node) const override
+      {
+        return std::make_pair(TValue{TDatetime{node.at("date_time").get<std::string>()}}, TDecoderResult::SUCCESS);
       }
     };
 
@@ -359,7 +379,7 @@ namespace rexsapi::detail
           }
           matrix.m_Values.emplace_back(std::move(r));
         }
-        bool result = matrix.validate();
+        const bool result = matrix.validate();
         return std::make_pair(TValue{std::move(matrix)}, result ? TDecoderResult::SUCCESS : TDecoderResult::FAILURE);
       }
       std::string m_Name;
@@ -475,6 +495,7 @@ namespace rexsapi::detail
     m_Decoder[TValueType::FLOATING_POINT] = std::make_unique<json::TFloatDecoder>();
     m_Decoder[TValueType::STRING] = std::make_unique<json::TStringDecoder>();
     m_Decoder[TValueType::ENUM] = std::make_unique<json::TEnumDecoder>();
+    m_Decoder[TValueType::DATE_TIME] = std::make_unique<json::TDatetimeDecoder>();
     m_Decoder[TValueType::INTEGER_ARRAY] = std::make_unique<json::TCodedArrayDecoder<int64_t>>("integer_array");
     m_Decoder[TValueType::FLOATING_POINT_ARRAY] =
       std::make_unique<json::TCodedArrayDecoder<double>>("floating_point_array");
