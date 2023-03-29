@@ -57,6 +57,7 @@ namespace rexsapi
     /**
      * @brief Constructs a new empty TValue object
      *
+     * TValue::isEmpty will return true for default constructed TValue objects.
      */
     TValue() = default;
 

@@ -27,6 +27,8 @@ namespace rexsapi
   /**
    * @brief Outputs a json object into a string
    *
+   * Will add a UTF-8 BOM to the beginning of the buffer.
+   *
    */
   class TJsonStringSerializer
   {
@@ -53,6 +55,8 @@ namespace rexsapi
 
   /**
    * @brief Outputs a json object into a file
+   *
+   * Will add a UTF-8 BOM to the beginning of the file.
    *
    */
   class TJsonFileSerializer

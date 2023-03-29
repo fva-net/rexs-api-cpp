@@ -81,7 +81,7 @@ namespace rexsapi
   /**
    * @brief Represents a REXS model loaded from a file or created by the TModelBuilder
    *
-   * A TModel instance is the main REXSapi object that abstracts a complete REXS model as described by the REXS
+   * A TModel instance is the main REXS object that abstracts a complete REXS model as described by the REXS
    * standard. It can be queried for meta information, components, relations, and load spectrum, drilling down to
    * attributes and values using getters from components and relations.
    *

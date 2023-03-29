@@ -46,7 +46,7 @@ namespace rexsapi
    * All allowed kinds of REXS model files can be loaded trasparently with this loader. The loader will also create it's
    * own model registry. For the successful creation of the model registry, all schema files have to be available to
    * the loader. Additionally, all necessary REXS database model files for different versions and languages have to be
-   * available. The REXSapi project contains the directory ```models``` with all relevant files that can be used with
+   * available. The REXS project contains the directory ```models``` with all relevant files that can be used with
    * the loader.
    *
    * Allows loading of multiple REXS model files with the same loader.

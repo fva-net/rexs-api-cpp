@@ -22,7 +22,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Exception class for all REXSapi exceptions
+   * @brief Exception class for all REXS exceptions
    *
    * There is only one exception type and no exception hierarchie.
    */
