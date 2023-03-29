@@ -63,6 +63,7 @@ target_sources(rexsapi INTERFACE
 )
 
 target_include_directories(rexsapi INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>)
+target_include_directories(rexsapi SYSTEM INTERFACE "${date_SOURCE_DIR}/include")
 target_include_directories(rexsapi SYSTEM INTERFACE "${fmt_SOURCE_DIR}/include")
 target_include_directories(rexsapi SYSTEM INTERFACE "${json_SOURCE_DIR}/single_include")
 target_include_directories(rexsapi SYSTEM INTERFACE "${pugixml_SOURCE_DIR}/src")

@@ -23,6 +23,7 @@ option(BUILD_WITH_DOCS "Build documentation" ${REXSAPI_MASTER_PROJECT})
 
 include(cmake/create_docs.cmake)
 include(cmake/fetch_cli11.cmake)
+include(cmake/fetch_date.cmake)
 include(cmake/fetch_fmt.cmake)
 include(cmake/fetch_json.cmake)
 include(cmake/fetch_miniz.cmake)

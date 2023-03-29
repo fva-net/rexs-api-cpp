@@ -17,9 +17,11 @@
 #ifndef REXSAPI_TYPES_HXX
 #define REXSAPI_TYPES_HXX
 
+#include <rexsapi/ConversionHelper.hxx>
 #include <rexsapi/Exception.hxx>
 #include <rexsapi/Format.hxx>
 
+#include <date/date.h>
 #include <vector>
 
 namespace rexsapi
@@ -184,6 +186,89 @@ namespace rexsapi
      *
      */
     std::vector<std::vector<T>> m_Values;
+  };
+
+
+  /**
+   * @brief Represents the REXS date_time type
+   *
+   */
+  class TDatetime
+  {
+  public:
+    using time_point = std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds>;
+
+    /**
+     * @brief Construct a new TDatetime object from a string
+     *
+     * @param datetime The string has to be in ISO8601 format `yyyy-mm-ddThh:mm:ss[+/-]<offset to UTC>`
+     * @throws std::exception if the string cannot be parsed or the date time is invalid
+     */
+    explicit TDatetime(const std::string& datetime)
+    {
+      auto op = date::parse("%FT%T%Ez", m_Timepoint);
+      std::istringstream in{datetime};
+      in >> op;
+
+      if (!in.good()) {
+        throw std::runtime_error{"illegal date specified: " + datetime};
+      }
+    }
+
+    /**
+     * @brief Construct a new TDatetime object from a std::chrono::time_point
+     *
+     * @param datetime A time point
+     */
+    explicit TDatetime(time_point datetime)
+    : m_Timepoint{datetime}
+    {
+    }
+
+    /**
+     * @brief Returns a new TDatetime object constructed with the current date and time
+     *
+     * @return A new TDatetime object set to the current date and time
+     */
+    static TDatetime now()
+    {
+      return TDatetime{std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::now())};
+    }
+
+    /**
+     * @brief Returns the UTC string representation in ISO8601 format `yyyy-mm-ddThh:mm:ss[+/-]<offset to UTC>`.
+     *        The offset will always be +00:00.
+     *
+     * @return The UTC string representation
+     */
+    inline std::string asUTCString() const
+    {
+      return date::format("%FT%T%Ez", m_Timepoint);
+    }
+
+    /**
+     * @brief Returns the locale string representation in ISO8601 format `yyyy-mm-ddThh:mm:ss[+/-]<offset to UTC>`.
+     *        The offset will be set to the current timezone offset from UTC.
+     *
+     * @return The locale string representation
+     */
+    inline std::string asLocaleString() const
+    {
+      return getTimeStringISO8601(m_Timepoint);
+    }
+
+    /**
+     * @brief Returns the time point
+     *
+     * @return time_point
+     */
+    inline time_point asTimepoint() const
+    {
+      return m_Timepoint;
+    }
+
+  private:
+    time_point m_Timepoint;
   };
 
 
