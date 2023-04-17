@@ -94,6 +94,10 @@ if(REXSAPI_MASTER_PROJECT)
     DESTINATION ./deps/include
   )
   install(
+    DIRECTORY "${date_SOURCE_DIR}/include"
+    DESTINATION ./deps
+  )
+  install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/examples"
     DESTINATION .
     FILES_MATCHING PATTERN "*.cxx"
