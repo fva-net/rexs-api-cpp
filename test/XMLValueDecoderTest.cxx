@@ -45,6 +45,7 @@ TEST_CASE("XML value decoder test")
     <attribute id="enum">injection_lubrication</attribute>
     <attribute id="reference component">17</attribute>
     <attribute id="file reference">/root/my/path</attribute>
+    <attribute id="date time">2022-06-05T08:50:27+03:00</attribute>
     <attribute id="coded float32 array">
       <array code="float32">MveeQZ6hM0I=</array>
     </attribute>
@@ -190,6 +191,13 @@ TEST_CASE("XML value decoder test")
     CHECK(value.getValue<std::string>() == "injection_lubrication");
   }
 
+  SUBCASE("Decode date time")
+  {
+    const auto [value, result] = decoder.decode(rexsapi::TValueType::DATE_TIME, enumValue, getNode(doc, "date time"));
+    CHECK(result == rexsapi::detail::TDecoderResult::SUCCESS);
+    CHECK(value.getValue<rexsapi::TDatetime>().asUTCString() == "2022-06-05T05:50:27+00:00");
+  }
+
   SUBCASE("Decode integer array")
   {
     const auto [value, result] =
@@ -297,6 +305,7 @@ TEST_CASE("XML value decoder error test")
     <attribute id="string"></attribute>
     <attribute id="enum">unknown enum</attribute>
     <attribute id="reference component">PR</attribute>
+    <attribute id="date time">2022-02-30T08:50:27+02:00</attribute>
     <attribute id="integer array">
       <array>
         <c>1.1</c>
@@ -379,6 +388,12 @@ TEST_CASE("XML value decoder error test")
           rexsapi::detail::TDecoderResult::FAILURE);
     CHECK(decoder.decode(rexsapi::TValueType::ENUM, {}, getNode(doc, "enum")).second ==
           rexsapi::detail::TDecoderResult::SUCCESS);
+  }
+
+  SUBCASE("Decode date time")
+  {
+    CHECK(decoder.decode(rexsapi::TValueType::DATE_TIME, enumValue, getNode(doc, "date time")).second ==
+          rexsapi::detail::TDecoderResult::FAILURE);
   }
 
   SUBCASE("Decode integer array")

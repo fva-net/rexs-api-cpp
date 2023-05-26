@@ -242,6 +242,15 @@
           {
             "type": "object",
             "properties": {
+              "date_time": {
+                "type": ["null", "string"]
+              }
+            },
+            "required": ["date_time"]
+          },
+          {
+            "type": "object",
+            "properties": {
               "floating_point_array": {
                 "type": ["null", "array"],
                 "items": {

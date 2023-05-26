@@ -16,6 +16,8 @@
 
 #include <rexsapi/Types.hxx>
 
+#include <regex>
+
 #include <doctest.h>
 
 
@@ -115,8 +117,8 @@ TEST_CASE("Relation role test")
 
 TEST_CASE("Bool test")
 {
-  rexsapi::Bool bTrue{true};
-  rexsapi::Bool bFalse{false};
+  const rexsapi::Bool bTrue{true};
+  const rexsapi::Bool bFalse{false};
 
   SUBCASE("Create")
   {
@@ -144,5 +146,43 @@ TEST_CASE("Bool test")
   {
     CHECK(*bTrue);
     CHECK_FALSE(*bFalse);
+  }
+}
+
+TEST_CASE("Datetime test")
+{
+  const std::regex reg_expr(R"(^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})[+-](\d{2}):(\d{2})$)");
+  std::smatch match;
+
+  SUBCASE("Parse")
+  {
+    const rexsapi::TDatetime dt{"2023-03-28T13:49:36+02:00"};
+    using namespace date;
+    CHECK(dt.asTimepoint() == date::sys_days{2023_y / mar / 28} + std::chrono::hours{11} + std::chrono::minutes{49} +
+                                std::chrono::seconds{36});
+    CHECK(dt.asUTCString() == "2023-03-28T11:49:36+00:00");
+    const auto s = dt.asLocaleString();
+    CHECK(std::regex_match(s, match, reg_expr));
+  }
+
+  SUBCASE("Equality")
+  {
+    const rexsapi::TDatetime dt{"2023-03-28T13:49:36+02:00"};
+    CHECK(dt == dt);
+    const rexsapi::TDatetime dt1{"2022-03-28T13:49:36+02:00"};
+    CHECK_FALSE(dt == dt1);
+    CHECK_FALSE(dt1 == dt);
+  }
+
+  SUBCASE("Now")
+  {
+    const rexsapi::TDatetime dt = rexsapi::TDatetime::now();
+    const auto s = dt.asLocaleString();
+    CHECK(std::regex_match(s, match, reg_expr));
+  }
+
+  SUBCASE("Illegal date")
+  {
+    CHECK_THROWS(rexsapi::TDatetime{"2023-02-31T13:49:36+02:00"});
   }
 }

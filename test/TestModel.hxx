@@ -17,8 +17,8 @@
 #ifndef TEST_TEST_MODEL_HXX
 #define TEST_TEST_MODEL_HXX
 
-#include <rexsapi/database/Model.hxx>
 #include <rexsapi/Model.hxx>
+#include <rexsapi/database/Model.hxx>
 
 
 static inline rexsapi::TModel createModel(const rexsapi::database::TModel& dbModel)
@@ -33,6 +33,9 @@ static inline rexsapi::TModel createModel(const rexsapi::database::TModel& dbMod
   // INTEGER
   attributes.emplace_back(
     rexsapi::TAttribute{gearUnitComponent.findAttributeById("gear_shift_index"), rexsapi::TValue{5}});
+  // DATE_TIME
+  attributes.emplace_back(rexsapi::TAttribute{gearUnitComponent.findAttributeById("modification_date"),
+                                              rexsapi::TValue{rexsapi::TDatetime{"2022-06-05T08:50:27+03:00"}}});
 
   components.emplace_back(rexsapi::TComponent{componentId++, gearUnitComponent, "Getriebe", std::move(attributes)});
 
@@ -174,7 +177,7 @@ static inline rexsapi::TModel createModel(const rexsapi::database::TModel& dbMod
 
   rexsapi::TLoadSpectrum loadSpectrum{std::move(loadCases), std::move(accumulation)};
 
-  rexsapi::TModelInfo info{"REXSApi Unit Test", "1.0", "2022-05-20T08:59:10+01:00", rexsapi::TRexsVersion{"1.4"}, "en"};
+  rexsapi::TModelInfo info{"REXSApi Unit Test", "1.0", "2022-05-20T08:59:10+01:00", dbModel.getVersion(), "en"};
 
   return rexsapi::TModel{info, std::move(components), std::move(relations), std::move(loadSpectrum)};
 }

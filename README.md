@@ -1,7 +1,7 @@
 ![Supported Platforms](https://img.shields.io/badge/platforms-Linux%20%7C%20Windows%20%7C%20Mac-blue.svg)
 ![License: Apache 2](https://img.shields.io/badge/license-Apache%202-blue)
 ![Language: C++17](https://img.shields.io/badge/language-C%2B%2B17-blue.svg)
-![Version:](https://img.shields.io/badge/version-1.0.0-green)
+![Version:](https://img.shields.io/badge/version-1.1.0-green)
 [![GitHub Build Status](https://github.com/fva-net/rexs-api-cpp/workflows/CMake%20Build%20Matrix/badge.svg)](https://github.com/fva-net/rexs-api-cpp/actions)
 [![Coverage Status](https://coveralls.io/repos/github/BearinxSimulationSuite/REXSapi/badge.svg?branch=main)](https://coveralls.io/github/BearinxSimulationSuite/REXSapi?branch=main)
 
@@ -11,11 +11,11 @@ The REXSapi library is a C++ implementation of the [REXS specification](https://
 
 # Status
 
-The project is now in beta phase and the API should be stable. You can checkout the library and play with it. Probably still a bit early for production use, though.
+The project is now released and is already used in production. However, the API will probably still change a bit due to the adaption of the 1.5 standards version.
 
 # Supported REXS Versions
 
-The library uses REXS database model files in order to validate REXS model files. Database model files can be downloaded from the [REXS database page](https://database.rexs.info/). Currently, the implementation supports versions 1.0 to 1.4, but newer database files should also work. Version 1.0 to 1.4 database model files in english and german can also be found in the models directory of this project.
+The library uses REXS database model files in order to validate REXS model files. Database model files can be downloaded from the [REXS database page](https://database.rexs.info/). Currently, the implementation supports versions 1.0 to 1.5, but newer database files should also work. Version 1.0 to 1.5 database model files in english and german can also be found in the models directory of this project.
 
 The library supports REXS model files in xml and json format. Compressed REXS zip archives can also be loaded. The loading and storing mechanism can be easily extended to support other sources besides files for model loading and storing.
 
@@ -32,7 +32,7 @@ You need a C++17 compatible compiler to use the library.
 
 In order to use REXSapi it is most convinient to just include the `Rexsapi.hxx` header. Mind that you have to include this header along the `REXSAPI_MINIZ_IMPL` define right before the include in *exactly* one compilation unit (cpp file) in order to add the miniz implementation to the project.
 
-```c++
+```cpp
 #define REXSAPI_MINIZ_IMPL
 #include <rexsapi/Rexsapi.hxx>
 ```
@@ -41,7 +41,7 @@ In order to use REXSapi it is most convinient to just include the `Rexsapi.hxx` 
 
 Loading a REXS model file is straight forward. You need the REXS database model files for the API to validate the model.
 
-```c++
+```cpp
 const rexsapi::TModelLoader loader{"/path/to/rexs/database/models"};
 rexsapi::TResult result;
 const std::optional<rexsapi::TModel> model = 
@@ -62,7 +62,7 @@ The `TModelLoader` class can load json and xml REXS model files. If successful, 
 
 The Model itself provides methods for accessing every aspect of a model.
 
-```c++
+```cpp
 const rexsapi::TModel model = loadModel();
 for (const auto& relation : model.getRelations()) {
   for (const auto& ref : relation.getReferences()) {
@@ -82,7 +82,7 @@ Alternatively, if the model shall be processed in a complete way, the `TModelVis
 
 The most reliable way to create a REXS model is to use the `TModelBuilder` class. It can create every aspect of a model, be it components, relations, or load spectrum, of a REXS model and highly abstracts the construction of REXS standard compliant models. The `TModelBuilder` needs a specific REXS database model for checking and validating the model. Most model builder methods return a reference to the model builder in order to allow chaining of method calls resulting in dense easy to read code.
 
-```c++
+```cpp
 const auto registry = rexsapi::createModelRegistry("/path/to/rexs/database/models");
 const auto& databaseModel = registry.getModel(rexsapi::TRexsVersion{"1.4"}, "en");
 rexsapi::TModelBuilder modelBuilder{databaseModel};
@@ -111,7 +111,7 @@ If all necessary components have been added, you can start to add relations that
 
 Saving a REXS model to a file is straight forward using the `TModelSaver` convenience class.
 
-```c++
+```cpp
 const rexsapi::TModel model = createModel();
 rexsapi::TResult result;
 rexsapi::TModelSaver{}.store(result, model, "/path/to/your/rexs/model/file",
@@ -282,12 +282,13 @@ The library is header only. A build is only necessary if you want to run the tes
 REXSapi uses the following thirdparty open source software
 
 - [cli11 2.3.2](https://github.com/CLIUtils/CLI11)
+- [date 3.0.1](https://github.com/HowardHinnant/date)
+- [doctest 2.4.10](https://github.com/doctest/doctest)
 - [fmt 9.1.0](https://github.com/fmtlib/fmt)
 - [nlohmann json 3.11.2](https://github.com/nlohmann/json)
 - [miniz 3.0.2](https://github.com/richgel999/miniz)
 - [pugixml 1.13](https://github.com/zeux/pugixml)
 - [valijson 1.0](https://github.com/tristanpenman/valijson)
-- [doctest 2.4.10](https://github.com/doctest/doctest)
 
 # License
 REXsapi is licensed under the Apache-2.0 license.

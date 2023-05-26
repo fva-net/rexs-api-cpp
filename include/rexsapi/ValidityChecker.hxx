@@ -103,6 +103,7 @@ namespace rexsapi::detail
       case TValueType::BOOLEAN_MATRIX:
       case TValueType::STRING_MATRIX:
       case TValueType::REFERENCE_COMPONENT:
+      case TValueType::DATE_TIME:
         return true;
     }
 

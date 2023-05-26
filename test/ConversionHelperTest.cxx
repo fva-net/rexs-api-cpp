@@ -86,8 +86,8 @@ TEST_CASE("Conversion double test")
           doctest::Approx(std::numeric_limits<double>::max()));
     CHECK(rexsapi::convertToDouble(std::to_string(std::numeric_limits<double>::min())) ==
           doctest::Approx(std::numeric_limits<double>::min()));
-    double d = rexsapi::convertToDouble("37.849999999999");
-    auto s = rexsapi::format(d);
+    const double d = rexsapi::convertToDouble("37.849999999999");
+    const auto s = rexsapi::format(d);
     CHECK(s == "37.849999999999");
   }
 
@@ -102,10 +102,10 @@ TEST_CASE("Time helper")
 {
   SUBCASE("ISO8601 date")
   {
-    auto s = rexsapi::getTimeStringISO8601(std::chrono::system_clock::now());
+    const auto s = rexsapi::getTimeStringISO8601(std::chrono::system_clock::now());
     std::regex reg_expr(R"(^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})[+-](\d{2}):(\d{2})$)");
     std::smatch match;
-    REQUIRE(std::regex_match(s, match, reg_expr));
+    CHECK(std::regex_match(s, match, reg_expr));
   }
 }
 
@@ -113,7 +113,7 @@ TEST_CASE("String helper")
 {
   SUBCASE("To upper")
   {
-    std::string s{"Some lower and some Upper ChaRacter"};
+    const std::string s{"Some lower and some Upper ChaRacter"};
     CHECK(rexsapi::toupper(s) == "SOME LOWER AND SOME UPPER CHARACTER");
   }
 }

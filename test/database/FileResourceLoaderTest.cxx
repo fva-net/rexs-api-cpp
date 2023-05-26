@@ -43,7 +43,7 @@ TEST_CASE("File resource loader test")
       buffers.emplace_back(buffer);
     });
 
-    CHECK(buffers.size() == 10);
+    CHECK(buffers.size() == 12);
     std::for_each(buffers.begin(), buffers.end(), [](const auto& buf) {
       checkBuffer(buf);
     });
