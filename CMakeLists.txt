@@ -77,3 +77,9 @@ if(BUILD_WITH_TOOLS)
   add_subdirectory(tools)
 endif(
 )
+
+install(
+  FILES
+  ${CMAKE_SOURCE_DIR}/CHANGELOG.md
+  DESTINATION .
+)
