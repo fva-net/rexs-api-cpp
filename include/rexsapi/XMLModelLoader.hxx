@@ -73,7 +73,7 @@ namespace rexsapi
   private:
     static bool checkDuplicate(const TAttributes& attributes, const TAttribute& attribute);
 
-    TAttributes getAttributes(const std::string& context, TResult& result, const std::string& componentId,
+    TAttributes getAttributes(const std::string& context, TResult& result, uint64_t componentId,
                               const database::TComponent& componentType,
                               const pugi::xpath_node_set& attributeNodes) const;
 
@@ -117,7 +117,7 @@ namespace rexsapi
     std::set<uint64_t> usedComponents;
 
     for (const auto& component : doc.select_nodes("/model/components/component")) {
-      const auto componentId = detail::getStringAttribute(component, "id");
+      const auto componentId = convertToUint64(detail::getStringAttribute(component, "id"));
       std::string componentName = detail::getStringAttribute(component, "name", "");
       try {
         const auto& componentType = dbModel.findComponentById(detail::getStringAttribute(component, "type"));
@@ -127,7 +127,7 @@ namespace rexsapi
         std::string context = componentName.empty() ? componentType.getName() : componentName;
         TAttributes attributes = getAttributes(context, result, componentId, componentType, attributeNodes);
 
-        components.emplace_back(TComponent{componentsMapping.addComponent(convertToUint64(componentId)), componentType,
+        components.emplace_back(TComponent{componentId, componentsMapping.addComponent(componentId), componentType,
                                            componentName, std::move(attributes)});
       } catch (const std::exception& ex) {
         result.addError(
@@ -170,7 +170,7 @@ namespace rexsapi
             references.emplace_back(TRelationReference{role, hint, *component});
           } catch (const std::exception& ex) {
             result.addError(TError{m_Mode.adapt(TErrorLevel::ERR),
-                                   fmt::format("cannot process reference id={}: {}", referenceId, ex.what())});
+                                   fmt::format("cannot process relation reference id={}: {}", referenceId, ex.what())});
           }
         }
 
@@ -193,9 +193,9 @@ namespace rexsapi
 
         for (const auto& component : doc.select_nodes(
                fmt::format("/model/load_spectrum/load_case[@id = '{}']/component", loadCaseId).c_str())) {
-          auto componentId = detail::getStringAttribute(component, "id");
+          auto componentId = convertToUint64(detail::getStringAttribute(component, "id"));
           try {
-            const auto* refComponent = componentsMapping.getComponent(convertToUint64(componentId), components);
+            const auto* refComponent = componentsMapping.getComponent(componentId, components);
             if (refComponent == nullptr) {
               result.addError(
                 TError{m_Mode.adapt(TErrorLevel::ERR),
@@ -223,9 +223,9 @@ namespace rexsapi
     {
       TLoadComponents loadComponents;
       for (const auto& component : doc.select_nodes("/model/load_spectrum/accumulation/component")) {
-        auto componentId = detail::getStringAttribute(component, "id");
+        auto componentId = convertToUint64(detail::getStringAttribute(component, "id"));
         try {
-          const auto* refComponent = componentsMapping.getComponent(convertToUint64(componentId), components);
+          const auto* refComponent = componentsMapping.getComponent(componentId, components);
           if (refComponent == nullptr) {
             result.addError(TError{m_Mode.adapt(TErrorLevel::ERR),
                                    fmt::format("accumulation component id={} does not exist", componentId)});
@@ -263,7 +263,7 @@ namespace rexsapi
   }
 
   inline TAttributes TXMLModelLoader::getAttributes(const std::string& context, TResult& result,
-                                                    const std::string& componentId,
+                                                    uint64_t componentId,
                                                     const database::TComponent& componentType,
                                                     const pugi::xpath_node_set& attributeNodes) const
   {
@@ -272,7 +272,7 @@ namespace rexsapi
       std::string id = detail::getStringAttribute(attribute, "id");
       auto unit = detail::getStringAttribute(attribute, "unit");
 
-      bool isCustom = m_LoaderHelper.checkCustom(result, context, id, convertToUint64(componentId), componentType);
+      bool isCustom = m_LoaderHelper.checkCustom(result, context, id, componentId, componentType);
 
       if (!isCustom) {
         const auto& att = componentType.findAttributeById(id);
@@ -288,11 +288,12 @@ namespace rexsapi
           }
         }
 
-        auto value = m_LoaderHelper.getValue(result, context, id, convertToUint64(componentId), att, attribute.node());
+        auto value = m_LoaderHelper.getValue(result, context, id, componentId, att, attribute.node());
         TAttribute newAttribute{att, std::move(value)};
         if (checkDuplicate(attributes, newAttribute)) {
           result.addError(TError{m_Mode.adapt(TErrorLevel::ERR),
-                                 fmt::format("{}: duplicate attribute found for attribute id={}", context, id)});
+                                 fmt::format("{}: duplicate attribute found for attribute id={} of component id={}",
+                                             context, id, componentId)});
         }
         attributes.emplace_back(std::move(newAttribute));
       } else {

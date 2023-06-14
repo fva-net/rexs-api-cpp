@@ -167,8 +167,9 @@ namespace rexsapi::detail
             auto id = attribute.getValue<TReferenceComponentType>();
             const auto* comp = componentMapping.getComponent(static_cast<uint64_t>(id), components);
             if (comp == nullptr) {
-              result.addError(
-                TError{mode.adapt(TErrorLevel::ERR), fmt::format("referenced component id={} does not exist", id)});
+              result.addError(TError{mode.adapt(TErrorLevel::ERR),
+                                     fmt::format("referenced component id={} does not exist in component id={}", id,
+                                                 component.getExternalId())});
               continue;
             }
             attributes.emplace_back(TAttribute{attribute, TValue{static_cast<int64_t>(comp->getInternalId())}});

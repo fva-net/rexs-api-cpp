@@ -140,7 +140,7 @@ TEST_CASE("XML model loader test")
     CHECK_FALSE(result);
     REQUIRE(result.getErrors().size() == 1);
     CHECK(result.getErrors()[0].getMessage() ==
-          "Load: duplicate attribute found for attribute id=u_coordinate_on_shaft");
+          "Load: duplicate attribute found for attribute id=u_coordinate_on_shaft of component id=3");
     REQUIRE(model);
     CHECK(model->getInfo().getApplicationId() == "REXSApi Unit Test");
     REQUIRE(model->getInfo().getApplicationLanguage().has_value());

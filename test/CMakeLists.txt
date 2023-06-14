@@ -9,6 +9,7 @@ add_executable(rexsapi_test
   AttributeTest.cxx
   Base64Test.cxx
   CodedValuesTest.cxx
+  ComponentTest.cxx
   ConversionHelperTest.cxx
   FileUtilsTest.cxx
   JsonModelLoaderTest.cxx

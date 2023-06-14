@@ -161,8 +161,8 @@ namespace rexsapi
         std::string context = componentName.empty() ? componentType.getName() : componentName;
         TAttributes attributes = getAttributes(context, result, componentId, componentType, component);
 
-        components.emplace_back(
-          TComponent{componentMapping.addComponent(componentId), componentType, componentName, std::move(attributes)});
+        components.emplace_back(TComponent{componentId, componentMapping.addComponent(componentId), componentType,
+                                           componentName, std::move(attributes)});
       } catch (const std::exception& ex) {
         result.addError(
           TError{m_Mode.adapt(TErrorLevel::ERR), fmt::format("component id={}: {}", componentId, ex.what())});
@@ -198,20 +198,21 @@ namespace rexsapi
         if (!unit.empty() && TUnit{unit} != att.getUnit()) {
           result.addError(
             TError{m_Mode.adapt(TErrorLevel::ERR),
-                   fmt::format("{}: specified incorrect unit ({}) for attribute id={}", context, unit, id)});
+                   fmt::format("{}: specified incorrect unit ({}) for attribute id={} of component id={}", context, unit, id, componentId)});
         }
         TValue value;
         if (type != att.getValueType()) {
-          result.addError(
-            TError{m_Mode.adapt(TErrorLevel::ERR), fmt::format("{}: specified incorrect type ({}) for attribute id={}",
-                                                               context, toTypeString(type), id)});
+          result.addError(TError{m_Mode.adapt(TErrorLevel::ERR),
+                                 fmt::format("{}: specified incorrect type ({}) for attribute id={} of component id={}",
+                                             context, toTypeString(type), id, componentId)});
         } else {
           value = m_LoaderHelper.getValue(result, context, id, componentId, att, attribute);
         }
         TAttribute newAttribute{att, std::move(value)};
         if (checkDuplicate(attributes, newAttribute)) {
           result.addError(
-            TError{TErrorLevel::ERR, fmt::format("{}: duplicate attribute found for attribute id={}", context, id)});
+            TError{TErrorLevel::ERR, fmt::format("{}: duplicate attribute found for attribute id={} of component id={}",
+                                                 context, id, componentId)});
         }
         attributes.emplace_back(std::move(newAttribute));
       } else {

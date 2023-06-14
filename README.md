@@ -101,7 +101,7 @@ modelBuilder.addRelation(rexsapi::TRelationType::SIDE)
     
 ... [more relations]
 
-auto model = modelBuilder.build("REXSApi Model Builder", "1.0", "en");
+auto model = modelBuilder.build("REXSApi Model Builder", "1.2", "en");
 ```
 First you add components and attributes to the model. The last added component or attribute are the so called active component or attribute. All following method calls always affect the currently active component or attribute. The same is true for relations. Attributes need real C++ types as values.
 
@@ -230,7 +230,7 @@ include(FetchContent)
 FetchContent_Declare(
   rexsapi
   GIT_REPOSITORY https://github.com/fva-net/rexs-api-cpp.git
-  GIT_TAG origin/v1.0.0
+  GIT_TAG origin/v1.1.0
 )
 
 FetchContent_MakeAvailable(rexsapi)

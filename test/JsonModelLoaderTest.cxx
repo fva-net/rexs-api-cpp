@@ -225,7 +225,8 @@ TEST_CASE("Json model loader test")
           "Transmission unit: attribute id=matrix_correction is not part of component gear_unit id=1");
     CHECK(result.getErrors()[1].getMessage() ==
           "Transmission unit: attribute id=element_structure is not part of component gear_unit id=1");
-    CHECK(result.getErrors()[2].getMessage() == "Welle 1: duplicate attribute found for attribute id=display_color");
+    CHECK(result.getErrors()[2].getMessage() ==
+          "Welle 1: duplicate attribute found for attribute id=display_color of component id=2");
     CHECK(result.getErrors()[3].getMessage() ==
           "load_case id=1: attribute id=load_duration_fraction is not part of component gear_unit id=1");
     CHECK_FALSE(result.isCritical());

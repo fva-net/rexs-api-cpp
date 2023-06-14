@@ -156,7 +156,7 @@ namespace rexsapi
      *
      * @tparam T The actual C++ type to extract. Should use one of the predefined types: TFloatType, TBoolType,
      * TIntType, TEnumType, TStringType, TFileReferenceType, TBoolArrayType, TFloatArrayType, TIntArrayType,
-     * TEnumArrayType, TStringArrayType, TReferenceComponentType, TFloatMatrixType, TStringMatrixType,
+     * TEnumArrayType, TStringArrayType, TDatetimeType, TReferenceComponentType, TFloatMatrixType, TStringMatrixType,
      * TArrayOfIntArraysType.
      * @return const auto& to the underlying C++ value
      * @throws std::bad_variant_access if T does not correspond to the underlying type
