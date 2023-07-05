@@ -27,7 +27,7 @@
 namespace rexsapi::database
 {
   /**
-   * @brief Loads REXS database model xml files from a directory
+   * @brief Loads REXS database model xml files from a directory.
    *
    * Can be used to parametrize the XMLModelLoader and gives it the ability to load resources from a directory.
    */
@@ -35,7 +35,7 @@ namespace rexsapi::database
   {
   public:
     /**
-     * @brief Constructs a new TFileResourceLoader object
+     * @brief Constructs a new TFileResourceLoader object.
      *
      * @param path A directory containing REXS database model xml files
      */
@@ -45,7 +45,7 @@ namespace rexsapi::database
     }
 
     /**
-     * @brief Performs the actual loading of files
+     * @brief Performs the actual loading of files.
      *
      * Will iterate over all files in the configured directory and pass the contents of all xml files to the callback.
      * Additionally, a TResult object is passed into the callback and can be updated by the callback to reflect

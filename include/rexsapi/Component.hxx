@@ -23,7 +23,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Represents a REXS model component
+   * @brief Represents a REXS model component.
    *
    * Components should not be created manually but by using the TModelBuilder.
    * Aggregates attributes and is referenced by relations and load spectrum.
@@ -32,7 +32,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TComponent object
+     * @brief Constructs a new TComponent object.
      *
      * Components are immutable objects, once created they cannot be changed.
      *
@@ -53,7 +53,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Constructs a new TComponent object with an external component id
+     * @brief Constructs a new TComponent object with an external component id.
      *
      * Components are immutable objects, once created they cannot be changed.
      *
@@ -75,7 +75,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Constructs a new TComponent object from an existing component
+     * @brief Constructs a new TComponent object from an existing component.
      *
      * Will use the external id, internal id, type, and name from the existing component.
      *
@@ -94,7 +94,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns the external id (e.g from a model file) of this component
+     * @brief Returns the external id (e.g from a model file) of this component.
      * 
      * @attention The external id will return uint64 max, if it has not been set
      * 
@@ -106,7 +106,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns the internal id of this component
+     * @brief Returns the internal id of this component.
      *
      * The internal id will either be set manually by the user or generated automatically by the API.
      *
@@ -118,7 +118,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns either the internal or external id of this component
+     * @brief Returns either the internal or external id of this component.
      *
      * Will return the external id if it has been set. Otherwise, returns the internal id.
      *

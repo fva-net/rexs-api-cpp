@@ -24,7 +24,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Represents a REXS model attribute
+   * @brief Represents a REXS model attribute.
    *
    * An attribute can be either a standard or a custom attribute. Attributes should not be created manually but by using
    * the TModelBuilder.
@@ -38,7 +38,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new standard TAttribute object
+     * @brief Constructs a new standard TAttribute object.
      *
      * Attributes are immutable objects, once created they cannot be changed.
      *
@@ -54,7 +54,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Constructs a new custom TAttribute object
+     * @brief Constructs a new custom TAttribute object.
      *
      * Attributes are immutable objects, once created they cannot be changed.
      *
@@ -76,7 +76,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Constructs a new TAttribute object from an existing attribute
+     * @brief Constructs a new TAttribute object from an existing attribute.
      *
      * Attributes are immutable objects, once created they cannot be changed.
      *
@@ -94,7 +94,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Checks if this attribute is a custom attribute
+     * @brief Checks if this attribute is a custom attribute.
      *
      * @return true if this attribute is a custom attribute
      * @return false if this attribute is a standard attribute
@@ -134,7 +134,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Checks if this attribute has a non empty value
+     * @brief Checks if this attribute has a non empty value.
      *
      * An empty value can be created by passing a default TValue instance into a constructor.
      *
@@ -152,7 +152,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns the underlying C++ value
+     * @brief Returns the underlying C++ value.
      *
      * @tparam T The actual C++ type to extract. Should use one of the predefined types: TFloatType, TBoolType,
      * TIntType, TEnumType, TStringType, TFileReferenceType, TBoolArrayType, TFloatArrayType, TIntArrayType,
@@ -168,7 +168,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns the value as string
+     * @brief Returns the value as string.
      *
      * Currently, will not convert array, array of arrays or matrix types
      *

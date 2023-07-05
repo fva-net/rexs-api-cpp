@@ -27,7 +27,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Represents a components unique id
+   * @brief Represents a components unique id.
    *
    * Can be either a generated or a custom user defined id.
    *
@@ -38,7 +38,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TComponentId object
+     * @brief Constructs a new TComponentId object.
      *
      * A generated id.
      *
@@ -50,7 +50,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Constructs a new TComponentId object
+     * @brief Constructs a new TComponentId object.
      *
      * A custom user defined id.
      *
@@ -87,7 +87,7 @@ namespace rexsapi
 namespace std
 {
   /**
-   * @brief Calculates the hash value for a TComponentId
+   * @brief Calculates the hash value for a TComponentId.
    *
    * @tparam  TComponentId
    */

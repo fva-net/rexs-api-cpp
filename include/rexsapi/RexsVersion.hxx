@@ -25,14 +25,14 @@
 namespace rexsapi
 {
   /**
-   * @brief Represents a REXS version
+   * @brief Represents a REXS version.
    *
    */
   class TRexsVersion
   {
   public:
     /**
-     * @brief Constructs a new TRexsVersion object
+     * @brief Constructs a new TRexsVersion object.
      *
      * @param version Has to contain a major and a minor version number separated with a dot
      * @throws TException if the version is invalid
@@ -96,7 +96,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns string representation of the version
+     * @brief Returns string representation of the version.
      *
      * @return std::string containing a major and a minor version number separated with a dot
      */
@@ -114,7 +114,7 @@ namespace rexsapi
 namespace std
 {
   /**
-   * @brief Calculates the hash value for a TRexsVersion
+   * @brief Calculates the hash value for a TRexsVersion.
    *
    * @tparam  TRexsVersion
    */

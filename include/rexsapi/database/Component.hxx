@@ -94,7 +94,7 @@ namespace rexsapi::database
     }
 
     /**
-     * @brief Retrieves an attribute with the given attributeId
+     * @brief Retrieves an attribute with the given attributeId.
      *
      * @param attributeId The attributeId of the attribute to retrieve
      * @return const TAttribute& to the found attribute

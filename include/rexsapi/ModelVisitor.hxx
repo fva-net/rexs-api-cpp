@@ -22,7 +22,7 @@
 namespace rexsapi
 {
   /**
-   * @brief The TModelVisitor can be used for easy model hierarchy traversing
+   * @brief The TModelVisitor can be used for easy model hierarchy traversing.
    *
    * It will traverse the model in the following order:
    * - ModelInfo
@@ -44,7 +44,7 @@ namespace rexsapi
     virtual ~TModelVisitor() = default;
 
     /**
-     * @brief Starts the traversal of the model
+     * @brief Starts the traversal of the model.
      *
      * Calls the appropriate TModelVisitor::onVisit template methods upon traversing the model. Upon return of the
      * method the complete model has been traversed.
@@ -70,14 +70,14 @@ namespace rexsapi
     TModelVisitor& operator=(TModelVisitor&&) = delete;
 
     /**
-     * @brief Will be called once upon traversal start
+     * @brief Will be called once upon traversal start.
      *
      * @param info The models meta data
      */
     virtual void onVisit(const TModelInfo& info) = 0;
 
     /**
-     * @brief Will be called once for every relation
+     * @brief Will be called once for every relation.
      *
      * Will be called after TModelVisitor::onVisit(const TModelInfo& info). References dont need to be manually
      * iterated, as TModelVisitor::onVisit(const TRelationReference& reference) will be called for every reference of
@@ -88,7 +88,7 @@ namespace rexsapi
     virtual void onVisit(const TRelation& relation) = 0;
 
     /**
-     * @brief Will be called once for every reference of a specific relation
+     * @brief Will be called once for every reference of a specific relation.
      *
      * Will be called right after the correspondig relation has been visited.
      *
@@ -99,7 +99,7 @@ namespace rexsapi
     virtual void onVisit(const TRelationReference& reference) = 0;
 
     /**
-     * @brief Will be called once for every component
+     * @brief Will be called once for every component.
      *
      * Will be called after traversing all relations and their corresponding references. Attributes dont need to be
      * manually iterated, as TModelVisitor::onVisit(const TAttribute& attribute) will be called for every attribute of
@@ -110,7 +110,7 @@ namespace rexsapi
     virtual void onVisit(const TComponent& component) = 0;
 
     /**
-     * @brief Will be called once for every attribute of a specific component
+     * @brief Will be called once for every attribute of a specific component.
      *
      * Will be called right after the corresponding component has been visited.
      *
@@ -119,7 +119,7 @@ namespace rexsapi
     virtual void onVisit(const TAttribute& attribute) = 0;
 
     /**
-     * @brief Will be called once for the load spectrum
+     * @brief Will be called once for the load spectrum.
      *
      * Will only be called, if the model has load cases.
      *
@@ -132,7 +132,7 @@ namespace rexsapi
     virtual void onVisit(const TLoadSpectrum& spectrum) = 0;
 
     /**
-     * @brief Will be called once for every load case of the load spectrum
+     * @brief Will be called once for every load case of the load spectrum.
      *
      * Will be called after TModelVisitor::onVisit(const TLoadSpectrum& spectrum). Load components dont need to be
      * manually iterated, as TModelVisitor::onVisit(const TLoadComponent& loadComponent) will be called for every load
@@ -143,7 +143,7 @@ namespace rexsapi
     virtual void onVisit(const TLoadCase& loadCase) = 0;
 
     /**
-     * @brief Will be called once for the load spectrum accumulation
+     * @brief Will be called once for the load spectrum accumulation.
      *
      * Will only be called, if the model has an accumulation.
      *
@@ -156,7 +156,7 @@ namespace rexsapi
     virtual void onVisit(const TAccumulation& accumulation) = 0;
 
     /**
-     * @brief Will be called once for every load component of a load case or accumulation
+     * @brief Will be called once for every load component of a load case or accumulation.
      *
      * Will be called after the corresponding TModelVisitor::onVisit(const TLoadCase& loadCase) or
      * TModelVisitor::onVisit(const TAccumulation& accumulation).

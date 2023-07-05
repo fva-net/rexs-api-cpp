@@ -26,7 +26,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Represents a specific REXS file type
+   * @brief Represents a specific REXS file type.
    *
    */
   enum class TFileType {
@@ -37,7 +37,7 @@ namespace rexsapi
   };
 
   /**
-   * @brief Creates a TFileType from a string
+   * @brief Creates a TFileType from a string.
    *
    * @param type The string to convert
    * @return TFileType corresponding to the given string
@@ -47,7 +47,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Defines mappings for custom file extensions to REXS file types
+   * @brief Defines mappings for custom file extensions to REXS file types.
    *
    * Currently, only REXS XML and JSON are allowed formats.
    *
@@ -62,7 +62,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Determines the REXS file type from a given REXS model filesystem path
+   * @brief Determines the REXS file type from a given REXS model filesystem path.
    *
    */
   class TExtensionChecker
@@ -71,7 +71,7 @@ namespace rexsapi
     TExtensionChecker() = default;
 
     /**
-     * @brief Constructs a new TExtensionChecker object
+     * @brief Constructs a new TExtensionChecker object.
      *
      * @param customMappings Defines additional custom extensions to use for REXS model file type detection
      */
@@ -81,7 +81,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns the file type from a REXS model filesystem path
+     * @brief Returns the file type from a REXS model filesystem path.
      *
      * Will look for all allowed standard REXS extensions: .rexs, .rexsj, .rexsz, .rexs.xml, .rexs.json, .rexs.zip.
      * If no standard extension qualifies, will try custom extensions if specified.

@@ -28,7 +28,7 @@ namespace rexsapi::database
 
 
   /**
-   * @brief Represents a specific endpoint of a TInterval
+   * @brief Represents a specific endpoint of a TInterval.
    *
    * Contains the limit and the nature of one interval endpoint, either open or closed
    */
@@ -45,7 +45,7 @@ namespace rexsapi::database
     }
 
     /**
-     * @brief Checks if this interval endpoint has been set
+     * @brief Checks if this interval endpoint has been set.
      *
      * @return true if the endpoint has been set
      * @return false if the endpoint has been default constructed
@@ -56,7 +56,7 @@ namespace rexsapi::database
     }
 
     /**
-     * @brief Checks if the value is smaller or equal to the limit
+     * @brief Checks if the value is smaller or equal to the limit.
      *
      * The result will depend on the nature of the endpoint: either open or closed.
      * A closed endpoint will include the limit while an open will not.
@@ -69,7 +69,7 @@ namespace rexsapi::database
     bool operator<=(double value) const noexcept;
 
     /**
-     * @brief Checks if the value is greater or equal to the limit
+     * @brief Checks if the value is greater or equal to the limit.
      *
      * The result will depend on the nature of the endpoint: either open or closed.
      * A closed endpoint will include the limit while an open will not.
@@ -89,7 +89,7 @@ namespace rexsapi::database
 
 
   /**
-   * @brief Represents a value range for an attributes value
+   * @brief Represents a value range for an attributes value.
    *
    * Intervals should not be created manually, but will be imported from the REXS database model using the
    * TModelRegistry.
@@ -101,7 +101,7 @@ namespace rexsapi::database
   {
   public:
     /**
-     * @brief Constructs a new TInterval object with no interval set
+     * @brief Constructs a new TInterval object with no interval set.
      *
      * Intervals are immutable objects, once created they cannot be changed.
      *
@@ -110,7 +110,7 @@ namespace rexsapi::database
     TInterval() = default;
 
     /**
-     * @brief Constructs a new TInterval object
+     * @brief Constructs a new TInterval object.
      *
      * Intervals are immutable objects, once created they cannot be changed.
      *
@@ -124,7 +124,7 @@ namespace rexsapi::database
     }
 
     /**
-     * @brief Checks the value against the interval range
+     * @brief Checks the value against the interval range.
      *
      * @param value The value to check
      * @return true if the value lies in the interval

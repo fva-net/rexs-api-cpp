@@ -57,7 +57,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Checks relations for correctness
+   * @brief Checks relations for correctness.
    *
    * Checks either a model or a single relation for correctness. Correctness means that a relation has the necessary
    * reference roles mandated by the standard according to the relations (or models) version. Additionally, a relation
@@ -67,7 +67,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TRelationTypeChecker object
+     * @brief Constructs a new TRelationTypeChecker object.
      *
      * The checker will downgrade non-critical errors to warnings if relaxed mode is used. However, the checking might
      * downgrade errors, but the check methods will nevertheless return false upon any errors.
@@ -80,7 +80,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Checks all the relations of the given model
+     * @brief Checks all the relations of the given model.
      *
      * @param result Describes the outcome of the check. Will contain messages upon issues encountered.
      * @param model The model to check the relations for. Will use the models version for the check.
@@ -90,7 +90,7 @@ namespace rexsapi
     bool check(TResult& result, const TModel& model) const;
 
     /**
-     * @brief Checks a single relation
+     * @brief Checks a single relation.
      *
      * @param result Describes the outcome of the check. Will contain messages upon issues encountered.
      * @param version The version to use for the check

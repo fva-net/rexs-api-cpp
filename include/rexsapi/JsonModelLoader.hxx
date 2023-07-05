@@ -29,7 +29,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Creates TModel instances from REXS json buffer
+   * @brief Creates TModel instances from REXS json buffer.
    *
    * A json model loader can create TModel instances from supplied buffer. The buffer has to contain a REXS model in
    * json format that validates against the json schema. Additionally, a mode can be chosen in order to define how to
@@ -41,7 +41,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TJsonModelLoader object
+     * @brief Constructs a new TJsonModelLoader object.
      *
      * @param mode Defines how to handle encountered issues while processing a model buffer
      * @param validator The json schema for validating the buffer
@@ -54,7 +54,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Processes a buffer and creates a TModel instance upon success
+     * @brief Processes a buffer and creates a TModel instance upon success.
      *
      * Will first validate the buffer against the json schema. Only valid buffer will be processed.
      *

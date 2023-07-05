@@ -27,7 +27,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Creates a model registry containing all models found in the given filesystem path
+   * @brief Creates a model registry containing all models found in the given filesystem path.
    *
    * The filesystem path should contain REXS database model files for different versions and languages. Additionally,
    * the XML database model schema file (*rexs-dbmodel.xsd*) has to be available in the path.
@@ -41,7 +41,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Easy to use model loader convenience class abstracting REXS model load operations
+   * @brief Easy to use model loader convenience class abstracting REXS model load operations.
    *
    * All allowed kinds of REXS model files can be loaded trasparently with this loader. The loader will also create it's
    * own model registry. For the successful creation of the model registry, all schema files have to be available to
@@ -55,7 +55,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TModelLoader object
+     * @brief Constructs a new TModelLoader object.
      *
      * @param databasePath filesystem path containing REXS database model files for different versions and languages and
      * all relevant schema files. The necessary schema files are:
@@ -72,7 +72,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Constructs a new TModelLoader object
+     * @brief Constructs a new TModelLoader object.
      *
      * @param databasePath filesystem path containing REXS database model files for different versions and languages and
      * all relevant schema files. The necessary schema files are:
@@ -91,7 +91,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Loads a RESX model file and creates a TModel instance
+     * @brief Loads a RESX model file and creates a TModel instance.
      *
      * The given file can contain a REXS model in XML or JSON format. The files extension has to be one of the allowed
      * extensions:

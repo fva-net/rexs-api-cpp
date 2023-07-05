@@ -23,7 +23,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Represents a REXS model unit
+   * @brief Represents a REXS model unit.
    *
    * Represents either a standard REXS unit or a custom unit.
    *
@@ -32,13 +32,13 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new empty custom TUnit object
+     * @brief Constructs a new empty custom TUnit object.
      *
      */
     TUnit() = default;
 
     /**
-     * @brief Constructs a new TUnit object from a REXS database unit
+     * @brief Constructs a new TUnit object from a REXS database unit.
      *
      * The new unit will have the same name as the database unit.
      *
@@ -51,7 +51,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Constructs a new custom TUnit object
+     * @brief Constructs a new custom TUnit object.
      *
      * @param unit The units name
      */
@@ -61,7 +61,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Checks if this unit is a custom unit
+     * @brief Checks if this unit is a custom unit.
      *
      * @return true if constructed as a default unit or as a custom unit
      * @return false if constructed with a REXS database unit
@@ -77,7 +77,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Compares two units for equality
+     * @brief Compares two units for equality.
      *
      * @param lhs A REXS model unit
      * @param rhs A REXS database unit
@@ -90,7 +90,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Compares two units for inequality
+     * @brief Compares two units for inequality.
      *
      * @param lhs A REXS model unit
      * @param rhs A REXS database unit
@@ -103,7 +103,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Compares two REXS model units for equality
+     * @brief Compares two REXS model units for equality.
      *
      * @param lhs The left hand unit to compare
      * @param rhs The right hand unit to compare
@@ -116,7 +116,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Compares two REXS model units for inequality
+     * @brief Compares two REXS model units for inequality.
      *
      * @param lhs The left hand unit to compare
      * @param rhs The right hand unit to compare

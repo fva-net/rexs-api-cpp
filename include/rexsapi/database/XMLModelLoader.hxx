@@ -29,7 +29,7 @@
 namespace rexsapi::database
 {
   /**
-   * @brief Loads REXS database models in XML format
+   * @brief Loads REXS database models in XML format.
    *
    * Is used to populate the REXS database model registry.
    *
@@ -45,7 +45,7 @@ namespace rexsapi::database
   {
   public:
     /**
-     * @brief Constructs a new TXmlModelLoader object
+     * @brief Constructs a new TXmlModelLoader object.
      *
      * @param resourceLoader Resource loader instance to use for model loading
      * @param schemaLoader Resource loader instance to use for schema loading
@@ -57,7 +57,7 @@ namespace rexsapi::database
     }
 
     /**
-     * @brief Loads REXS database models
+     * @brief Loads REXS database models.
      *
      * Uses the resource loader to load XML database models into a buffer. Then uses the schema loader to load the REXS
      * database model XSD schema and checks all loaded model buffers against the schema. Finally, creates a model from

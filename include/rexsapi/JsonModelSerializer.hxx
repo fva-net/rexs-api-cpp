@@ -26,14 +26,14 @@
 namespace rexsapi
 {
   /**
-   * @brief Used to serialize a TModel in REXS json format
+   * @brief Used to serialize a TModel in REXS json format.
    *
    */
   class TJsonModelSerializer
   {
   public:
     /**
-     * @brief Serializes a TModel in REXS json format
+     * @brief Serializes a TModel in REXS json format.
      *
      * Uses the serializer to output the created json object.
      *

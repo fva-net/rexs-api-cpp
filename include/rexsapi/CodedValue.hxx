@@ -22,7 +22,7 @@
 
 
 /**
- * @brief Classes and functions in the detail namespace shall not be used by client code
+ * @brief Classes and functions in the detail namespace shall not be used by client code.
  *
  */
 namespace rexsapi::detail

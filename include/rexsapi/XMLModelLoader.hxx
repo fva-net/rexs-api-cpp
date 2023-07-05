@@ -30,7 +30,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Creates TModel instances from REXS xml buffer
+   * @brief Creates TModel instances from REXS xml buffer.
    *
    * A xml model loader can create TModel instances from supplied buffer. The buffer has to contain a REXS model in
    * xml format that validates against the xsd schema. Additionally, a mode can be chosen in order to define how to
@@ -42,7 +42,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TXMLModelLoader object
+     * @brief Constructs a new TXMLModelLoader object.
      *
      * @param mode Defines how to handle encountered issues while processing a model buffer
      * @param validator The xsd schema for validating the buffer
@@ -55,7 +55,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Processes a buffer and creates a TModel instance upon success
+     * @brief Processes a buffer and creates a TModel instance upon success.
      *
      * Will first validate the buffer against the xsd schema. Only valid buffer will be processed.
      *

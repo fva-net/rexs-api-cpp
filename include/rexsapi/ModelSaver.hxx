@@ -26,7 +26,7 @@
 namespace rexsapi
 {
   /**
-   * @brief The REXS model format to save a model in
+   * @brief The REXS model format to save a model in.
    *
    */
   enum class TSaveType {
@@ -46,7 +46,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Stores a REXS TModel instance to the given filesystem path
+     * @brief Stores a REXS TModel instance to the given filesystem path.
      *
      * Models can be stored either in XML or JSON format. If the filesystem path does not contain an extension, the
      * store operation will add the correct extension depending on the desired store format. For XML format the

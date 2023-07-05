@@ -23,7 +23,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Represents a REXS model relation reference
+   * @brief Represents a REXS model relation reference.
    *
    * A relation reference lives in the context of a TRelation and references a component of a model containing the
    * relation.
@@ -34,7 +34,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TRelationReference object
+     * @brief Constructs a new TRelationReference object.
      *
      * References are immutable objects, once created they cannot be changed.
      *
@@ -74,7 +74,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents a REXS model relation
+   * @brief Represents a REXS model relation.
    *
    * A relation aggregates references connecting components to assemblies.
    *
@@ -84,7 +84,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TRelation object
+     * @brief Constructs a new TRelation object.
      *
      * Relations are immutable objects, once created they cannot be changed.
      *
