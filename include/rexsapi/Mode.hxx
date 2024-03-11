@@ -88,9 +88,11 @@ namespace rexsapi
           case TErrorLevel::CRIT:
             return TErrorLevel::CRIT;
           case TErrorLevel::WARN:
+            [[fallthrough]];
           case TErrorLevel::ERR:
             return TErrorLevel::WARN;
         }
+        break;
       case TMode::STRICT_MODE:
         return level;
     }

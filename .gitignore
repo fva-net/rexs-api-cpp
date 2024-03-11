@@ -7,3 +7,4 @@ build_xcode
 check_loc.sh
 ignore_files.txt
 CMakeSettings.json
+docker
