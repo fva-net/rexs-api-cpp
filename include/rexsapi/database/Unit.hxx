@@ -17,6 +17,7 @@
 #ifndef REXSAPI_DATABASE_UNIT_HXX
 #define REXSAPI_DATABASE_UNIT_HXX
 
+#include <cstdint>
 #include <string>
 
 /** @file */

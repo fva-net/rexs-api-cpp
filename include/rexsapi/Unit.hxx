@@ -19,8 +19,6 @@
 
 #include <rexsapi/database/Unit.hxx>
 
-#include <cstdint>
-
 
 namespace rexsapi
 {
