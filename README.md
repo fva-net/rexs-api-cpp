@@ -156,6 +156,7 @@ File ".FVA-Industriegetriebe_2stufig_1-4.rexs" processed with 10 warnings
 The `model_converter` can convert REXS model files between xml and json format. Files can be converted in any direction, even into the same format. You can convert complete directories with one go. As with the `model_checker`, the tool supports a relaxed mode for loading non-standard complying model files. If files do not conform to the standard, converting them may result in removed elements.
 
 ### Options
+
 | Option | Description |
 |:--|:--|
 | --help, -h | Show usage and options |
@@ -247,8 +248,9 @@ The library is header only. A build is only necessary if you want to run the tes
 ## Linux
 
 - You will need the following software packages
-  - g++ 9.3.0 or higher
-  - cmake 3.16.3 or higher
+  - g++ 11.4.0 or higher
+  - clang 15.0.7 or higher
+  - cmake 3.22 or higher
 - To install the dependencies on ubuntu
   - Call `sudo apt-get install cmake g++`
 - Create a build directory in the source directory of REXSapi and change to it
@@ -260,15 +262,15 @@ The library is header only. A build is only necessary if you want to run the tes
 ## Windows
 
 - You will need the following software packages
-  - Visual Studio 2019 or higher
-- CMake support is build into Visual Studio 2019
+  - Visual Studio 2022 or higher
+- CMake support is build into Visual Studio 2022
 - Open the local folder of the REXSapi project
 - Visual Studio will configure the project automatically
 
 ## Mac
 - You will need the following software packages
   - XCode 12.4 or higher
-  - cmake 3.16.3 or higher
+  - cmake 3.22 or higher
 - To install cmake on Mac
   - Call `brew install cmake`
 - Create a build directory in the source directory of REXSapi and change to it
