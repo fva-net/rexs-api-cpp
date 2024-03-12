@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixed README.md
-- Fixed doxygen docu regarding @brief not rendering correctly in Visual Studio (#25)
+- Fixed doxygen docu regarding brief description not rendering correctly in Visual Studio (#25)
 
 ### Changed
 
