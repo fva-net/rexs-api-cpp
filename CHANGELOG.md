@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - External ids will be used for better error messages for easier finding a specific erroneous component in a 
   model file (#2)
 - Components can have an external id, which represents exactly the components id specified in a model file (#4)
+- Added model database file for 1.6 models (#30)
 
 ## [1.1.0]
 
