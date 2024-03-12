@@ -510,6 +510,14 @@ namespace rexsapi
         { "component": "C1", "role": "planetary_stage" },
         { "component": "C2", "role": "shaft" }
       ]
+    },
+    "contact": {
+      "ordered": false,
+      "roles": [
+        { "component": "S", "role": "assembly" },
+        { "component": "A", "role": "side_1" },
+        { "component": "B", "role": "side_2" }
+      ]
     }
   }
 }

@@ -205,19 +205,19 @@ namespace
     }
   }
 })";
-}
 
-std::optional<rexsapi::TModel> loadModelBuffer(rexsapi::TResult& result, const std::string& buffer,
-                                               const rexsapi::database::TModelRegistry& registry,
-                                               rexsapi::TMode mode = rexsapi::TMode::STRICT_MODE)
-{
-  static const rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
-  static const rexsapi::TJsonSchemaValidator validator{schemaLoader};
+  std::optional<rexsapi::TModel> loadModelBuffer(rexsapi::TResult& result, const std::string& buffer,
+                                                 const rexsapi::database::TModelRegistry& registry,
+                                                 rexsapi::TMode mode = rexsapi::TMode::STRICT_MODE)
+  {
+    static const rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
+    static const rexsapi::TJsonSchemaValidator validator{schemaLoader};
 
-  rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
-                                                                                                       buffer};
+    rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
+                                                                                                         buffer};
 
-  return loader.load(mode, result, registry);
+    return loader.load(mode, result, registry);
+  }
 }
 
 
