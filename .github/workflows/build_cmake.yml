@@ -107,9 +107,8 @@ jobs:
         run: |
           version=$(grep "project("  CMakeLists.txt | cut -d ' ' -f3)
           echo "VERSION=$version" >> "$GITHUB_ENV"
-      - uses: actions/download-artifact@v4
-        with:
-          path: artifacts
+      - name: Display structure of folders
+        run: ls -R
       - name: Create release
         id: create_release
         uses: thomaseizinger/create-release@1.0.0
@@ -127,4 +126,4 @@ jobs:
           rm: true
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            ./artifacts/rexsapi-${{env.VERSION}}/rexsapi-*.zip
+            ./build/rexsapi-*.zip
