@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-22.04]
-        build_type: [Debug]
+        build_type: [Release]
         cxx: [g++]
     steps:
       - uses: actions/checkout@v4
