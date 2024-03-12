@@ -286,6 +286,7 @@ namespace rexsapi
     ASSEMBLY,              //!< assembly
     CENTRAL_SHAFT,         //!< shaft
     CONNECTION,            //!< connection
+    CONTACT,               //!< contact
     COUPLING,              //!< coupling
     FLANK,                 //!< flank
     MANUFACTURING_STEP,    //!< manufacturing_step
@@ -501,6 +502,8 @@ namespace rexsapi
         return "central_shaft";
       case TRelationType::CONNECTION:
         return "connection";
+      case TRelationType::CONTACT:
+        return "contact";
       case TRelationType::COUPLING:
         return "coupling";
       case TRelationType::FLANK:
@@ -540,6 +543,9 @@ namespace rexsapi
     }
     if (type == "connection") {
       return TRelationType::CONNECTION;
+    }
+    if (type == "contact") {
+      return TRelationType::CONTACT;
     }
     if (type == "coupling") {
       return TRelationType::COUPLING;

@@ -32,7 +32,7 @@ TEST_CASE("Relation type checker test")
   SUBCASE("Load mappings")
   {
     auto mappings = rexsapi::detail::loadMappings();
-    CHECK(mappings.size() == 3);
+    CHECK(mappings.size() == 4);
   }
 
   SUBCASE("Check relation")
