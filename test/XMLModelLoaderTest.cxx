@@ -198,6 +198,15 @@ TEST_CASE("XML model loader test")
           "Schneckenrad [9]: value is out of range for attribute id=throat_radius_worm_wheel of component id=9");
   }
 
+  SUBCASE("Load version 1.6 rexs file")
+  {
+    const auto model =
+      loadModel(result, projectDir() / "test" / "example_models" / "FVA-Industriegetriebe_2_stufig_1-6.rexs", registry);
+    CHECK(model);
+    CHECK_FALSE(result);
+    CHECK_FALSE(result.isCritical());
+  }
+
   SUBCASE("Load complex model from file in strict mode")
   {
     const auto model =
