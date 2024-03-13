@@ -203,7 +203,7 @@ TEST_CASE("XML model loader test")
     const auto model =
       loadModel(result, projectDir() / "test" / "example_models" / "FVA-Industriegetriebe_2_stufig_1-6.rexs", registry);
     CHECK(model);
-    CHECK_FALSE(result);
+    CHECK(result);
     CHECK_FALSE(result.isCritical());
   }
 
