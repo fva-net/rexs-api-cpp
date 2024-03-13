@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<model applicationId="FVA Workbench" applicationVersion="8.0" date="2022-12-12T11:06:16+01:00" version="1.5">
+  <relations>
+    <!--Reference relation from Shaft [30] to 18CrMo4 [50] -->
+    <relation id="1" type="reference">
+      <ref hint="shaft" id="30" role="origin"/>
+      <ref hint="material" id="50" role="referenced"/>
+    </relation>
+    <!--Relation between the main component Shaft [30] and the sub-component section [100]-->
+    <relation id="2" type="assembly">
+      <ref hint="shaft" id="30" role="assembly"/>
+      <ref hint="shaft_section" id="100" role="part"/>
+    </relation>
+    <!--Relation between the main component Shaft [30] and the sub-component section [110]-->
+    <relation id="3" type="assembly">
+      <ref hint="shaft" id="30" role="assembly"/>
+      <ref hint="shaft_section" id="110" role="part"/>
+    </relation>
+  </relations>
+  <components>
+    <component id="30" name="Shaft [30]" type="shaft">
+	</component>
+    <component id="50" name="18CrMo4 [50]" type="material">
+      <attribute id="core_hardness_vickers" unit="HV">550.0</attribute>
+      <attribute id="density" unit="kg / dm^3">7.85</attribute>
+      <attribute id="elastic_modulus" unit="N / mm^2">210000.0</attribute>
+      <attribute id="endurance_limit_flank" unit="N / mm^2">1500.0</attribute>
+      <attribute id="endurance_limit_root" unit="N / mm^2">461.0</attribute>
+      <attribute id="fatigue_limit_bending" unit="MPa">550.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">440.0</attribute>
+      <attribute id="fatigue_limit_torsion" unit="MPa">330.0</attribute>
+      <attribute id="fatigue_strength_factor_compression" unit="none">0.4</attribute>
+      <attribute id="fatigue_strength_factor_shear" unit="none">0.577</attribute>
+      <attribute id="heat_treated_material_type_iso_6336_2006" unit="none">case_hardened_wrought_steel</attribute>
+      <attribute id="material_designation" unit="none">18CrMo4</attribute>
+      <attribute id="material_type_din_743_2012" unit="none">case_hardening_steel</attribute>
+      <attribute id="poisson_ratio" unit="none">0.3</attribute>
+      <attribute id="surface_hardness_brinell" unit="HB">693.5</attribute>
+      <attribute id="surface_hardness_vickers" unit="HV">750.0</attribute>
+      <attribute id="tensile_strength" unit="N / mm^2">1100.0</attribute>
+      <attribute id="thermal_capacity" unit="J / (kg K)">430.0</attribute>
+      <attribute id="thermal_conductivity" unit="W / (m K)">40.0</attribute>
+      <attribute id="thermal_expansion_coefficient_minus" unit="1e-6 / C">8.0</attribute>
+      <attribute id="thermal_expansion_coefficient_plus" unit="1e-6 / C">11.0</attribute>
+      <attribute id="yield_strength" unit="N / mm^2">775.0</attribute>
+    </component>
+    <component id="100" name="section [100]" type="shaft_section">
+      <attribute id="inner_diameter_begin" unit="mm">0.0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0.0</attribute>
+      <attribute id="length" unit="mm">50.0</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">30.0</attribute>
+      <attribute id="outer_diameter_end" unit="mm">30.0</attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">0.0</attribute>
+    </component>
+    <component id="110" name="section [110]" type="shaft_section">
+      <attribute id="inner_diameter_begin" unit="mm">0.0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0.0</attribute>
+      <attribute id="length" unit="mm">50.0</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">50.0</attribute>
+      <attribute id="outer_diameter_end" unit="mm">50.0</attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">50.0</attribute>
+    </component>
+  </components>
+</model>

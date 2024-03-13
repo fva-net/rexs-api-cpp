@@ -163,7 +163,8 @@ namespace rexsapi::detail
       for (const auto& component : components) {
         TAttributes attributes;
         for (const auto& attribute : component.getAttributes()) {
-          if (attribute.getValueType() == TValueType::REFERENCE_COMPONENT && attribute.hasValue()) {
+          if (attribute.getValueType() == TValueType::REFERENCE_COMPONENT && attribute.hasValue() &&
+              attribute.getAttributeId() != "referenced_component_id") {
             auto id = attribute.getValue<TReferenceComponentType>();
             const auto* comp = componentMapping.getComponent(static_cast<uint64_t>(id), components);
             if (comp == nullptr) {

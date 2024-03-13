@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<model applicationId="FVA Workbench" applicationVersion="8.0" date="2022-12-12T11:06:16+01:00" version="1.5">
+  <relations>
+    <!--Relation between the main component Gear unit [1] and the sub-component Casing [2]-->
+    <relation id="1" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="gear_casing" id="2" role="part"/>
+    </relation>
+    <!--Relation between the main component Gear unit [1] and the sub-component Shaft [3]-->
+    <relation id="3" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="shaft" id="3" role="part"/>
+    </relation>
+    <!--Side relation between Rolling bearing [6] and Shaft [3] and Casing [2]-->
+    <relation id="6" type="side">
+      <ref hint="gear_casing" id="2" role="outer_part"/>
+      <ref hint="shaft" id="3" role="inner_part"/>
+      <ref hint="rolling_bearing_with_catalog_geometry" id="6" role="assembly"/>
+    </relation>
+  </relations>
+  <components>
+    <component id="1" name="Gear unit [1]" type="gear_unit">
+      <attribute id="account_for_gravity" unit="none">true</attribute>
+      <attribute id="account_for_shear_deformation" unit="none">true</attribute>
+      <attribute id="direction_vector_gravity_u" unit="none">0.0</attribute>
+      <attribute id="direction_vector_gravity_v" unit="none">1.0</attribute>
+      <attribute id="direction_vector_gravity_w" unit="none">0.0</attribute>
+      <attribute id="gear_shift_index" unit="none">1</attribute>
+      <attribute id="gravitational_acceleration" unit="m / s^2">9.81</attribute>
+      <attribute id="number_of_gears" unit="none">1</attribute>
+      <attribute id="number_of_nodes_in_mesh_width_for_loaddistribution" unit="none">18</attribute>
+      <attribute id="operating_time" unit="h">100000.0</attribute>
+      <attribute id="operating_time_vdi_2736_2014" unit="h">100000.0</attribute>
+      <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+    </component>
+    <component id="2" name="Casing [2]" type="gear_casing">
+      <attribute id="type_of_gear_casing_construction_vdi_2736_2014" unit="none">closed</attribute>
+    </component>
+    <component id="3" name="Shaft [3]" type="shaft">
+      <attribute id="data_source" unit="none">./database_shaft.rexs</attribute>
+	  <attribute id="referenced_component_id" unit="none">30</attribute>
+	  <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+    </component>
+    <component id="6" name="Rolling bearing [6]" type="rolling_bearing_with_catalog_geometry">
+	  <attribute id="data_source" unit="none">./database_bearing.rexs</attribute>
+	  <attribute id="referenced_component_id" unit="none">60</attribute>
+      <attribute id="axial_force_absorption" unit="none">negative</attribute>
+      <attribute id="radial_force_absorption" unit="none">true</attribute>
+      <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="speed_outer_ring" unit="1 / min">0.0</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>40.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_coordinate_on_shaft_inner_side" unit="mm">40.0</attribute>
+      <attribute id="u_coordinate_on_shaft_outer_side" unit="mm">40.0</attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+    </component>
+  </components>
+</model>
