@@ -18,6 +18,7 @@
 #include <rexsapi/ModelMerger.hxx>
 
 #include <test/TestHelper.hxx>
+#include <test/TestModelLoader.hxx>
 
 #include <doctest.h>
 
@@ -25,19 +26,31 @@
 TEST_CASE("Model merger test")
 {
   const rexsapi::TModelLoader loader{projectDir() / "models"};
+  const auto registry = createModelRegistry();
   rexsapi::TResult result;
-  rexsapi::TModelMerger merger;
+  rexsapi::TModelMerger merger{registry};
 
   SUBCASE("Merge")
   {
     const auto mainModel =
       loader.load(projectDir() / "test" / "example_models" / "external_sources" / "placeholder_model.rexs", result,
                   rexsapi::TMode::RELAXED_MODE);
-    const auto referencedModel =
+    const auto referencedModel1 =
       loader.load(projectDir() / "test" / "example_models" / "external_sources" / "database_shaft.rexs", result,
                   rexsapi::TMode::RELAXED_MODE);
+    const auto referencedModel2 =
+      loader.load(projectDir() / "test" / "example_models" / "external_sources" / "database_bearing.rexs", result,
+                  rexsapi::TMode::RELAXED_MODE);
 
-    auto newModel = merger.merge(result, *mainModel, *referencedModel);
+    auto newModel = merger.merge(result, *mainModel, "./database_shaft.rexs", *referencedModel1);
+    newModel = merger.merge(result, *newModel, "./database_bearing.rexs", *referencedModel2);
+
+    for (const auto& comp : newModel->getComponents()) {
+      std::cout << comp.getType() << "\n";
+      for (const auto& att : comp.getAttributes()) {
+        std::cout << "\t" << att.getAttributeId() << "\n";
+      }
+    }
     CHECK(newModel);
     CHECK(result);
   }
@@ -55,7 +68,7 @@ TEST_CASE("Model merger test")
     rexsapi::TModelInfo modelInfo16{"My App", "", "2024-03-13", rexsapi::TRexsVersion{"1.6"}, {}};
     rexsapi::TModel referencedModel{modelInfo16, components, relations, spectrum};
 
-    auto newModel = merger.merge(result, mainModel, referencedModel);
+    auto newModel = merger.merge(result, mainModel, "", referencedModel);
     CHECK_FALSE(newModel);
     CHECK_FALSE(result);
     REQUIRE(result.getErrors().size() == 1);

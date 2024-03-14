@@ -47,7 +47,7 @@ namespace rexsapi
      * in the range specified if applicable.
      */
     TAttribute(const database::TAttribute& attribute, TValue value)
-    : m_AttributeWrapper{AttributeWrapper{attribute}}
+    : m_AttributeWrapper{attribute}
     , m_Unit{attribute.getUnit()}
     , m_Value{std::move(value)}
     {
@@ -107,7 +107,7 @@ namespace rexsapi
     [[nodiscard]] const std::string& getAttributeId() const& noexcept
     {
       if (m_AttributeWrapper) {
-        return m_AttributeWrapper->m_Attribute.getAttributeId();
+        return m_AttributeWrapper.value().get().getAttributeId();
       }
       return m_CustomAttributeId;
     }
@@ -115,7 +115,7 @@ namespace rexsapi
     [[nodiscard]] const std::string& getName() const& noexcept
     {
       if (m_AttributeWrapper) {
-        return m_AttributeWrapper->m_Attribute.getName();
+        return m_AttributeWrapper.value().get().getName();
       }
       return m_CustomAttributeId;
     }
@@ -128,7 +128,7 @@ namespace rexsapi
     [[nodiscard]] TValueType getValueType() const noexcept
     {
       if (m_AttributeWrapper) {
-        return m_AttributeWrapper->m_Attribute.getValueType();
+        return m_AttributeWrapper.value().get().getValueType();
       }
       return *m_CustomValueType;
     }
@@ -181,10 +181,7 @@ namespace rexsapi
     }
 
   private:
-    struct AttributeWrapper {
-      const database::TAttribute& m_Attribute;
-    };
-    std::optional<AttributeWrapper> m_AttributeWrapper;
+    std::optional<std::reference_wrapper<const database::TAttribute>> m_AttributeWrapper;
 
     std::string m_CustomAttributeId{};
     std::optional<TValueType> m_CustomValueType{};

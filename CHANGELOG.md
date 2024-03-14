@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed README.md
 - Fixed doxygen docu regarding brief description not rendering correctly in Visual Studio (#25)
+- TAttributes can now be assigned
 
 ### Changed
 
