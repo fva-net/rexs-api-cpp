@@ -30,6 +30,7 @@ target_sources(rexsapi INTERFACE
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelBuilder.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelHelper.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelLoader.hxx
+  ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelMerger.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelSaver.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelVisitor.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/Relation.hxx
