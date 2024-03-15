@@ -161,7 +161,7 @@ namespace std
 {
   template<>
   struct less<rexsapi::TComponent> {
-    constexpr bool operator()(const rexsapi::TComponent& lhs, const rexsapi::TComponent& rhs) const
+    bool operator()(const rexsapi::TComponent& lhs, const rexsapi::TComponent& rhs) const
     {
       return lhs.getInternalId() < rhs.getInternalId();
     }
