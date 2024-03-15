@@ -145,4 +145,29 @@ TEST_CASE("Model merger test")
           "cannot find referenced component 42 in data_source './database_material.rexs'");
     CHECK(result.getErrors()[0].isError());
   }
+
+  SUBCASE("Merge model with wrong component type in data_source")
+  {
+    std::optional<rexsapi::TModel> newModel;
+
+    {
+      const auto mainModel = loader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_4" /
+                                           "placeholder_model.rexs",
+                                         result, rexsapi::TMode::RELAXED_MODE);
+      const auto referencedModel = loader.load(projectDir() / "test" / "example_models" / "external_sources" /
+                                                 "example_4" / "database_material.rexs",
+                                               result, rexsapi::TMode::RELAXED_MODE);
+
+      result.reset();
+      newModel = merger.merge(result, *mainModel, "./database_material.rexs", *referencedModel);
+    }
+
+    CHECK_FALSE(newModel);
+    CHECK_FALSE(result);
+    REQUIRE(result.getErrors().size() == 1);
+    CHECK(
+      result.getErrors()[0].getMessage() ==
+      "referenced component 8 in data_source './database_material.rexs' has wrong type 'material' instead of 'shaft'");
+    CHECK(result.getErrors()[0].isError());
+  }
 }

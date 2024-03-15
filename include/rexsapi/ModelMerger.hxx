@@ -185,7 +185,7 @@ namespace rexsapi
               if (referencedComponent.getType() != component.getType()) {
                 result.addError(
                   TError{TErrorLevel::CRIT,
-                         fmt::format("referenced component {} in data_source '{}' has wrong type '{}' instead of '{}",
+                         fmt::format("referenced component {} in data_source '{}' has wrong type '{}' instead of '{}'",
                                      refComponentId, dataSource, referencedComponent.getType(), component.getType())});
                 return {};
               }
