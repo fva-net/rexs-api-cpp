@@ -121,4 +121,28 @@ TEST_CASE("Model merger test")
     CHECK(attributes[4].getAttributeId() == "fatigue_limit_torsion");
     CHECK(attributes[4].getValue<rexsapi::TFloatType>() == doctest::Approx(360.0));
   }
+
+  SUBCASE("Merge model with non existing component in data_source")
+  {
+    std::optional<rexsapi::TModel> newModel;
+
+    {
+      const auto mainModel = loader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_3" /
+                                           "placeholder_model.rexs",
+                                         result, rexsapi::TMode::RELAXED_MODE);
+      const auto referencedModel = loader.load(projectDir() / "test" / "example_models" / "external_sources" /
+                                                 "example_3" / "database_material.rexs",
+                                               result, rexsapi::TMode::RELAXED_MODE);
+
+      result.reset();
+      newModel = merger.merge(result, *mainModel, "./database_material.rexs", *referencedModel);
+    }
+
+    CHECK_FALSE(newModel);
+    CHECK_FALSE(result);
+    REQUIRE(result.getErrors().size() == 1);
+    CHECK(result.getErrors()[0].getMessage() ==
+          "cannot find referenced component 42 in data_source './database_material.rexs'");
+    CHECK(result.getErrors()[0].isError());
+  }
 }
