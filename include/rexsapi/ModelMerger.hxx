@@ -178,19 +178,28 @@ namespace rexsapi
         if (refAttribute) {
           const auto& dataSourceAttribute = atrributeFinder.findAttributeById("data_source");
           if (dataSourceAttribute && dataSourceAttribute.value().get().getValueAsString() == dataSource) {
-            const auto& refComponent =
-              componentFinder.findComponentByExternalId(refAttribute.value().get().getValue().getValue<TIntType>());
+            const auto refComponentId = refAttribute.value().get().getValue().getValue<TIntType>();
+            const auto& refComponent = componentFinder.findComponentByExternalId(refComponentId);
             if (refComponent) {
-              const auto& referencedId = refComponent.value().get().getInternalId();
-              const auto& compRelations = relationFinder.findRelationsByReferenceId(referencedId);
-              referencedRelations.emplace_back(ReferencedRelation{component.getInternalId(), referencedId, {}});
+              const auto& referencedComponent = refComponent.value().get();
+              if (referencedComponent.getType() != component.getType()) {
+                result.addError(
+                  TError{TErrorLevel::CRIT,
+                         fmt::format("referenced component {} in data_source '{}' has wrong type '{}' instead of '{}",
+                                     refComponentId, dataSource, referencedComponent.getType(), component.getType())});
+                return {};
+              }
+              const auto& compRelations =
+                relationFinder.findRelationsByReferenceId(referencedComponent.getInternalId());
+              referencedRelations.emplace_back(
+                ReferencedRelation{component.getInternalId(), referencedComponent.getInternalId(), {}});
               std::set<TComponent> relationComponents;
               std::for_each(compRelations.begin(), compRelations.end(), [&](const auto& relation) {
                 std::set<TComponent> tmp;
                 bool isRefContained = false;
                 std::for_each(relation.get().getReferences().begin(), relation.get().getReferences().end(),
                               [&](const auto& reference) {
-                                if (reference.getComponent().getInternalId() != referencedId) {
+                                if (reference.getComponent().getInternalId() != referencedComponent.getInternalId()) {
                                   tmp.emplace(reference.getComponent());
                                 } else {
                                   isRefContained = true;
@@ -220,6 +229,11 @@ namespace rexsapi
                                       databaseModel.findComponentById(component.getType()), component.getName(),
                                       attributes);
               addComponent = false;
+            } else {
+              result.addError(
+                TError{TErrorLevel::CRIT, fmt::format("cannot find referenced component {} in data_source '{}'",
+                                                      refComponentId, dataSource)});
+              return {};
             }
           } else {
             // TODO: We don't have a data_source attribute, so look into the global database
