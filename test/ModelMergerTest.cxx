@@ -31,7 +31,7 @@ TEST_CASE("Model merger test")
   rexsapi::TResult result;
   const rexsapi::TModelMerger merger{registry};
 
-  SUBCASE("Merge")
+  SUBCASE("Merge multiple models")
   {
     std::optional<rexsapi::TModel> newModel;
 
@@ -82,5 +82,43 @@ TEST_CASE("Model merger test")
     REQUIRE(result.getErrors().size() == 1);
     CHECK(result.getErrors()[0].getMessage() == "cannot reference components from different rexs versions");
     CHECK(result.getErrors()[0].isError());
+  }
+
+  SUBCASE("Merge model with components only")
+  {
+    std::optional<rexsapi::TModel> newModel;
+
+    {
+      const auto mainModel = loader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_2" /
+                                           "placeholder_model.rexs",
+                                         result, rexsapi::TMode::RELAXED_MODE);
+      const auto referencedModel = loader.load(projectDir() / "test" / "example_models" / "external_sources" /
+                                                 "example_2" / "database_material.rexs",
+                                               result, rexsapi::TMode::RELAXED_MODE);
+
+      newModel = merger.merge(result, *mainModel, "./database_material.rexs", *referencedModel);
+    }
+
+    CHECK(newModel);
+    CHECK(result);
+    CHECK(newModel->getComponents().size() == 7);
+
+    const ComponentFinder finder{*newModel};
+    REQUIRE_NOTHROW(finder.findComponent("18CrMo4 [5]"));
+    CHECK(finder.findComponent("18CrMo4 [5]").getType() == "material");
+    CHECK(finder.findComponent("18CrMo4 [5]").getAttributes().size() == 5);
+    REQUIRE_NOTHROW(finder.findComponent("18CrMo4 [6]"));
+    CHECK(finder.findComponent("18CrMo4 [6]").getType() == "material");
+    CHECK(finder.findComponent("18CrMo4 [6]").getAttributes().size() == 5);
+    REQUIRE_NOTHROW(finder.findComponent("17CrNi6-6 [7]"));
+    CHECK(finder.findComponent("17CrNi6-6 [7]").getType() == "material");
+    const auto& attributes = finder.findComponent("17CrNi6-6 [7]").getAttributes();
+    REQUIRE(attributes.size() == 5);
+    CHECK(attributes[2].getAttributeId() == "fatigue_limit_bending");
+    CHECK(attributes[2].getValue<rexsapi::TFloatType>() == doctest::Approx(300.0));
+    CHECK(attributes[3].getAttributeId() == "fatigue_limit_compression_tension");
+    CHECK(attributes[3].getValue<rexsapi::TFloatType>() == doctest::Approx(240.0));
+    CHECK(attributes[4].getAttributeId() == "fatigue_limit_torsion");
+    CHECK(attributes[4].getValue<rexsapi::TFloatType>() == doctest::Approx(360.0));
   }
 }

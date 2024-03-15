@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<model applicationId="FVA Workbench" applicationVersion="8.0" date="2022-12-12T11:06:16+01:00" version="1.5">
+  <relations>
+    <relation id="1" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="shaft" id="2" role="part"/>
+    </relation>
+    <relation id="2" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="shaft" id="3" role="part"/>
+    </relation>
+    <relation id="3" type="assembly">
+      <ref hint="gear_unit" id="1" role="assembly"/>
+      <ref hint="shaft" id="4" role="part"/>
+    </relation>
+    <relation id="4" type="reference">
+      <ref hint="shaft" id="2" role="origin"/>
+      <ref hint="material" id="5" role="referenced"/>
+    </relation>
+    <relation id="5" type="reference">
+      <ref hint="shaft" id="3" role="origin"/>
+      <ref hint="material" id="6" role="referenced"/>
+    </relation>
+    <relation id="6" type="reference">
+      <ref hint="shaft" id="4" role="origin"/>
+      <ref hint="material" id="7" role="referenced"/>
+    </relation>
+  </relations>
+  <components>
+    <component id="1" name="Gear unit [1]" type="gear_unit">
+      <attribute id="account_for_gravity" unit="none">true</attribute>
+      <attribute id="account_for_shear_deformation" unit="none">true</attribute>
+      <attribute id="direction_vector_gravity_u" unit="none">0.0</attribute>
+      <attribute id="direction_vector_gravity_v" unit="none">1.0</attribute>
+      <attribute id="direction_vector_gravity_w" unit="none">0.0</attribute>
+      <attribute id="gear_shift_index" unit="none">1</attribute>
+      <attribute id="gravitational_acceleration" unit="m / s^2">9.81</attribute>
+      <attribute id="number_of_gears" unit="none">1</attribute>
+      <attribute id="number_of_nodes_in_mesh_width_for_loaddistribution" unit="none">18</attribute>
+      <attribute id="operating_time" unit="h">100000.0</attribute>
+      <attribute id="operating_time_vdi_2736_2014" unit="h">100000.0</attribute>
+      <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+    </component>
+    <component id="2" name="Shaft [2]" type="shaft">
+	    <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+    </component>
+    <component id="3" name="Shaft [3]" type="shaft">
+	    <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+    </component>
+    <component id="4" name="Shaft [4]" type="shaft">
+	    <attribute id="reference_component_for_position" unit="none">1</attribute>
+      <attribute id="support_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="u_axis_vector" unit="mm">
+        <array>
+          <c>1.0</c>
+          <c>0.0</c>
+          <c>0.0</c>
+        </array>
+      </attribute>
+      <attribute id="w_axis_vector" unit="mm">
+        <array>
+          <c>0.0</c>
+          <c>0.0</c>
+          <c>1.0</c>
+        </array>
+      </attribute>
+    </component>
+    <component id="5" name="18CrMo4 [5]" type="material">
+      <attribute id="data_source" unit="none">./database_material.rexs</attribute>
+	    <attribute id="referenced_component_id" unit="none">5</attribute>
+    </component>
+    <component id="6" name="18CrMo4 [6]" type="material">
+      <attribute id="data_source" unit="none">./database_material.rexs</attribute>
+	    <attribute id="referenced_component_id" unit="none">5</attribute>
+    </component>
+    <component id="7" name="17CrNi6-6 [7]" type="material">
+      <attribute id="data_source" unit="none">./database_material.rexs</attribute>
+	    <attribute id="referenced_component_id" unit="none">11</attribute>
+      <attribute id="fatigue_limit_bending" unit="MPa">300.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">240.0</attribute>
+    </component>
+  </components>
+</model>

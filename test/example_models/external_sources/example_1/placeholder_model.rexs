@@ -59,8 +59,8 @@
     </component>
     <component id="3" name="Shaft [3]" type="shaft">
       <attribute id="data_source" unit="none">./database_shaft.rexs</attribute>
-	  <attribute id="referenced_component_id" unit="none">30</attribute>
-	  <attribute id="reference_component_for_position" unit="none">1</attribute>
+	    <attribute id="referenced_component_id" unit="none">30</attribute>
+	    <attribute id="reference_component_for_position" unit="none">1</attribute>
       <attribute id="support_vector" unit="mm">
         <array>
           <c>0.0</c>
@@ -84,8 +84,8 @@
       </attribute>
     </component>
     <component id="6" name="Rolling bearing [6]" type="rolling_bearing_with_catalog_geometry">
-	  <attribute id="data_source" unit="none">./database_bearing.rexs</attribute>
-	  <attribute id="referenced_component_id" unit="none">60</attribute>
+	    <attribute id="data_source" unit="none">./database_bearing.rexs</attribute>
+	    <attribute id="referenced_component_id" unit="none">60</attribute>
       <attribute id="axial_force_absorption" unit="none">negative</attribute>
       <attribute id="radial_force_absorption" unit="none">true</attribute>
       <attribute id="reference_component_for_position" unit="none">1</attribute>
