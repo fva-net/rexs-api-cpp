@@ -137,7 +137,7 @@ namespace rexsapi
       TLoadCases loadCases = getLoadCases(result, componentMapping, components, dbModel, j);
       std::optional<TAccumulation> accumulation = getAccumulation(result, componentMapping, components, dbModel, j);
 
-      TModel model{info, std::move(components), std::move(relations),
+      TModel model{std::move(info), std::move(components), std::move(relations),
                    TLoadSpectrum{std::move(loadCases), std::move(accumulation)}};
       TRelationTypeChecker checker{m_Mode.getMode()};
       checker.check(result, model);
@@ -196,9 +196,9 @@ namespace rexsapi
       if (!isCustom) {
         const auto& att = componentType.findAttributeById(id);
         if (!unit.empty() && TUnit{unit} != att.getUnit()) {
-          result.addError(
-            TError{m_Mode.adapt(TErrorLevel::ERR),
-                   fmt::format("{}: specified incorrect unit ({}) for attribute id={} of component id={}", context, unit, id, componentId)});
+          result.addError(TError{m_Mode.adapt(TErrorLevel::ERR),
+                                 fmt::format("{}: specified incorrect unit ({}) for attribute id={} of component id={}",
+                                             context, unit, id, componentId)});
         }
         TValue value;
         if (type != att.getValueType()) {

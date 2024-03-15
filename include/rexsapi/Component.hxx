@@ -37,7 +37,7 @@ namespace rexsapi
      * Components are immutable objects, once created they cannot be changed.
      *
      * @attention The external id will be set to uint64 max
-     * 
+     *
      * @param internalId Has to be unique for this specific component in a specific TModel instance
      * @param componentType The database component type
      * @param name An optional name for this component. Can be left empty.
@@ -57,8 +57,10 @@ namespace rexsapi
      *
      * Components are immutable objects, once created they cannot be changed.
      *
-     * @param externalId External id specified in a rexs model file. Has to be unique for this specific component in a specific TModel instance.
-     * @param internalId Internal id used for referencing. Has to be unique for this specific component in a specific TModel instance.
+     * @param externalId External id specified in a rexs model file. Has to be unique for this specific component in a
+     * specific TModel instance.
+     * @param internalId Internal id used for referencing. Has to be unique for this specific component in a specific
+     * TModel instance.
      * @param componentType The database component type.
      * @param name An optional name for this component. Can be left empty.
      * @param attributes The attributes used by this component. Can be left empty. If filled should match the REXS
@@ -95,11 +97,11 @@ namespace rexsapi
 
     /**
      * @brief Returns the external id (e.g from a model file) of this component.
-     * 
+     *
      * @attention The external id will return uint64 max, if it has not been set
-     * 
+     *
      * @return The external component id
-     */ 
+     */
     uint64_t getExternalId() const noexcept
     {
       return m_ExternalId;
@@ -153,6 +155,17 @@ namespace rexsapi
   };
 
   using TComponents = std::vector<TComponent>;
+}
+
+namespace std
+{
+  template<>
+  struct less<rexsapi::TComponent> {
+    constexpr bool operator()(const rexsapi::TComponent& lhs, const rexsapi::TComponent& rhs) const
+    {
+      return lhs.getInternalId() < rhs.getInternalId();
+    }
+  };
 }
 
 #endif

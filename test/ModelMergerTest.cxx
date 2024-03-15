@@ -18,6 +18,7 @@
 #include <rexsapi/ModelMerger.hxx>
 
 #include <test/TestHelper.hxx>
+#include <test/TestModelHelper.hxx>
 #include <test/TestModelLoader.hxx>
 
 #include <doctest.h>
@@ -28,47 +29,54 @@ TEST_CASE("Model merger test")
   const rexsapi::TModelLoader loader{projectDir() / "models"};
   const auto registry = createModelRegistry();
   rexsapi::TResult result;
-  rexsapi::TModelMerger merger{registry};
+  const rexsapi::TModelMerger merger{registry};
 
   SUBCASE("Merge")
   {
-    const auto mainModel =
-      loader.load(projectDir() / "test" / "example_models" / "external_sources" / "placeholder_model.rexs", result,
-                  rexsapi::TMode::RELAXED_MODE);
-    const auto referencedModel1 =
-      loader.load(projectDir() / "test" / "example_models" / "external_sources" / "database_shaft.rexs", result,
-                  rexsapi::TMode::RELAXED_MODE);
-    const auto referencedModel2 =
-      loader.load(projectDir() / "test" / "example_models" / "external_sources" / "database_bearing.rexs", result,
-                  rexsapi::TMode::RELAXED_MODE);
+    std::optional<rexsapi::TModel> newModel;
 
-    auto newModel = merger.merge(result, *mainModel, "./database_shaft.rexs", *referencedModel1);
-    newModel = merger.merge(result, *newModel, "./database_bearing.rexs", *referencedModel2);
+    {
+      const auto mainModel =
+        loader.load(projectDir() / "test" / "example_models" / "external_sources" / "placeholder_model.rexs", result,
+                    rexsapi::TMode::RELAXED_MODE);
+      const auto referencedModel1 =
+        loader.load(projectDir() / "test" / "example_models" / "external_sources" / "database_shaft.rexs", result,
+                    rexsapi::TMode::RELAXED_MODE);
+      const auto referencedModel2 =
+        loader.load(projectDir() / "test" / "example_models" / "external_sources" / "database_bearing.rexs", result,
+                    rexsapi::TMode::RELAXED_MODE);
 
-    for (const auto& comp : newModel->getComponents()) {
-      std::cout << comp.getType() << "\n";
-      for (const auto& att : comp.getAttributes()) {
-        std::cout << "\t" << att.getAttributeId() << "\n";
-      }
+      newModel = merger.merge(result, *mainModel, "./database_shaft.rexs", *referencedModel1);
+      newModel = merger.merge(result, *newModel, "./database_bearing.rexs", *referencedModel2);
     }
+
     CHECK(newModel);
     CHECK(result);
+    CHECK(newModel->getComponents().size() == 9);
+    const ComponentFinder finder{*newModel};
+    CHECK_NOTHROW(finder.findComponent("18CrMo4 [50]"));
+    CHECK_NOTHROW(finder.findComponent("section [100]"));
+    REQUIRE_NOTHROW(finder.findComponent("section [110]"));
+    CHECK_NOTHROW(finder.findComponent("rolling_bearing_row [80]"));
+    CHECK_NOTHROW(finder.findComponent("rolling_bearing_row [90]"));
+    REQUIRE_NOTHROW(finder.findComponent("Rolling bearing [6]"));
+    const auto& bearing = finder.findComponent("Rolling bearing [6]");
+    CHECK(bearing.getAttributes().size() == 33);
+    CHECK(finder.findComponentsByType("shaft_section").size() == 2);
+    CHECK(newModel->getRelations().size() == 8);
   }
 
   SUBCASE("Merge with different rexs versions")
   {
-    rexsapi::TComponents components;
-    rexsapi::TRelations relations;
-    rexsapi::TLoadCases loadCases;
-    rexsapi::TLoadSpectrum spectrum{loadCases, {}};
+    const rexsapi::TModelInfo modelInfo15{"My App", "", "2024-03-13", rexsapi::TRexsVersion{"1.5"}, {}};
+    const rexsapi::TModel mainModel{modelInfo15, rexsapi::TComponents{}, rexsapi::TRelations{},
+                                    rexsapi::TLoadSpectrum{rexsapi::TLoadCases{}, {}}};
 
-    rexsapi::TModelInfo modelInfo15{"My App", "", "2024-03-13", rexsapi::TRexsVersion{"1.5"}, {}};
-    rexsapi::TModel mainModel{modelInfo15, components, relations, spectrum};
+    const rexsapi::TModelInfo modelInfo16{"My App", "", "2024-03-13", rexsapi::TRexsVersion{"1.6"}, {}};
+    const rexsapi::TModel referencedModel{modelInfo16, rexsapi::TComponents{}, rexsapi::TRelations{},
+                                          rexsapi::TLoadSpectrum{rexsapi::TLoadCases{}, {}}};
 
-    rexsapi::TModelInfo modelInfo16{"My App", "", "2024-03-13", rexsapi::TRexsVersion{"1.6"}, {}};
-    rexsapi::TModel referencedModel{modelInfo16, components, relations, spectrum};
-
-    auto newModel = merger.merge(result, mainModel, "", referencedModel);
+    const auto newModel = merger.merge(result, mainModel, "", referencedModel);
     CHECK_FALSE(newModel);
     CHECK_FALSE(result);
     REQUIRE(result.getErrors().size() == 1);

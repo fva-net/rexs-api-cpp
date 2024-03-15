@@ -37,6 +37,20 @@ public:
     return *it;
   }
 
+  rexsapi::TComponents findComponentsByType(const std::string& type) const
+  {
+    rexsapi::TComponents components;
+
+    std::for_each(m_Model.getComponents().begin(), m_Model.getComponents().end(),
+                  [&type, &components](const auto& component) {
+                    if (component.getType() == type) {
+                      components.emplace_back(component);
+                    }
+                  });
+
+    return components;
+  }
+
 private:
   const rexsapi::TModel& m_Model;
 };

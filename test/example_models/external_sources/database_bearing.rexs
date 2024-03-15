@@ -37,12 +37,12 @@
       <attribute id="radial_static_load_rating" unit="kN">60.0</attribute>
       <attribute id="width" unit="mm">20.0</attribute>
     </component>
-    <component id="80" name="" type="rolling_bearing_row">
+    <component id="80" name="rolling_bearing_row [80]" type="rolling_bearing_row">
       <attribute id="axial_force_absorption_of_row" unit="none">negative</attribute>
       <attribute id="position_of_rolling_elements" unit="none">one_rolling_element_on_v_axis</attribute>
       <attribute id="pressure_angle" unit="deg">11.68</attribute>
     </component>
-    <component id="90" name="" type="rolling_bearing_row">
+    <component id="90" name="rolling_bearing_row [90]" type="rolling_bearing_row">
       <attribute id="axial_force_absorption_of_row" unit="none">positive</attribute>
       <attribute id="position_of_rolling_elements" unit="none">one_rolling_element_on_v_axis</attribute>
       <attribute id="pressure_angle" unit="deg">11.68</attribute>

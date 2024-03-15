@@ -247,7 +247,7 @@ namespace rexsapi
       }
     }
 
-    TModel model{info, std::move(components), std::move(relations),
+    TModel model{std::move(info), std::move(components), std::move(relations),
                  TLoadSpectrum{std::move(loadCases), std::move(accumulation)}};
     TRelationTypeChecker checker{m_Mode.getMode()};
     checker.check(result, model);
@@ -262,8 +262,7 @@ namespace rexsapi
     return it != attributes.end();
   }
 
-  inline TAttributes TXMLModelLoader::getAttributes(const std::string& context, TResult& result,
-                                                    uint64_t componentId,
+  inline TAttributes TXMLModelLoader::getAttributes(const std::string& context, TResult& result, uint64_t componentId,
                                                     const database::TComponent& componentType,
                                                     const pugi::xpath_node_set& attributeNodes) const
   {
