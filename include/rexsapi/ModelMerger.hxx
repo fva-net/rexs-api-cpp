@@ -163,7 +163,6 @@ namespace rexsapi
 
       TModelBuilder modelBuilder{databaseModel};
 
-
       TComponents components;
       const TComponentFinder componentFinder{referencedModel.getComponents()};
       const TRelationFinder relationFinder{referencedModel};
@@ -249,39 +248,37 @@ namespace rexsapi
         }
       }
 
-      /*
-      const TComponentFinder newModelComponentFinder{components};
       for (const auto& relation : mainModel.getRelations()) {
-        TRelationReferences references;
-        std::for_each(relation.getReferences().begin(), relation.getReferences().end(),
-                      [&references, &newModelComponentFinder](const auto& reference) {
-                        references.emplace_back(
-                          reference.getRole(), reference.getHint(),
-                          newModelComponentFinder.findComponentByInternalId(reference.getComponent().getInternalId())
-                            .value()
-                            .get());
-                      });
-        relations.emplace_back(relation.getType(), relation.getOrder(), references);
+        modelBuilder.addRelation(relation.getType());
+        if (relation.getOrder()) {
+          modelBuilder.order(relation.getOrder().value());
+        }
+        std::for_each(
+          relation.getReferences().begin(), relation.getReferences().end(), [&modelBuilder](const auto& reference) {
+            modelBuilder.addRef(reference.getRole(), std::to_string(reference.getComponent().getInternalId()))
+              .hint(reference.getHint());
+          });
       }
 
       for (const auto& refRelation : referencedRelations) {
         std::for_each(refRelation.referencedRelations.begin(), refRelation.referencedRelations.end(),
-                      [&relations, &refRelation, &newModelComponentFinder](const auto& relation) {
-                        TRelationReferences references;
-                        std::for_each(relation.getReferences().begin(), relation.getReferences().end(),
-                                      [&refRelation, &references, &newModelComponentFinder](const auto& reference) {
-                                        auto id = reference.getComponent().getInternalId();
-                                        if (id == refRelation.referencedModelId) {
-                                          id = refRelation.mainModelId;
-                                        }
-                                        references.emplace_back(
-                                          reference.getRole(), reference.getHint(),
-                                          newModelComponentFinder.findComponentByInternalId(id).value().get());
-                                      });
-                        relations.emplace_back(relation.getType(), relation.getOrder(), references);
+                      [&modelBuilder, &refRelation](const auto& relation) {
+                        modelBuilder.addRelation(relation.getType());
+                        if (relation.getOrder()) {
+                          modelBuilder.order(relation.getOrder().value());
+                        }
+
+                        std::for_each(
+                          relation.getReferences().begin(), relation.getReferences().end(),
+                          [&modelBuilder, &refRelation](const auto& reference) {
+                            auto id = reference.getComponent().getInternalId();
+                            if (id == refRelation.referencedModelId) {
+                              id = refRelation.mainModelId;
+                            }
+                            modelBuilder.addRef(reference.getRole(), std::to_string(id)).hint(reference.getHint());
+                          });
                       });
       }
-       */
 
       return modelBuilder.build(mainModel.getInfo());
     }
