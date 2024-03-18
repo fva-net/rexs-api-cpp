@@ -100,6 +100,19 @@ namespace rexsapi
      */
     bool check(TResult& result, const TRexsVersion& version, const TRelation& relation) const;
 
+    /**
+     * @brief Checks if the given relation role is a main component for the relation type.
+     *
+     * @param result Describes the outcome of the check. Will contain messages upon issues encountered.
+     * @param version The version to use for the check
+     * @param relationType The relation type to check main components for
+     * @param role The role to check main component
+     * @return true
+     * @return false
+     */
+    bool isMainComponentRole(TResult& result, const TRexsVersion& version, const TRelationType relationType,
+                             const TRelationRole role) const;
+
   private:
     bool checkRelation(TResult& result, const TRexsVersion& version, const detail::TRelationTypeMapping* mapping,
                        const TRelation& relation) const;
@@ -194,6 +207,27 @@ namespace rexsapi
       if (role.m_Role == reference.getRole()) {
         return true;
       }
+    }
+
+    return false;
+  }
+
+  inline bool TRelationTypeChecker::isMainComponentRole(TResult& result, const TRexsVersion& version,
+                                                        const TRelationType relationType, const TRelationRole role) const
+  {
+    const auto* mapping = findVersion(version);
+    if (mapping == nullptr) {
+      result.addError(
+        TError{TErrorLevel::ERR, fmt::format("cannot find configuration for version {}", version.asString())});
+      return false;
+    }
+
+    const auto it = std::find_if(mapping->m_Entries.begin(), mapping->m_Entries.end(), [relationType](const auto& entry) {
+      return entry.m_Type == relationType;
+    });
+
+    if (it != mapping->m_Entries.end()) {
+      return it->m_Roles[0].m_Role == role;
     }
 
     return false;

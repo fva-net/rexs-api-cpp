@@ -26,6 +26,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   model file (#2)
 - Components can have an external id, which represents exactly the components id specified in a model file (#4)
 - Added model database file for 1.6 models (#30)
+- New check method for main components to TRelationTypeChecker
+- TModelMerger to merge multiple TModel instances into a new instance (#36)
+- References into external data sources can now be used for REXS models >= version 1.5 (#31)
 
 ## [1.1.0]
 
