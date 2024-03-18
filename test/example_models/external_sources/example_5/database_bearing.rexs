@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<model applicationId="FVA Workbench" applicationVersion="8.0" date="2022-12-12T11:06:16+01:00" version="1.5">
+  <relations>
+    <!--Relation between the main component Rolling bearing [60] and the sub-component rolling_bearing_row [80]-->
+    <relation id="1" order="1" type="ordered_assembly">
+      <ref hint="rolling_bearing_with_catalog_geometry" id="60" role="assembly"/>
+      <ref hint="rolling_bearing_row" id="80" role="part"/>
+    </relation>
+    <!--Relation between the main component Rolling bearing [60] and the sub-component rolling_bearing_row [90]-->
+    <relation id="2" order="2" type="ordered_assembly">
+      <ref hint="rolling_bearing_with_catalog_geometry" id="60" role="assembly"/>
+      <ref hint="rolling_bearing_row" id="90" role="part"/>
+    </relation>
+	  <relation id="3" type="ordered_assembly" order="1">
+      <ref hint="rolling_bearing_row" id="80" role="assembly" />
+      <ref hint="rolling_element" id="81" role="part" />
+    </relation>
+    <relation id="4" type="ordered_assembly" order="2">
+      <ref hint="rolling_bearing_row" id="80" role="assembly" />
+      <ref hint="rolling_element" id="82" role="part" />
+    </relation>
+    <relation id="5" type="ordered_assembly" order="3">
+      <ref hint="rolling_bearing_row" id="80" role="assembly" />
+      <ref hint="rolling_element" id="83" role="part" />
+    </relation>
+    <relation id="6" type="ordered_assembly" order="4">
+      <ref hint="rolling_bearing_row" id="80" role="assembly" />
+      <ref hint="rolling_element" id="84" role="part" />
+    </relation>
+    <relation id="7" type="ordered_assembly" order="5">
+      <ref hint="rolling_bearing_row" id="80" role="assembly" />
+      <ref hint="rolling_element" id="85" role="part" />
+    </relation>
+    <relation id="8" type="ordered_assembly" order="6">
+      <ref hint="rolling_bearing_row" id="80" role="assembly" />
+      <ref hint="rolling_element" id="86" role="part" />
+    </relation>
+    <relation id="9" type="ordered_assembly" order="1">
+      <ref hint="rolling_bearing_row" id="90" role="assembly" />
+      <ref hint="rolling_element" id="91" role="part" />
+    </relation>
+    <relation id="10" type="ordered_assembly" order="2">
+      <ref hint="rolling_bearing_row" id="90" role="assembly" />
+      <ref hint="rolling_element" id="92" role="part" />
+    </relation>
+    <relation id="11" type="ordered_assembly" order="3">
+      <ref hint="rolling_bearing_row" id="90" role="assembly" />
+      <ref hint="rolling_element" id="93" role="part" />
+    </relation>
+    <relation id="12" type="ordered_assembly" order="4">
+      <ref hint="rolling_bearing_row" id="90" role="assembly" />
+      <ref hint="rolling_element" id="94" role="part" />
+    </relation>
+    <relation id="13" type="ordered_assembly" order="5">
+      <ref hint="rolling_bearing_row" id="90" role="assembly" />
+      <ref hint="rolling_element" id="95" role="part" />
+    </relation>
+    <relation id="14" type="ordered_assembly" order="6">
+      <ref hint="rolling_bearing_row" id="90" role="assembly" />
+      <ref hint="rolling_element" id="96" role="part" />
+    </relation>
+  </relations>
+  <components>
+    <component id="60" name="Rolling bearing [60]" type="rolling_bearing_with_catalog_geometry">
+      <attribute id="axial_factor_y_0" unit="none">2.2</attribute>
+      <attribute id="axial_factor_y_1" unit="none">2.2</attribute>
+      <attribute id="axial_factor_y_2" unit="none">3.3</attribute>
+      <attribute id="bearing_tolerance_class" unit="none">P0</attribute>
+      <attribute id="bearing_type" unit="none">radial_self_aligning_roller_bearing</attribute>
+      <attribute id="catalogue_designation" unit="none">22206 E</attribute>
+      <attribute id="catalogue_value_e" unit="none">0.31</attribute>
+      <attribute id="contamination_factor_according_to_iso_281_2007" unit="none">0.5</attribute>
+      <attribute id="fatigue_limit_load" unit="kN">6.4</attribute>
+      <attribute id="inner_diameter" unit="mm">30.0</attribute>
+      <attribute id="lubrication_type" unit="none">oil_injection</attribute>
+      <attribute id="manufacturer" unit="none">SKF</attribute>
+      <attribute id="number_of_bearing_rows" unit="none">2</attribute>
+      <attribute id="operating_axial_bearing_clearance" unit="mum">0.0</attribute>
+      <attribute id="operating_radial_bearing_clearance" unit="mum">0.0</attribute>
+      <attribute id="outer_diameter" unit="mm">62.0</attribute>
+      <attribute id="radial_clearance_class" unit="none">C0</attribute>
+      <attribute id="radial_dynamic_load_rating" unit="kN">66.1</attribute>
+      <attribute id="radial_factor_x_1" unit="none">1.0</attribute>
+      <attribute id="radial_factor_x_2" unit="none">0.67</attribute>
+      <attribute id="radial_static_load_rating" unit="kN">60.0</attribute>
+      <attribute id="width" unit="mm">20.0</attribute>
+    </component>
+    <component id="80" name="" type="rolling_bearing_row">
+      <attribute id="axial_force_absorption_of_row" unit="none">negative</attribute>
+      <attribute id="position_of_rolling_elements" unit="none">one_rolling_element_on_v_axis</attribute>
+      <attribute id="pressure_angle" unit="deg">11.68</attribute>
+    </component>
+    <component id="90" name="" type="rolling_bearing_row">
+      <attribute id="axial_force_absorption_of_row" unit="none">positive</attribute>
+      <attribute id="position_of_rolling_elements" unit="none">one_rolling_element_on_v_axis</attribute>
+      <attribute id="pressure_angle" unit="deg">11.68</attribute>
+    </component>
+	<component id="81" name="Profilierte Rolle 1" type="rolling_element">
+      <attribute id="diameter_of_rolling_element" unit="mm">3.2</attribute>
+      <attribute id="length_of_rolling_element" unit="mm">16.8</attribute>
+    </component>
+	<component id="82" name="Profilierte Rolle 2" type="rolling_element">
+      <attribute id="diameter_of_rolling_element" unit="mm">3.2</attribute>
+      <attribute id="length_of_rolling_element" unit="mm">16.8</attribute>
+    </component>
+	<component id="83" name="Profilierte Rolle 3" type="rolling_element">
+      <attribute id="diameter_of_rolling_element" unit="mm">3.2</attribute>
+      <attribute id="length_of_rolling_element" unit="mm">16.8</attribute>
+    </component>
+	<component id="84" name="Profilierte Rolle 4" type="rolling_element">
+      <attribute id="diameter_of_rolling_element" unit="mm">3.2</attribute>
+      <attribute id="length_of_rolling_element" unit="mm">16.8</attribute>
+    </component>
+	<component id="85" name="Profilierte Rolle 5" type="rolling_element">
+      <attribute id="diameter_of_rolling_element" unit="mm">3.2</attribute>
+      <attribute id="length_of_rolling_element" unit="mm">16.8</attribute>
+    </component>
+	<component id="86" name="Profilierte Rolle 6" type="rolling_element">
+      <attribute id="diameter_of_rolling_element" unit="mm">3.2</attribute>
+      <attribute id="length_of_rolling_element" unit="mm">16.8</attribute>
+    </component>
+	<component id="91" name="Profilierte Rolle 1" type="rolling_element">
+      <attribute id="diameter_of_rolling_element" unit="mm">3.2</attribute>
+      <attribute id="length_of_rolling_element" unit="mm">16.8</attribute>
+    </component>
+	<component id="92" name="Profilierte Rolle 2" type="rolling_element">
+      <attribute id="diameter_of_rolling_element" unit="mm">3.2</attribute>
+      <attribute id="length_of_rolling_element" unit="mm">16.8</attribute>
+    </component>
+	<component id="93" name="Profilierte Rolle 3" type="rolling_element">
+      <attribute id="diameter_of_rolling_element" unit="mm">3.2</attribute>
+      <attribute id="length_of_rolling_element" unit="mm">16.8</attribute>
+    </component>
+	<component id="94" name="Profilierte Rolle 4" type="rolling_element">
+      <attribute id="diameter_of_rolling_element" unit="mm">3.2</attribute>
+      <attribute id="length_of_rolling_element" unit="mm">16.8</attribute>
+    </component>
+	<component id="95" name="Profilierte Rolle 5" type="rolling_element">
+      <attribute id="diameter_of_rolling_element" unit="mm">3.2</attribute>
+      <attribute id="length_of_rolling_element" unit="mm">16.8</attribute>
+    </component>
+	<component id="96" name="Profilierte Rolle 6" type="rolling_element">
+      <attribute id="diameter_of_rolling_element" unit="mm">3.2</attribute>
+      <attribute id="length_of_rolling_element" unit="mm">16.8</attribute>
+    </component>
+  </components>
+</model>

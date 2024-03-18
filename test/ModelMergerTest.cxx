@@ -170,4 +170,29 @@ TEST_CASE("Model merger test")
       "referenced component 8 in data_source './database_material.rexs' has wrong type 'material' instead of 'shaft'");
     CHECK(result.getErrors()[0].isError());
   }
+
+  SUBCASE("Merge multiple models with indirect relations")
+  {
+    std::optional<rexsapi::TModel> newModel;
+
+    {
+      const auto mainModel = loader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_5" /
+                                           "placeholder_model.rexs",
+                                         result, rexsapi::TMode::RELAXED_MODE);
+      const auto referencedModel1 =
+        loader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_5" / "database_shaft.rexs",
+                    result, rexsapi::TMode::RELAXED_MODE);
+      const auto referencedModel2 = loader.load(projectDir() / "test" / "example_models" / "external_sources" /
+                                                  "example_5" / "database_bearing.rexs",
+                                                result, rexsapi::TMode::RELAXED_MODE);
+
+      newModel = merger.merge(result, *mainModel, "./database_shaft.rexs", *referencedModel1);
+      newModel = merger.merge(result, *newModel, "./database_bearing.rexs", *referencedModel2);
+    }
+
+    CHECK(newModel);
+    CHECK(result);
+    CHECK(newModel->getComponents().size() == 21);
+    CHECK(newModel->getRelations().size() == 20);
+  }
 }

@@ -31,7 +31,7 @@ namespace rexsapi
   class TAttributeFinder
   {
   public:
-    explicit TAttributeFinder(const rexsapi::TComponent& component)
+    explicit TAttributeFinder(const TComponent& component)
     : m_Component{component}
     {
     }
@@ -64,14 +64,14 @@ namespace rexsapi
     }
 
   private:
-    const rexsapi::TComponent& m_Component;
+    const TComponent& m_Component;
   };
 
 
   class TComponentFinder
   {
   public:
-    explicit TComponentFinder(const rexsapi::TComponents& components)
+    explicit TComponentFinder(const TComponents& components)
     : m_Components{components}
     {
     }
@@ -101,39 +101,52 @@ namespace rexsapi
     }
 
   private:
-    const rexsapi::TComponents& m_Components;
+    const TComponents& m_Components;
   };
 
 
   class TRelationFinder
   {
   public:
-    explicit TRelationFinder(const rexsapi::TModel& model)
+    explicit TRelationFinder(const TModel& model, const TRexsVersion& version)
     : m_Model{model}
+    , m_Version{version}
     {
     }
 
-    // TODO: add recursive lookup for relations of references
     std::vector<std::reference_wrapper<const TRelation>> findRelationsByReferenceId(uint64_t id) const
     {
       std::vector<std::reference_wrapper<const TRelation>> relations;
 
-      std::for_each(m_Model.getRelations().begin(), m_Model.getRelations().end(),
-                    [&id, &relations](const auto& relation) {
-                      auto it = std::find_if(relation.getReferences().begin(), relation.getReferences().end(),
-                                             [&id](const auto& reference) {
-                                               return reference.getComponent().getInternalId() == id;
-                                             });
-                      if (it != relation.getReferences().end()) {
-                        relations.emplace_back(relation);
-                      }
-                    });
+      std::for_each(
+        m_Model.getRelations().begin(), m_Model.getRelations().end(), [this, &id, &relations](const auto& relation) {
+          auto it = std::find_if(relation.getReferences().begin(), relation.getReferences().end(),
+                                 [this, &id, &relation](const auto& reference) {
+                                   TResult result;
+                                   return reference.getComponent().getInternalId() == id &&
+                                          m_Checker.isMainComponentRole(result, m_Version, relation.getType(),
+                                                                        reference.getRole());
+                                 });
+
+          if (it != relation.getReferences().end()) {
+            std::for_each(relation.getReferences().begin(), relation.getReferences().end(),
+                          [this, &id, &relations](const auto& reference) {
+                            if (reference.getComponent().getInternalId() != id) {
+                              auto subRelations = findRelationsByReferenceId(reference.getComponent().getInternalId());
+                              relations.insert(relations.end(), subRelations.begin(), subRelations.end());
+                            }
+                          });
+            relations.emplace_back(relation);
+          }
+        });
 
       return relations;
     }
 
   private:
-    const rexsapi::TModel& m_Model;
+    const TModel& m_Model;
+    const TRexsVersion& m_Version;
+    const TRelationTypeChecker m_Checker{TMode::STRICT_MODE};
   };
 
   /*
@@ -165,7 +178,7 @@ namespace rexsapi
 
       TComponents components;
       const TComponentFinder componentFinder{referencedModel.getComponents()};
-      const TRelationFinder relationFinder{referencedModel};
+      const TRelationFinder relationFinder{referencedModel, referencedModel.getInfo().getVersion()};
       TRelations relations;
 
       struct ReferencedRelation {
@@ -199,20 +212,13 @@ namespace rexsapi
                 ReferencedRelation{component.getInternalId(), referencedComponent.getInternalId(), {}});
               std::set<TComponent> relationComponents;
               std::for_each(compRelations.begin(), compRelations.end(), [&](const auto& relation) {
-                std::set<TComponent> tmp;
-                bool isRefContained = false;
+                referencedRelations.back().referencedRelations.emplace_back(relation);
                 std::for_each(relation.get().getReferences().begin(), relation.get().getReferences().end(),
                               [&](const auto& reference) {
                                 if (reference.getComponent().getInternalId() != referencedComponent.getInternalId()) {
-                                  tmp.emplace(reference.getComponent());
-                                } else {
-                                  isRefContained = true;
-                                  referencedRelations.back().referencedRelations.emplace_back(relation);
+                                  relationComponents.emplace(reference.getComponent());
                                 }
                               });
-                if (isRefContained) {
-                  relationComponents.insert(tmp.begin(), tmp.end());
-                }
               });
 
               for (const auto& comp : relationComponents) {
