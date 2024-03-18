@@ -137,7 +137,8 @@ namespace rexsapi::detail
     }
 
   private:
-    uint64_t m_InternalComponentId{0};
+    // TODO: is this ok?
+    inline static uint64_t m_InternalComponentId{0};
     std::unordered_map<uint64_t, uint64_t> m_ComponentsMapping;
   };
 
@@ -163,6 +164,7 @@ namespace rexsapi::detail
       for (const auto& component : components) {
         TAttributes attributes;
         for (const auto& attribute : component.getAttributes()) {
+          // TODO: maybe add new value type REFERENCE_EXTERNAL_COMPONENT
           if (attribute.getValueType() == TValueType::REFERENCE_COMPONENT && attribute.hasValue() &&
               attribute.getAttributeId() != "referenced_component_id") {
             auto id = attribute.getValue<TReferenceComponentType>();

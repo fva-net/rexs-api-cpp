@@ -126,8 +126,8 @@ namespace rexsapi
         return m_AttributeId == attribute;
       }
 
-      TAttribute createAttribute(const std::unordered_map<TComponentId, uint64_t>& m_ComponentMapping) const;
-      TAttribute createAttribute() const;
+      ::rexsapi::TAttribute createAttribute(const std::unordered_map<TComponentId, uint64_t>& m_ComponentMapping) const;
+      ::rexsapi::TAttribute createAttribute() const;
     };
 
     struct TComponentEntry {
@@ -223,7 +223,8 @@ namespace rexsapi
           attributeId = lastAttribute().m_Attribute->getAttributeId();
         }
 
-        if (type == TValueType::REFERENCE_COMPONENT) {
+        // TODO: maybe add new value type REFERENCE_EXTERNAL_COMPONENT
+        if (type == TValueType::REFERENCE_COMPONENT && attributeId != "referenced_component_id") {
           throw TException{
             fmt::format("a reference has to be set using the reference method for attribute id={} of component id={}",
                         attributeId, lastComponent().m_Id.asString())};
@@ -1007,6 +1008,18 @@ namespace rexsapi
      * Called as final step to create the REXS TModel instance. Can be called multiple times and generates
      * the same TModel as long as no other mehods have been called in between on this builder.
      *
+     * @param info The meta data for this model
+     * @return TModel of all added REXS model components, attributes, load cases, and accumulation
+     * @throws TException if anything goes wrong while building the model
+     */
+    [[nodiscard]] TModel build(TModelInfo info);
+
+    /**
+     * @brief Finalizes the model builder and creates the REXS TModel instance
+     *
+     * Called as final step to create the REXS TModel instance. Can be called multiple times and generates
+     * the same TModel as long as no other mehods have been called in between on this builder.
+     *
      * @param applicationId The name of the application creating the model
      * @param applicationVersion The version if the application creating the model
      * @param applicationLanguage The optional language used by the application
@@ -1067,7 +1080,7 @@ namespace rexsapi
   }
 
 
-  inline TAttribute
+  inline ::rexsapi::TAttribute
   detail::TAttributeEntry::createAttribute(const std::unordered_map<TComponentId, uint64_t>& componentMapping) const
   {
     if (m_Value.isEmpty() && !m_Reference.has_value()) {
@@ -1086,10 +1099,10 @@ namespace rexsapi
 
       if (m_Reference.has_value()) {
         auto id = static_cast<TReferenceComponentType>(componentMapping.at(*m_Reference));
-        return TAttribute{*m_Attribute, TValue{id}};
+        return ::rexsapi::TAttribute{*m_Attribute, TValue{id}};
       }
 
-      return TAttribute{*m_Attribute, std::move(val)};
+      return ::rexsapi::TAttribute{*m_Attribute, std::move(val)};
     }
 
     TUnit unit;
@@ -1099,13 +1112,13 @@ namespace rexsapi
 
     if (m_Reference.has_value()) {
       auto id = static_cast<TReferenceComponentType>(componentMapping.at(*m_Reference));
-      return TAttribute{m_AttributeId, unit, *m_ValueType, TValue{id}};
+      return ::rexsapi::TAttribute{m_AttributeId, unit, *m_ValueType, TValue{id}};
     }
 
-    return TAttribute{m_AttributeId, unit, *m_ValueType, std::move(val)};
+    return ::rexsapi::TAttribute{m_AttributeId, unit, *m_ValueType, std::move(val)};
   }
 
-  inline TAttribute detail::TAttributeEntry::createAttribute() const
+  inline ::rexsapi::TAttribute detail::TAttributeEntry::createAttribute() const
   {
     if (m_Value.isEmpty()) {
       throw TException{fmt::format("attribute id={} has an empty value",
@@ -1120,7 +1133,7 @@ namespace rexsapi
         throw TException{
           fmt::format("attribute id={} has wrong unit {}", m_Attribute->getAttributeId(), m_Unit->getName())};
       }
-      return TAttribute{*m_Attribute, std::move(val)};
+      return ::rexsapi::TAttribute{*m_Attribute, std::move(val)};
     }
 
     TUnit unit;
@@ -1128,7 +1141,7 @@ namespace rexsapi
       unit = *m_Unit;
     }
 
-    return TAttribute{m_AttributeId, unit, *m_ValueType, std::move(val)};
+    return ::rexsapi::TAttribute{m_AttributeId, unit, *m_ValueType, std::move(val)};
   }
 
 
@@ -1586,21 +1599,13 @@ namespace rexsapi
     return m_ComponentBuilder.id();
   }
 
-  inline TModel TModelBuilder::build(std::string applicationId, std::string applicationVersion,
-                                     std::optional<std::string> language)
+  inline TModel TModelBuilder::build(rexsapi::TModelInfo info)
   {
     TRelations relations;
-    const rexsapi::TModelInfo info{std::move(applicationId), std::move(applicationVersion),
-                                   getTimeStringISO8601(std::chrono::system_clock::now()),
-                                   m_ComponentBuilder.m_Components.databaseModel().getVersion(), std::move(language)};
     auto components = m_ComponentBuilder.build();
 
     if (components.empty()) {
       throw TException{"no components specified for model"};
-    }
-
-    if (m_Relations.empty()) {
-      throw TException{"no relations specified for model"};
     }
 
     std::set<uint64_t> usedComponents;
@@ -1617,7 +1622,7 @@ namespace rexsapi
       relations.emplace_back(rexsapi::TRelation{relation.m_Type, relation.m_Order, std::move(references)});
     }
 
-    if (usedComponents.size() != components.size()) {
+    if (!relations.empty() && usedComponents.size() != components.size()) {
       throw TException{
         fmt::format("{} components are not used in a relation", components.size() - usedComponents.size())};
     }
@@ -1639,7 +1644,7 @@ namespace rexsapi
 
     TLoadSpectrum spectrum{std::move(loadCases), std::move(accumulation)};
 
-    TModel model{info, std::move(components), std::move(relations), std::move(spectrum)};
+    TModel model{std::move(info), std::move(components), std::move(relations), std::move(spectrum)};
     TRelationTypeChecker checker{TMode::STRICT_MODE};
     TResult result;
     if (!checker.check(result, model)) {
@@ -1651,6 +1656,15 @@ namespace rexsapi
       throw TException{stream.str()};
     }
     return model;
+  }
+
+  inline TModel TModelBuilder::build(std::string applicationId, std::string applicationVersion,
+                                     std::optional<std::string> language)
+  {
+    const rexsapi::TModelInfo info{std::move(applicationId), std::move(applicationVersion),
+                                   getTimeStringISO8601(std::chrono::system_clock::now()),
+                                   m_ComponentBuilder.m_Components.databaseModel().getVersion(), std::move(language)};
+    return build(std::move(info));
   }
 }
 

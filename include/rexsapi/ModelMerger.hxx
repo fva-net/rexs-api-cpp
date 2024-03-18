@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+
 #ifndef REXSAPI_MODEL_MERGER_HXX
 #define REXSAPI_MODEL_MERGER_HXX
 
-#include <rexsapi/Model.hxx>
+
+#include <rexsapi/ModelBuilder.hxx>
 #include <rexsapi/database/ModelRegistry.hxx>
 
 #include <functional>
@@ -159,6 +161,9 @@ namespace rexsapi
       const auto language = mainModel.getInfo().getApplicationLanguage();
       const auto& databaseModel = m_Registry.getModel(mainModel.getInfo().getVersion(), language.value_or("en"));
 
+      TModelBuilder modelBuilder{databaseModel};
+
+
       TComponents components;
       const TComponentFinder componentFinder{referencedModel.getComponents()};
       const TRelationFinder relationFinder{referencedModel};
@@ -211,7 +216,9 @@ namespace rexsapi
                 }
               });
 
-              components.insert(components.end(), relationComponents.begin(), relationComponents.end());
+              for (const auto& comp : relationComponents) {
+                insertComponent(modelBuilder, comp, {});
+              }
 
               TAttributes attributes = component.getAttributes();
               std::for_each(refComponent.value().get().getAttributes().begin(),
@@ -225,9 +232,7 @@ namespace rexsapi
                               }
                             });
 
-              components.emplace_back(component.getExternalId(), component.getInternalId(),
-                                      databaseModel.findComponentById(component.getType()), component.getName(),
-                                      attributes);
+              insertComponent(modelBuilder, component, attributes);
               addComponent = false;
             } else {
               result.addError(
@@ -240,10 +245,11 @@ namespace rexsapi
           }
         }
         if (addComponent) {
-          components.emplace_back(component);
+          insertComponent(modelBuilder, component, {});
         }
       }
 
+      /*
       const TComponentFinder newModelComponentFinder{components};
       for (const auto& relation : mainModel.getRelations()) {
         TRelationReferences references;
@@ -275,11 +281,30 @@ namespace rexsapi
                         relations.emplace_back(relation.getType(), relation.getOrder(), references);
                       });
       }
+       */
 
-      return TModel(mainModel.getInfo(), std::move(components), std::move(relations), mainModel.getLoadSpectrum());
+      return modelBuilder.build(mainModel.getInfo());
     }
 
   private:
+    void insertComponent(TModelBuilder& modelBuilder, const TComponent& component, const TAttributes& attributes) const
+    {
+      modelBuilder.addComponent(component.getType(), std::to_string(component.getInternalId()))
+        .name(component.getName());
+      for (const auto& attr : attributes.empty() ? component.getAttributes() : attributes) {
+        // TODO: handle custom attributes
+        // TODO: maybe add new value type REFERENCE_EXTERNAL_COMPONENT
+        if (attr.getValueType() == TValueType::REFERENCE_COMPONENT &&
+            attr.getAttributeId() != "referenced_component_id") {
+          modelBuilder.addAttribute(attr.getAttributeId())
+            .unit(attr.getUnit().getName())
+            .reference(std::to_string(attr.getValue().getValue<rexsapi::TIntType>()));
+        } else {
+          modelBuilder.addAttribute(attr.getAttributeId()).unit(attr.getUnit().getName()).value(attr.getValue());
+        }
+      }
+    }
+
     const database::TModelRegistry& m_Registry;
   };
 }

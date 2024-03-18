@@ -19,7 +19,7 @@
   </relations>
   <components>
     <component id="30" name="Shaft [30]" type="shaft">
-	</component>
+	  </component>
     <component id="50" name="18CrMo4 [50]" type="material">
       <attribute id="core_hardness_vickers" unit="HV">550.0</attribute>
       <attribute id="density" unit="kg / dm^3">7.85</attribute>
