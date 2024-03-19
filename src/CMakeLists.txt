@@ -34,6 +34,7 @@ target_sources(rexsapi INTERFACE
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelSaver.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelVisitor.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/Relation.hxx
+  ${PROJECT_SOURCE_DIR}/include/rexsapi/ExternalSubcomponentsChecker.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/RelationTypeChecker.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/Result.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/RexsVersion.hxx

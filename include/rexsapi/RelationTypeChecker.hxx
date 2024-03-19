@@ -213,7 +213,8 @@ namespace rexsapi
   }
 
   inline bool TRelationTypeChecker::isMainComponentRole(TResult& result, const TRexsVersion& version,
-                                                        const TRelationType relationType, const TRelationRole role) const
+                                                        const TRelationType relationType,
+                                                        const TRelationRole role) const
   {
     const auto* mapping = findVersion(version);
     if (mapping == nullptr) {
@@ -222,9 +223,10 @@ namespace rexsapi
       return false;
     }
 
-    const auto it = std::find_if(mapping->m_Entries.begin(), mapping->m_Entries.end(), [relationType](const auto& entry) {
-      return entry.m_Type == relationType;
-    });
+    const auto it =
+      std::find_if(mapping->m_Entries.begin(), mapping->m_Entries.end(), [relationType](const auto& entry) {
+        return entry.m_Type == relationType;
+      });
 
     if (it != mapping->m_Entries.end()) {
       return it->m_Roles[0].m_Role == role;
@@ -648,7 +650,7 @@ namespace rexsapi
 }
     )";
 
-      TRelationTypeMappings mappings = parseMappings(result, relationTypes);
+      auto mappings = parseMappings(result, relationTypes);
       if (!result) {
         throw TException{fmt::format("cannot load relation types mapping")};
       }

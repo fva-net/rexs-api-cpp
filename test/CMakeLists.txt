@@ -24,6 +24,7 @@ add_executable(rexsapi_test
   ModelTest.cxx
   ModelVisitorTest.cxx
   ModeTest.cxx
+  PermissibleSubcomponentsMappingTest.cxx
   RelationTypeCheckerTest.cxx
   ResultTest.cxx
   RexsVersionTest.cxx

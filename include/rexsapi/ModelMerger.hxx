@@ -151,8 +151,6 @@ namespace rexsapi
 
   /*
     - All ids are unique over both models
-    - We have to preserve the external id and the data_source
-    -
   */
   class TModelMerger
   {
