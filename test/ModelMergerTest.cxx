@@ -29,7 +29,7 @@ TEST_CASE("Model merger test")
   const rexsapi::TModelLoader loader{projectDir() / "models"};
   const auto registry = createModelRegistry();
   rexsapi::TResult result;
-  const rexsapi::TModelMerger merger{registry};
+  const rexsapi::TModelMerger merger{rexsapi::TMode::RELAXED_MODE, registry};
 
   SUBCASE("Merge multiple models")
   {
@@ -194,5 +194,28 @@ TEST_CASE("Model merger test")
     CHECK(result);
     CHECK(newModel->getComponents().size() == 21);
     CHECK(newModel->getRelations().size() == 20);
+  }
+
+  SUBCASE("Merge model with non permissible component in data_source")
+  {
+    rexsapi::TModelMerger strictMerger{rexsapi::TMode::STRICT_MODE, registry};
+    std::optional<rexsapi::TModel> newModel;
+
+    {
+      const auto mainModel = loader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_6" /
+                                           "placeholder_model.rexs",
+                                         result, rexsapi::TMode::RELAXED_MODE);
+      const auto referencedModel =
+        loader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_6" / "database_shaft.rexs",
+                    result, rexsapi::TMode::RELAXED_MODE);
+
+      result.reset();
+      newModel = strictMerger.merge(result, *mainModel, "./database_shaft.rexs", *referencedModel);
+    }
+
+    CHECK(newModel);
+    CHECK_FALSE(result);
+    REQUIRE(result.getErrors().size() == 1);
+    CHECK(result.getErrors()[0].getMessage() == "external sub component 'cylindrical_gear' is not permissible for main component 'shaft'");
   }
 }

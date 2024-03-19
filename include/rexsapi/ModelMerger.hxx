@@ -19,6 +19,8 @@
 #define REXSAPI_MODEL_MERGER_HXX
 
 
+#include <rexsapi/ExternalSubcomponentsChecker.hxx>
+#include <rexsapi/Mode.hxx>
 #include <rexsapi/ModelBuilder.hxx>
 #include <rexsapi/database/ModelRegistry.hxx>
 
@@ -36,7 +38,7 @@ namespace rexsapi
     {
     }
 
-    rexsapi::TAttributes findCustomAttributes() const
+    [[nodiscard]] rexsapi::TAttributes findCustomAttributes() const
     {
       rexsapi::TAttributes attributes;
 
@@ -50,7 +52,7 @@ namespace rexsapi
       return attributes;
     }
 
-    std::optional<std::reference_wrapper<const TAttribute>> findAttributeById(const std::string& id) const
+    [[nodiscard]] std::optional<std::reference_wrapper<const TAttribute>> findAttributeById(const std::string& id) const
     {
       auto it = std::find_if(m_Component.getAttributes().begin(), m_Component.getAttributes().end(),
                              [&id](const auto& attribute) {
@@ -76,7 +78,7 @@ namespace rexsapi
     {
     }
 
-    std::optional<std::reference_wrapper<const TComponent>> findComponentByExternalId(int64_t id) const
+    [[nodiscard]] std::optional<std::reference_wrapper<const TComponent>> findComponentByExternalId(int64_t id) const
     {
       auto it = std::find_if(m_Components.begin(), m_Components.end(), [&id](const auto& component) {
         return component.getExternalId() == static_cast<uint64_t>(id);
@@ -88,7 +90,7 @@ namespace rexsapi
       return {};
     }
 
-    std::optional<std::reference_wrapper<const TComponent>> findComponentByInternalId(uint64_t id) const
+    [[nodiscard]] std::optional<std::reference_wrapper<const TComponent>> findComponentByInternalId(uint64_t id) const
     {
       auto it = std::find_if(m_Components.begin(), m_Components.end(), [&id](const auto& component) {
         return component.getInternalId() == id;
@@ -108,37 +110,45 @@ namespace rexsapi
   class TRelationFinder
   {
   public:
-    explicit TRelationFinder(const TModel& model, const TRexsVersion& version)
+    explicit TRelationFinder(TMode mode, const TModel& model, const TRexsVersion& version)
     : m_Model{model}
     , m_Version{version}
+    , m_Checker{mode}
+    , m_SubcomponentChecker{mode, version}
     {
     }
 
-    std::vector<std::reference_wrapper<const TRelation>> findRelationsByReferenceId(uint64_t id) const
+    [[nodiscard]] std::vector<std::reference_wrapper<const TRelation>>
+    findRelationsByReferenceId(TResult& result, uint64_t id, bool mainLevel = true) const
     {
       std::vector<std::reference_wrapper<const TRelation>> relations;
+      const TComponent* mainComponent = nullptr;
 
-      std::for_each(
-        m_Model.getRelations().begin(), m_Model.getRelations().end(), [this, &id, &relations](const auto& relation) {
-          auto it = std::find_if(relation.getReferences().begin(), relation.getReferences().end(),
-                                 [this, &id, &relation](const auto& reference) {
-                                   TResult result;
-                                   return reference.getComponent().getInternalId() == id &&
-                                          m_Checker.isMainComponentRole(result, m_Version, relation.getType(),
-                                                                        reference.getRole());
-                                 });
+      std::for_each(m_Model.getRelations().begin(), m_Model.getRelations().end(), [&, this](const auto& relation) {
+        auto it = std::find_if(
+          relation.getReferences().begin(), relation.getReferences().end(), [&, this](const auto& reference) {
+            if (reference.getComponent().getInternalId() == id &&
+                m_Checker.isMainComponentRole(result, m_Version, relation.getType(), reference.getRole())) {
+              mainComponent = &reference.getComponent();
+              return true;
+            }
+            return false;
+          });
 
-          if (it != relation.getReferences().end()) {
-            std::for_each(relation.getReferences().begin(), relation.getReferences().end(),
-                          [this, &id, &relations](const auto& reference) {
-                            if (reference.getComponent().getInternalId() != id) {
-                              auto subRelations = findRelationsByReferenceId(reference.getComponent().getInternalId());
-                              relations.insert(relations.end(), subRelations.begin(), subRelations.end());
-                            }
-                          });
-            relations.emplace_back(relation);
-          }
-        });
+        if (it != relation.getReferences().end()) {
+          std::for_each(
+            relation.getReferences().begin(), relation.getReferences().end(), [&, this](const auto& reference) {
+              if (reference.getComponent().getInternalId() != id) {
+                if (mainLevel && mainComponent) {
+                  m_SubcomponentChecker.isPermissibleSubComponent(result, *mainComponent, reference.getComponent());
+                }
+                auto subRelations = findRelationsByReferenceId(result, reference.getComponent().getInternalId(), false);
+                relations.insert(relations.end(), subRelations.begin(), subRelations.end());
+              }
+            });
+          relations.emplace_back(relation);
+        }
+      });
 
       return relations;
     }
@@ -146,17 +156,17 @@ namespace rexsapi
   private:
     const TModel& m_Model;
     const TRexsVersion& m_Version;
-    const TRelationTypeChecker m_Checker{TMode::STRICT_MODE};
+    const TRelationTypeChecker m_Checker;
+    TExternalSubcomponentsChecker m_SubcomponentChecker;
   };
 
-  /*
-    - All ids are unique over both models
-  */
+
   class TModelMerger
   {
   public:
-    explicit TModelMerger(const database::TModelRegistry& registry)
-    : m_Registry{registry}
+    explicit TModelMerger(TMode mode, const database::TModelRegistry& registry)
+    : m_Mode{mode}
+    , m_Registry{registry}
     {
     }
 
@@ -174,10 +184,8 @@ namespace rexsapi
 
       TModelBuilder modelBuilder{databaseModel};
 
-      TComponents components;
       const TComponentFinder componentFinder{referencedModel.getComponents()};
-      const TRelationFinder relationFinder{referencedModel, referencedModel.getInfo().getVersion()};
-      TRelations relations;
+      const TRelationFinder relationFinder{m_Mode.getMode(), referencedModel, referencedModel.getInfo().getVersion()};
 
       struct ReferencedRelation {
         uint64_t mainModelId;
@@ -205,7 +213,7 @@ namespace rexsapi
                 return {};
               }
               const auto& compRelations =
-                relationFinder.findRelationsByReferenceId(referencedComponent.getInternalId());
+                relationFinder.findRelationsByReferenceId(result, referencedComponent.getInternalId());
               referencedRelations.emplace_back(
                 ReferencedRelation{component.getInternalId(), referencedComponent.getInternalId(), {}});
               std::set<TComponent> relationComponents;
@@ -306,6 +314,7 @@ namespace rexsapi
       }
     }
 
+    const detail::TModeAdapter m_Mode;
     const database::TModelRegistry& m_Registry;
   };
 }

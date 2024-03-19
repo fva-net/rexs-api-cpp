@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New check method for main components to TRelationTypeChecker
 - TModelMerger to merge multiple TModel instances into a new instance (#36)
 - References into external data sources can now be used for REXS models >= version 1.5 (#31)
+- External sub components checker
 
 ## [1.1.0]
 

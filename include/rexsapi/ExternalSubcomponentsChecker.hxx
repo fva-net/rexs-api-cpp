@@ -44,9 +44,9 @@ namespace rexsapi
 
     static inline void from_json(const rexsapi::json& j, TSubcomponentsMapping::TSubcomponentsEntry& entry);
 
-    static inline TSubcomponentsMappings parseMappings(TResult& result, std::string_view buffer);
+    static inline TSubcomponentsMappings parseSubcomponentsMappings(TResult& result, std::string_view buffer);
 
-    static inline TSubcomponentsMappings loadMappings();
+    static inline TSubcomponentsMappings loadSubcomponentsMappings();
   }
 
   class TExternalSubcomponentsChecker
@@ -73,7 +73,7 @@ namespace rexsapi
   inline std::optional<detail::TSubcomponentsMapping>
   TExternalSubcomponentsChecker::findVersion(const TRexsVersion& version)
   {
-    detail::TSubcomponentsMappings mappings{detail::loadMappings()};
+    detail::TSubcomponentsMappings mappings{detail::loadSubcomponentsMappings()};
 
     for (auto it = std::make_reverse_iterator(mappings.end()); it != std::make_reverse_iterator(mappings.begin());
          ++it) {
@@ -117,7 +117,7 @@ namespace rexsapi
 
   namespace detail
   {
-    static inline TSubcomponentsMappings parseMappings(TResult& result, std::string_view buffer)
+    static inline TSubcomponentsMappings parseSubcomponentsMappings(TResult& result, std::string_view buffer)
     {
       TSubcomponentsMappings mappings;
 
@@ -144,7 +144,7 @@ namespace rexsapi
       return mappings;
     }
 
-    static inline TSubcomponentsMappings loadMappings()
+    static inline TSubcomponentsMappings loadSubcomponentsMappings()
     {
       TResult result;
 
@@ -257,7 +257,7 @@ namespace rexsapi
 }
     )";
 
-      auto mappings = parseMappings(result, subcomponents);
+      auto mappings = parseSubcomponentsMappings(result, subcomponents);
       if (!result) {
         throw TException{fmt::format("cannot load external permissible subcomponent mapping")};
       }
