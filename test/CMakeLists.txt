@@ -11,6 +11,7 @@ add_executable(rexsapi_test
   CodedValuesTest.cxx
   ComponentTest.cxx
   ConversionHelperTest.cxx
+  DataSourceLoaderTest.cxx
   FileUtilsTest.cxx
   JsonModelLoaderTest.cxx
   JsonModelSerializerTest.cxx

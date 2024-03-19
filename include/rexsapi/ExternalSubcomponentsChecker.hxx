@@ -42,8 +42,6 @@ namespace rexsapi
 
     using TSubcomponentsMappings = std::map<TRexsVersion, TSubcomponentsMapping>;
 
-    static inline void from_json(const rexsapi::json& j, TSubcomponentsMapping::TSubcomponentsEntry& entry);
-
     static inline TSubcomponentsMappings parseSubcomponentsMappings(TResult& result, std::string_view buffer);
 
     static inline TSubcomponentsMappings loadSubcomponentsMappings();

@@ -102,6 +102,20 @@ namespace rexsapi
       return {};
     }
 
+    [[nodiscard]] std::vector<TAttribute> findAllAttributesByAttributeId(const std::string& attribute) const
+    {
+      std::vector<TAttribute> attributes;
+      std::for_each(m_Components.begin(), m_Components.end(), [&attribute, &attributes](const auto& component) {
+        TAttributeFinder finder{component};
+        const auto& attr = finder.findAttributeById(attribute);
+        if (attr) {
+          attributes.emplace_back(attr.value());
+        }
+      });
+
+      return attributes;
+    }
+
   private:
     const TComponents& m_Components;
   };

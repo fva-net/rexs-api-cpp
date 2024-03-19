@@ -18,7 +18,9 @@
 #define REXSAPI_XML_MODEL_LOADER_HXX
 
 #include <rexsapi/ConversionHelper.hxx>
+#include <rexsapi/DataSourceResolver.hxx>
 #include <rexsapi/ModelHelper.hxx>
+#include <rexsapi/ModelMerger.hxx>
 #include <rexsapi/RelationTypeChecker.hxx>
 #include <rexsapi/XMLValueDecoder.hxx>
 #include <rexsapi/XSDSchemaValidator.hxx>
@@ -46,10 +48,14 @@ namespace rexsapi
      *
      * @param mode Defines how to handle encountered issues while processing a model buffer
      * @param validator The xsd schema for validating the buffer
+     * @param dataSourceResolver Will be used to load external model data sources if set. Triggers an error if not set
+     *                           and model has external references.
      */
-    explicit TXMLModelLoader(TMode mode, const TXSDSchemaValidator& validator)
+    explicit TXMLModelLoader(TMode mode, const TXSDSchemaValidator& validator,
+                             const TDataSourceResolver* dataSourceResolver = nullptr)
     : m_Mode{mode}
     , m_Validator{validator}
+    , m_DataSourceResolver{dataSourceResolver}
     , m_LoaderHelper{mode}
     {
     }
@@ -79,6 +85,7 @@ namespace rexsapi
 
     detail::TModeAdapter m_Mode;
     const TXSDSchemaValidator& m_Validator;
+    const TDataSourceResolver* m_DataSourceResolver{};
     detail::TModelHelper<detail::TXMLValueDecoder> m_LoaderHelper;
   };
 
@@ -97,11 +104,11 @@ namespace rexsapi
 
     const auto rexsModel = *doc.select_nodes("/model").begin();
     const auto language = detail::getStringAttribute(rexsModel, "applicationLanguage", "");
-    const TModelInfo info{detail::getStringAttribute(rexsModel, "applicationId"),
-                          detail::getStringAttribute(rexsModel, "applicationVersion"),
-                          detail::getStringAttribute(rexsModel, "date"),
-                          TRexsVersion{detail::getStringAttribute(rexsModel, "version")},
-                          language.empty() ? std::optional<std::string>{} : language};
+    TModelInfo info{detail::getStringAttribute(rexsModel, "applicationId"),
+                    detail::getStringAttribute(rexsModel, "applicationVersion"),
+                    detail::getStringAttribute(rexsModel, "date"),
+                    TRexsVersion{detail::getStringAttribute(rexsModel, "version")},
+                    language.empty() ? std::optional<std::string>{} : language};
 
     const auto& dbModel =
       registry.getModel(info.getVersion(), language.empty() ? "en" : language, m_Mode.getMode() == TMode::STRICT_MODE);
@@ -247,10 +254,35 @@ namespace rexsapi
       }
     }
 
-    TModel model{std::move(info), std::move(components), std::move(relations),
-                 TLoadSpectrum{std::move(loadCases), std::move(accumulation)}};
-    TRelationTypeChecker checker{m_Mode.getMode()};
-    checker.check(result, model);
+    std::optional<rexsapi::TModel> model = TModel{std::move(info), std::move(components), std::move(relations),
+                                                  TLoadSpectrum{std::move(loadCases), std::move(accumulation)}};
+    const TRelationTypeChecker checker{m_Mode.getMode()};
+    checker.check(result, *model);
+
+    // if referenced_component_id -> dataSourceResolver->load()
+    //   model = merge(model, referenced_model)
+    // if referenced_component_id and not dataSourceResolver -> error
+
+    const rexsapi::TModelMerger merger{m_Mode.getMode(), registry};
+    std::set<std::string> referencedDataSources;
+    TComponentFinder finder{model->getComponents()};
+    for (const auto& attribute : finder.findAllAttributesByAttributeId("data_source")) {
+      referencedDataSources.emplace(attribute.getValueAsString());
+    }
+    if (m_DataSourceResolver) {
+      for (const auto& dataSource : referencedDataSources) {
+        // TODO: use own result to generate correct errors
+        auto referencedModel = m_DataSourceResolver->load(dataSource, result, m_Mode.getMode());
+        // TODO: check model
+        model = merger.merge(result, *model, dataSource, *referencedModel);
+        // TODO: check model
+      }
+    } else if (!referencedDataSources.empty()) {
+      // TODO: error
+    }
+
+    // TODO: check for all referenced_component_id resolved
+
     return model;
   }
 

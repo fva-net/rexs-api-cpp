@@ -17,6 +17,7 @@
 #ifndef REXSAPI_JSON_MODEL_LOADER_HXX
 #define REXSAPI_JSON_MODEL_LOADER_HXX
 
+#include <rexsapi/DataSourceResolver.hxx>
 #include <rexsapi/Json.hxx>
 #include <rexsapi/JsonSchemaValidator.hxx>
 #include <rexsapi/JsonValueDecoder.hxx>
@@ -45,11 +46,15 @@ namespace rexsapi
      *
      * @param mode Defines how to handle encountered issues while processing a model buffer
      * @param validator The json schema for validating the buffer
+     * @param dataSourceResolver Will be used to load external model data sources if set. Triggers an error if not set
+     *                           and model has external references.
      */
-    explicit TJsonModelLoader(TMode mode, const TJsonSchemaValidator& validator)
+    explicit TJsonModelLoader(TMode mode, const TJsonSchemaValidator& validator,
+                              const TDataSourceResolver* dataSourceResolver = nullptr)
     : m_Mode{mode}
     , m_LoaderHelper{mode}
     , m_Validator{validator}
+    , m_DataSourceResolver{dataSourceResolver}
     {
     }
 
@@ -93,6 +98,7 @@ namespace rexsapi
     detail::TModeAdapter m_Mode;
     detail::TModelHelper<detail::TJsonValueDecoder> m_LoaderHelper;
     const TJsonSchemaValidator& m_Validator;
+    const TDataSourceResolver* m_DataSourceResolver{};
   };
 
 
@@ -117,10 +123,10 @@ namespace rexsapi
         language = j["/model/applicationLanguage"_json_pointer].get<std::string>();
       }
 
-      const TModelInfo info{j["/model/applicationId"_json_pointer].get<std::string>(),
-                            j["/model/applicationVersion"_json_pointer].get<std::string>(),
-                            j["/model/date"_json_pointer].get<std::string>(),
-                            TRexsVersion{j["/model/version"_json_pointer].get<std::string>()}, language};
+      TModelInfo info{j["/model/applicationId"_json_pointer].get<std::string>(),
+                      j["/model/applicationVersion"_json_pointer].get<std::string>(),
+                      j["/model/date"_json_pointer].get<std::string>(),
+                      TRexsVersion{j["/model/version"_json_pointer].get<std::string>()}, language};
 
       const auto& dbModel =
         registry.getModel(info.getVersion(), language.value_or("en"), m_Mode.getMode() == TMode::STRICT_MODE);
@@ -139,7 +145,7 @@ namespace rexsapi
 
       TModel model{std::move(info), std::move(components), std::move(relations),
                    TLoadSpectrum{std::move(loadCases), std::move(accumulation)}};
-      TRelationTypeChecker checker{m_Mode.getMode()};
+      const TRelationTypeChecker checker{m_Mode.getMode()};
       checker.check(result, model);
       return model;
     } catch (const json::exception& ex) {
