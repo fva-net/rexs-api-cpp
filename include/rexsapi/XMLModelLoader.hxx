@@ -125,7 +125,7 @@ namespace rexsapi
 
     for (const auto& component : doc.select_nodes("/model/components/component")) {
       const auto componentId = convertToUint64(detail::getStringAttribute(component, "id"));
-      std::string componentName = detail::getStringAttribute(component, "name", "");
+      const std::string componentName = detail::getStringAttribute(component, "name", "");
       try {
         const auto& componentType = dbModel.findComponentById(detail::getStringAttribute(component, "type"));
 
@@ -164,7 +164,7 @@ namespace rexsapi
           std::string referenceId = detail::getStringAttribute(reference, "id");
           try {
             auto role = relationRoleFromString(detail::getStringAttribute(reference, "role"));
-            std::string hint = detail::getStringAttribute(reference, "hint", "");
+            const std::string hint = detail::getStringAttribute(reference, "hint", "");
 
             const auto* component = componentsMapping.getComponent(convertToUint64(referenceId), components);
             if (component == nullptr) {
@@ -254,31 +254,42 @@ namespace rexsapi
       }
     }
 
-    std::optional<rexsapi::TModel> model = TModel{std::move(info), std::move(components), std::move(relations),
-                                                  TLoadSpectrum{std::move(loadCases), std::move(accumulation)}};
+    std::optional<TModel> model = TModel{std::move(info), std::move(components), std::move(relations),
+                        TLoadSpectrum{std::move(loadCases), std::move(accumulation)}};
     const TRelationTypeChecker checker{m_Mode.getMode()};
     checker.check(result, *model);
 
-    // if referenced_component_id -> dataSourceResolver->load()
-    //   model = merge(model, referenced_model)
-    // if referenced_component_id and not dataSourceResolver -> error
-
     const rexsapi::TModelMerger merger{m_Mode.getMode(), registry};
-    std::set<std::string> referencedDataSources;
-    TComponentFinder finder{model->getComponents()};
+    std::set<std::string, std::less<>> referencedDataSources;
+    const TComponentFinder finder{model->getComponents()};
     for (const auto& attribute : finder.findAllAttributesByAttributeId("data_source")) {
       referencedDataSources.emplace(attribute.getValueAsString());
     }
-    if (m_DataSourceResolver) {
+    if (m_DataSourceResolver != nullptr) {
       for (const auto& dataSource : referencedDataSources) {
-        // TODO: use own result to generate correct errors
-        auto referencedModel = m_DataSourceResolver->load(dataSource, result, m_Mode.getMode());
-        // TODO: check model
+        TResult subResult;
+        auto referencedModel = m_DataSourceResolver->load(dataSource, subResult, m_Mode.getMode());
+        if (subResult.hasIssues()) {
+          for (const auto& error : subResult.getErrors()) {
+            result.addError(TError{error.getLevel(), fmt::format("{}: {}", dataSource, error.getMessage())});
+          }
+        }
+        if (!referencedModel) {
+          result.addError(
+            TError{TErrorLevel::CRIT, fmt::format("{}: could not load external referenced model", dataSource)});
+          return {};
+        }
         model = merger.merge(result, *model, dataSource, *referencedModel);
-        // TODO: check model
+        if (!model) {
+          result.addError(
+            TError{TErrorLevel::CRIT, fmt::format("could not merge external referenced model from '{}'", dataSource)});
+          return {};
+        }
       }
     } else if (!referencedDataSources.empty()) {
-      // TODO: error
+      result.addError(
+        TError{m_Mode.adapt(TErrorLevel::ERR),
+               fmt::format("model contains external referenced components but no data source resolver was given")});
     }
 
     // TODO: check for all referenced_component_id resolved

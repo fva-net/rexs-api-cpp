@@ -213,10 +213,10 @@ namespace rexsapi
         bool addComponent = true;
         const auto refAttribute = atrributeFinder.findAttributeById("referenced_component_id");
         if (refAttribute) {
-          const auto& dataSourceAttribute = atrributeFinder.findAttributeById("data_source");
+          const auto dataSourceAttribute = atrributeFinder.findAttributeById("data_source");
           if (dataSourceAttribute && dataSourceAttribute.value().get().getValueAsString() == dataSource) {
             const auto refComponentId = refAttribute.value().get().getValue().getValue<TIntType>();
-            const auto& refComponent = componentFinder.findComponentByExternalId(refComponentId);
+            const auto refComponent = componentFinder.findComponentByExternalId(refComponentId);
             if (refComponent) {
               const auto& referencedComponent = refComponent.value().get();
               if (referencedComponent.getType() != component.getType()) {
@@ -226,7 +226,7 @@ namespace rexsapi
                                      refComponentId, dataSource, referencedComponent.getType(), component.getType())});
                 return {};
               }
-              const auto& compRelations =
+              const auto compRelations =
                 relationFinder.findRelationsByReferenceId(result, referencedComponent.getInternalId());
               referencedRelations.emplace_back(
                 ReferencedRelation{component.getInternalId(), referencedComponent.getInternalId(), {}});
@@ -245,7 +245,7 @@ namespace rexsapi
                 insertComponent(modelBuilder, comp, {});
               }
 
-              TAttributes attributes = component.getAttributes();
+              TAttributes attributes = getFilteredAttributes(component.getAttributes());
               std::for_each(refComponent.value().get().getAttributes().begin(),
                             refComponent.value().get().getAttributes().end(), [&attributes](const auto& attribute) {
                               auto it =
@@ -265,8 +265,6 @@ namespace rexsapi
                                                       refComponentId, dataSource)});
               return {};
             }
-          } else {
-            // TODO: We don't have a data_source attribute, so look into the global database
           }
         }
         if (addComponent) {
@@ -310,13 +308,25 @@ namespace rexsapi
     }
 
   private:
+    TAttributes getFilteredAttributes(const TAttributes& attributes) const
+    {
+      TAttributes filteredAttributes;
+
+      std::for_each(attributes.begin(), attributes.end(), [&filteredAttributes](const auto& attribute) {
+        if (attribute.getAttributeId() != "data_source" && attribute.getAttributeId() != "referenced_component_id") {
+          filteredAttributes.emplace_back(attribute);
+        }
+      });
+
+      return filteredAttributes;
+    }
+
     void insertComponent(TModelBuilder& modelBuilder, const TComponent& component, const TAttributes& attributes) const
     {
       modelBuilder.addComponent(component.getType(), std::to_string(component.getInternalId()))
         .name(component.getName());
       for (const auto& attr : attributes.empty() ? component.getAttributes() : attributes) {
         // TODO: handle custom attributes
-        // TODO: maybe add new value type REFERENCE_EXTERNAL_COMPONENT
         if (attr.getValueType() == TValueType::REFERENCE_COMPONENT &&
             attr.getAttributeId() != "referenced_component_id") {
           modelBuilder.addAttribute(attr.getAttributeId())

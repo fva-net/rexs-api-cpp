@@ -61,7 +61,7 @@ TEST_CASE("Model merger test")
     CHECK_NOTHROW(finder.findComponent("rolling_bearing_row [90]"));
     REQUIRE_NOTHROW(finder.findComponent("Rolling bearing [6]"));
     const auto& bearing = finder.findComponent("Rolling bearing [6]");
-    CHECK(bearing.getAttributes().size() == 33);
+    CHECK(bearing.getAttributes().size() == 31);
     CHECK(finder.findComponentsByType("shaft_section").size() == 2);
     CHECK(newModel->getRelations().size() == 8);
   }
@@ -106,20 +106,20 @@ TEST_CASE("Model merger test")
     const ComponentFinder finder{*newModel};
     REQUIRE_NOTHROW(finder.findComponent("18CrMo4 [5]"));
     CHECK(finder.findComponent("18CrMo4 [5]").getType() == "material");
-    CHECK(finder.findComponent("18CrMo4 [5]").getAttributes().size() == 5);
+    CHECK(finder.findComponent("18CrMo4 [5]").getAttributes().size() == 3);
     REQUIRE_NOTHROW(finder.findComponent("18CrMo4 [6]"));
     CHECK(finder.findComponent("18CrMo4 [6]").getType() == "material");
-    CHECK(finder.findComponent("18CrMo4 [6]").getAttributes().size() == 5);
+    CHECK(finder.findComponent("18CrMo4 [6]").getAttributes().size() == 3);
     REQUIRE_NOTHROW(finder.findComponent("17CrNi6-6 [7]"));
     CHECK(finder.findComponent("17CrNi6-6 [7]").getType() == "material");
     const auto& attributes = finder.findComponent("17CrNi6-6 [7]").getAttributes();
-    REQUIRE(attributes.size() == 5);
-    CHECK(attributes[2].getAttributeId() == "fatigue_limit_bending");
-    CHECK(attributes[2].getValue<rexsapi::TFloatType>() == doctest::Approx(300.0));
-    CHECK(attributes[3].getAttributeId() == "fatigue_limit_compression_tension");
-    CHECK(attributes[3].getValue<rexsapi::TFloatType>() == doctest::Approx(240.0));
-    CHECK(attributes[4].getAttributeId() == "fatigue_limit_torsion");
-    CHECK(attributes[4].getValue<rexsapi::TFloatType>() == doctest::Approx(360.0));
+    REQUIRE(attributes.size() == 3);
+    CHECK(attributes[0].getAttributeId() == "fatigue_limit_bending");
+    CHECK(attributes[0].getValue<rexsapi::TFloatType>() == doctest::Approx(300.0));
+    CHECK(attributes[1].getAttributeId() == "fatigue_limit_compression_tension");
+    CHECK(attributes[1].getValue<rexsapi::TFloatType>() == doctest::Approx(240.0));
+    CHECK(attributes[2].getAttributeId() == "fatigue_limit_torsion");
+    CHECK(attributes[2].getValue<rexsapi::TFloatType>() == doctest::Approx(360.0));
   }
 
   SUBCASE("Merge model with non existing component in data_source")
@@ -216,6 +216,7 @@ TEST_CASE("Model merger test")
     CHECK(newModel);
     CHECK_FALSE(result);
     REQUIRE(result.getErrors().size() == 1);
-    CHECK(result.getErrors()[0].getMessage() == "external sub component 'cylindrical_gear' is not permissible for main component 'shaft'");
+    CHECK(result.getErrors()[0].getMessage() ==
+          "external sub component 'cylindrical_gear' is not permissible for main component 'shaft'");
   }
 }

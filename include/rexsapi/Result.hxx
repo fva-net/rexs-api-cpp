@@ -118,6 +118,11 @@ namespace rexsapi
       return fmt::format("{}", m_Message);
     }
 
+    TErrorLevel getLevel() const
+    {
+      return m_Level;
+    }
+
   private:
     TErrorLevel m_Level;
     std::string m_Message;

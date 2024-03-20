@@ -29,7 +29,8 @@ TEST_CASE("Data source loader tests")
 
   SUBCASE("Load model with references")
   {
-    const rexsapi::TDataSourceLoader dataSourceLoader{projectDir() / "models", projectDir() / "test" / "example_models" / "external_sources" / "example_1"};
+    const rexsapi::TDataSourceLoader dataSourceLoader{
+      projectDir() / "models", projectDir() / "test" / "example_models" / "external_sources" / "example_1"};
     const rexsapi::TModelLoader modelLoader{projectDir() / "models", &dataSourceLoader};
 
     const auto model = modelLoader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_1" /
@@ -46,8 +47,39 @@ TEST_CASE("Data source loader tests")
     CHECK_NOTHROW(finder.findComponent("rolling_bearing_row [90]"));
     REQUIRE_NOTHROW(finder.findComponent("Rolling bearing [6]"));
     const auto& bearing = finder.findComponent("Rolling bearing [6]");
-    CHECK(bearing.getAttributes().size() == 33);
+    CHECK(bearing.getAttributes().size() == 31);
     CHECK(finder.findComponentsByType("shaft_section").size() == 2);
     CHECK(model->getRelations().size() == 8);
+  }
+
+  SUBCASE("Load non-existent referenced model")
+  {
+    const rexsapi::TDataSourceLoader dataSourceLoader{
+      projectDir() / "models", projectDir() / "test" / "example_models" / "external_sources" / "example_7"};
+    const rexsapi::TModelLoader modelLoader{projectDir() / "models", &dataSourceLoader};
+
+    const auto model = modelLoader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_7" /
+                                          "placeholder_model.rexs",
+                                        result, rexsapi::TMode::STRICT_MODE);
+
+    CHECK_FALSE(model);
+    CHECK_FALSE(result);
+    REQUIRE(result.getErrors().size() == 2);
+    CHECK(result.getErrors()[1].getMessage() == "./database_bearing.rexs: could not load external referenced model");
+  }
+
+  SUBCASE("No data resolver")
+  {
+    const rexsapi::TModelLoader modelLoader{projectDir() / "models"};
+
+    const auto model = modelLoader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_7" /
+                                          "placeholder_model.rexs",
+                                        result, rexsapi::TMode::STRICT_MODE);
+
+    CHECK(model);
+    CHECK_FALSE(result);
+    REQUIRE(result.getErrors().size() == 1);
+    CHECK(result.getErrors()[0].getMessage() ==
+          "model contains external referenced components but no data source resolver was given");
   }
 }
