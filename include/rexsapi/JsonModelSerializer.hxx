@@ -244,8 +244,12 @@ namespace rexsapi
                                  j.emplace_back(element);
                                }
                              },
-                             [&j, this](rexsapi::TReferenceComponentTag, const auto& n) -> void {
-                               j = getComponentId(static_cast<uint64_t>(n));
+                             [&j, &attribute, this](rexsapi::TReferenceComponentTag, const auto& n) -> void {
+                               if (attribute.getAttributeId() == "referenced_component_id") {
+                                 j = n;
+                               } else {
+                                 j = getComponentId(static_cast<uint64_t>(n));
+                               }
                              },
                              [&j, &attribute](rexsapi::TFloatMatrixTag, const auto& m) -> void {
                                encodeCodedMatrix(j, attribute.getValue().coded(), m);

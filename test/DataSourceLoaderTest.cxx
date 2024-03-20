@@ -78,8 +78,9 @@ TEST_CASE("Data source loader tests")
 
     CHECK(model);
     CHECK_FALSE(result);
-    REQUIRE(result.getErrors().size() == 1);
+    REQUIRE(result.getErrors().size() == 2);
     CHECK(result.getErrors()[0].getMessage() ==
           "model contains external referenced components but no data source resolver was given");
+    CHECK(result.getErrors()[1].getMessage() == "could not resolve all external referenced components");
   }
 }

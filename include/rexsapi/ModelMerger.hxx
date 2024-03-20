@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-
 #ifndef REXSAPI_MODEL_MERGER_HXX
 #define REXSAPI_MODEL_MERGER_HXX
-
 
 #include <rexsapi/ExternalSubcomponentsChecker.hxx>
 #include <rexsapi/Mode.hxx>

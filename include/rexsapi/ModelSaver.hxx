@@ -76,7 +76,7 @@ namespace rexsapi
           }
         }
       } catch (const std::exception& ex) {
-        result.addError(TError{TErrorLevel::CRIT, fmt::format("cannot store model to {}: {}", ex.what())});
+        result.addError(TError{TErrorLevel::CRIT, fmt::format("cannot store model to {}: {}", path.string(), ex.what())});
       }
     }
 

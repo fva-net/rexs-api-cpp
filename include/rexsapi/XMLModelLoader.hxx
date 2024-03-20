@@ -292,7 +292,9 @@ namespace rexsapi
                fmt::format("model contains external referenced components but no data source resolver was given")});
     }
 
-    // TODO: check for all referenced_component_id resolved
+    if (!finder.findAllAttributesByAttributeId("referenced_component_id").empty()) {
+      result.addError(TError{m_Mode.adapt(TErrorLevel::ERR), fmt::format("could not resolve all external referenced components")});
+    }
 
     return model;
   }

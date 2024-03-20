@@ -22,6 +22,7 @@
 #include <rexsapi/JsonSchemaValidator.hxx>
 #include <rexsapi/JsonValueDecoder.hxx>
 #include <rexsapi/ModelHelper.hxx>
+#include <rexsapi/ModelMerger.hxx>
 #include <rexsapi/RelationTypeChecker.hxx>
 #include <rexsapi/database/ModelRegistry.hxx>
 
@@ -143,10 +144,48 @@ namespace rexsapi
       TLoadCases loadCases = getLoadCases(result, componentMapping, components, dbModel, j);
       std::optional<TAccumulation> accumulation = getAccumulation(result, componentMapping, components, dbModel, j);
 
-      TModel model{std::move(info), std::move(components), std::move(relations),
+      std::optional<TModel> model = TModel{std::move(info), std::move(components), std::move(relations),
                    TLoadSpectrum{std::move(loadCases), std::move(accumulation)}};
       const TRelationTypeChecker checker{m_Mode.getMode()};
-      checker.check(result, model);
+      checker.check(result, *model);
+
+      const rexsapi::TModelMerger merger{m_Mode.getMode(), registry};
+      std::set<std::string, std::less<>> referencedDataSources;
+      const TComponentFinder finder{model->getComponents()};
+      for (const auto& attribute : finder.findAllAttributesByAttributeId("data_source")) {
+        referencedDataSources.emplace(attribute.getValueAsString());
+      }
+      if (m_DataSourceResolver != nullptr) {
+        for (const auto& dataSource : referencedDataSources) {
+          TResult subResult;
+          auto referencedModel = m_DataSourceResolver->load(dataSource, subResult, m_Mode.getMode());
+          if (subResult.hasIssues()) {
+            for (const auto& error : subResult.getErrors()) {
+              result.addError(TError{error.getLevel(), fmt::format("{}: {}", dataSource, error.getMessage())});
+            }
+          }
+          if (!referencedModel) {
+            result.addError(
+              TError{TErrorLevel::CRIT, fmt::format("{}: could not load external referenced model", dataSource)});
+            return {};
+          }
+          model = merger.merge(result, *model, dataSource, *referencedModel);
+          if (!model) {
+            result.addError(
+              TError{TErrorLevel::CRIT, fmt::format("could not merge external referenced model from '{}'", dataSource)});
+            return {};
+          }
+        }
+      } else if (!referencedDataSources.empty()) {
+        result.addError(
+          TError{m_Mode.adapt(TErrorLevel::ERR),
+                 fmt::format("model contains external referenced components but no data source resolver was given")});
+      }
+
+      if (!finder.findAllAttributesByAttributeId("referenced_component_id").empty()) {
+        result.addError(TError{m_Mode.adapt(TErrorLevel::ERR), fmt::format("could not resolve all external referenced components")});
+      }
+
       return model;
     } catch (const json::exception& ex) {
       result.addError(TError{TErrorLevel::CRIT, fmt::format("cannot parse json document: {}", ex.what())});
