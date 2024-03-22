@@ -104,7 +104,7 @@ namespace rexsapi
      * @param spectrum The load spectrum of this model. The optionality of the spectrum is implied in the absensce of
      * load cases and accumulations in the spectrum.
      */
-    TModel(TModelInfo info, TComponents components, TRelations relations, TLoadSpectrum spectrum)
+    TModel(TModelInfo info, TComponents&& components, TRelations&& relations, TLoadSpectrum&& spectrum)
     : m_Info{std::move(info)}
     , m_Components{std::move(components)}
     , m_Relations{std::move(relations)}

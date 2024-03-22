@@ -330,6 +330,8 @@ namespace rexsapi
           modelBuilder.addAttribute(attr.getAttributeId())
             .unit(attr.getUnit().getName())
             .reference(std::to_string(attr.getValue().getValue<rexsapi::TIntType>()));
+        } else if (attr.isCustomAttribute()) {
+          modelBuilder.addCustomAttribute(attr.getAttributeId(), attr.getValueType()).unit(attr.getUnit().getName()).value(attr.getValue());
         } else {
           modelBuilder.addAttribute(attr.getAttributeId()).unit(attr.getUnit().getName()).value(attr.getValue());
         }

@@ -83,4 +83,20 @@ TEST_CASE("Data source loader tests")
           "model contains external referenced components but no data source resolver was given");
     CHECK(result.getErrors()[1].getMessage() == "could not resolve all external referenced components");
   }
+
+  SUBCASE("Could not resolve all references")
+  {
+    const rexsapi::TDataSourceLoader dataSourceLoader{
+      projectDir() / "models", projectDir() / "test" / "example_models" / "external_sources" / "example_9"};
+    const rexsapi::TModelLoader modelLoader{projectDir() / "models", &dataSourceLoader};
+
+    const auto model = modelLoader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_9" /
+                                          "placeholder_model.rexs",
+                                        result, rexsapi::TMode::STRICT_MODE);
+    CHECK_FALSE(model);
+    CHECK_FALSE(result);
+    REQUIRE(result.getErrors().size() == 2);
+    CHECK(result.getErrors()[0].getMessage() == "cannot find referenced component 60 in data_source './database_shaft.rexs'");
+    CHECK(result.getErrors()[1].getMessage() == "could not merge external referenced model from './database_shaft.rexs'");
+  }
 }
