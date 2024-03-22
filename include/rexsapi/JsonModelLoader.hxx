@@ -151,7 +151,7 @@ namespace rexsapi
 
       const rexsapi::TModelMerger merger{m_Mode.getMode(), registry};
       std::set<std::string, std::less<>> referencedDataSources;
-      const TComponentFinder finder{model->getComponents()};
+      const detail::TComponentFinder finder{model->getComponents()};
       for (const auto& attribute : finder.findAllAttributesByAttributeId("data_source")) {
         referencedDataSources.emplace(attribute.getValueAsString());
       }

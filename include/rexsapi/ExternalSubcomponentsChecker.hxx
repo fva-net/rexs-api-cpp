@@ -47,9 +47,21 @@ namespace rexsapi
     static inline TSubcomponentsMappings loadSubcomponentsMappings();
   }
 
+
+  /**
+   * @brief The external subcomponent checker validates components according to the permissible components rules.
+   *
+   * The rules depend on the REXS version.
+   */
   class TExternalSubcomponentsChecker
   {
   public:
+    /**
+     * @brief Constructs a new TExternalSubcomponentsChecker object.
+     *
+     * @param mode Defines how to handle encountered issues while processing the components
+     * @param version The REXS version to use for the rules
+     */
     explicit TExternalSubcomponentsChecker(TMode mode, const TRexsVersion& version)
     : m_Mode{mode}
     , m_Version{version}
@@ -57,6 +69,14 @@ namespace rexsapi
     {
     }
 
+    /**
+     * @brief Will check the components according to the permissible components rules.
+     *
+     * @param result Describes the outcome of the operation. Will contain messages upon issues encountered.
+     * @param mainComponent The main component to use for the check
+     * @param subComponent The component to check if it is allowed as subcomponent for the given main component.
+     * @return true if allowed, otherwise false
+     */
     bool isPermissibleSubComponent(TResult& result, const TComponent& mainComponent,
                                    const TComponent& subComponent) const;
 

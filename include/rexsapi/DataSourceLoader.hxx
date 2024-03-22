@@ -25,15 +25,38 @@
 
 namespace rexsapi
 {
+  /**
+   * @brief File based loader for resolving data sources to models.
+   *
+   * Works exactly like a TModelLoader and has the same restrictions.
+   */
   class TDataSourceLoader : public TDataSourceResolver
   {
   public:
+    /**
+     * @brief Constructs a new TDataSourceLoader object.
+     *
+     * @param databasePath filesystem path containing REXS database model files for different versions and languages and
+     * all relevant schema files. Needs exactly the same files as the TModelLoader.
+     * @param path The filesystem path used as base directory for the REXS model files to load
+     */
     explicit TDataSourceLoader(const std::filesystem::path& databasePath, const std::filesystem::path& path)
     : m_Loader{databasePath, this}
     , m_Path{path}
     {
     }
 
+    /**
+     * @brief Loads a model from a data source.
+     *
+     * Internally, a TModelLoader is used to load the model.
+     *
+     * @param data_source The REXS model file to load. Will be prefixed by the databasePath given in the constructor.
+     * @param result Describes the outcome of the operation. Will contain messages upon issues encountered.
+     * @param mode Defines how to handle encountered issues while loading the model
+     * @return The loaded model if successful, otherwise an empty optional. The result will reflect all issues
+     *         encountered during the load operation.
+     */
     std::optional<TModel> load(const std::string& data_source, TResult& result,
                                TMode mode = TMode::STRICT_MODE) const override;
 

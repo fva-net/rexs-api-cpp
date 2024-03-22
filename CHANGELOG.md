@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed README.md
 - Fixed doxygen docu regarding brief description not rendering correctly in Visual Studio (#25)
-- TAttributes can now be assigned
 
 ### Changed
 
@@ -19,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgraded cmake version to 3.22 (#27)
 - Upgraded github CI os and compiler (#27)
 - Upgraded github CI actions (#28)
+- Except for the TModelInfo all other TModel constructor parameters have to be forcibly moved now
+- The rexsapi tools currently do not support the resolving of external component references and should be
+  used with --mode-relaxed if references lead to problems
+- TModelLoader now takes an optional TDataSourceResolver to resolve external component references (#31)
+- Analogous to the TModelLoader, TJsonModelLoader and TXMLModelLoader also take an optional TDataSourceResolver
 
 ### Added
 
@@ -26,10 +30,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   model file (#2)
 - Components can have an external id, which represents exactly the components id specified in a model file (#4)
 - Added model database file for 1.6 models (#30)
-- New check method for main components to TRelationTypeChecker
-- TModelMerger to merge multiple TModel instances into a new instance (#36)
 - References into external data sources can now be used for REXS models >= version 1.5 (#31)
-- External sub components checker
+- External sub components checker (#31)
+- New check method for main components to TRelationTypeChecker (#36)
+- TModelMerger to merge multiple TModel instances into a new instance (#36)
 
 ## [1.1.0]
 

@@ -24,11 +24,26 @@
 
 namespace rexsapi
 {
+  /**
+   * @brief Base class for resolving data sources to models.
+   *
+   * Has to be subclassed fot concrete implementations. Currently, the rexsapi provides the file based data source
+   * resolver TDataSourceLoader.
+   */
   class TDataSourceResolver
   {
   public:
     virtual ~TDataSourceResolver() = default;
 
+    /**
+     * @brief Loads a model from a specific data source.
+     *
+     * @param data_source The source to load a model from
+     * @param result Describes the outcome of the operation. Will contain messages upon issues encountered.
+     * @param mode Defines how to handle encountered issues while processing the model
+     * @return The loaded model if successful, otherwise an empty optional. The result will reflect all issues
+     *         encountered during the load operation.
+     */
     virtual std::optional<TModel> load(const std::string& data_source, TResult& result,
                                        TMode mode = TMode::STRICT_MODE) const = 0;
   };
