@@ -17,6 +17,7 @@
 #ifndef REXSAPI_HXX
 #define REXSAPI_HXX
 
+#include <rexsapi/DataSourceLoader.hxx>
 #include <rexsapi/Defines.hxx>
 #include <rexsapi/JsonModelSerializer.hxx>
 #include <rexsapi/JsonSerializer.hxx>

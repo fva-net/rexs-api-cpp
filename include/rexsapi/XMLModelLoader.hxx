@@ -255,7 +255,7 @@ namespace rexsapi
     }
 
     std::optional<TModel> model = TModel{std::move(info), std::move(components), std::move(relations),
-                        TLoadSpectrum{std::move(loadCases), std::move(accumulation)}};
+                                         TLoadSpectrum{std::move(loadCases), std::move(accumulation)}};
     const TRelationTypeChecker checker{m_Mode.getMode()};
     checker.check(result, *model);
 
@@ -293,7 +293,8 @@ namespace rexsapi
     }
 
     if (!finder.findAllAttributesByAttributeId("referenced_component_id").empty()) {
-      result.addError(TError{m_Mode.adapt(TErrorLevel::ERR), fmt::format("could not resolve all external referenced components")});
+      result.addError(
+        TError{m_Mode.adapt(TErrorLevel::ERR), fmt::format("could not resolve all external referenced components")});
     }
 
     return model;

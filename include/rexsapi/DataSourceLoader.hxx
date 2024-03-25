@@ -65,9 +65,13 @@ namespace rexsapi
     const std::filesystem::path m_Path;
   };
 
-  std::optional<TModel> TDataSourceLoader::load(const std::string& data_source, TResult& result, TMode mode) const
+  inline std::optional<TModel> TDataSourceLoader::load(const std::string& data_source, TResult& result, TMode mode) const
   {
-    return m_Loader.load(m_Path / data_source, result, mode);
+    std::filesystem::path path{data_source};
+    if (path.is_relative()) {
+      path = m_Path / path;
+    }
+    return m_Loader.load(path, result, mode);
   }
 }
 

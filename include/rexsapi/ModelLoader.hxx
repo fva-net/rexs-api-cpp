@@ -51,7 +51,7 @@ namespace rexsapi
    *
    * Allows loading of multiple REXS model files with the same loader.
    */
-  class TModelLoader
+  class TModelLoader final
   {
   public:
     /**

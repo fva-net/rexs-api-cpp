@@ -40,7 +40,8 @@ namespace rexsapi
 
       [[nodiscard]] rexsapi::TAttributes findCustomAttributes() const;
 
-      [[nodiscard]] std::optional<std::reference_wrapper<const TAttribute>> findAttributeById(const std::string& id) const;
+      [[nodiscard]] std::optional<std::reference_wrapper<const TAttribute>>
+      findAttributeById(const std::string& id) const;
 
     private:
       const rexsapi::TComponent& m_Component;
@@ -57,7 +58,8 @@ namespace rexsapi
 
       [[nodiscard]] std::optional<std::reference_wrapper<const TComponent>> findComponentByExternalId(int64_t id) const;
 
-      [[nodiscard]] std::optional<std::reference_wrapper<const TComponent>> findComponentByInternalId(uint64_t id) const;
+      [[nodiscard]] std::optional<std::reference_wrapper<const TComponent>>
+      findComponentByInternalId(uint64_t id) const;
 
       [[nodiscard]] std::vector<TAttribute> findAllAttributesByAttributeId(const std::string& attribute) const;
 
@@ -88,7 +90,7 @@ namespace rexsapi
     };
   }
 
-  
+
   /**
    * @brief The model merger creates a new model from a main model and a referenced model for externally referenced
    * components by the main model.
@@ -152,7 +154,8 @@ namespace rexsapi
       TModelBuilder modelBuilder{databaseModel};
 
       const detail::TComponentFinder componentFinder{referencedModel.getComponents()};
-      const detail::TRelationFinder relationFinder{m_Mode.getMode(), referencedModel, referencedModel.getInfo().getVersion()};
+      const detail::TRelationFinder relationFinder{m_Mode.getMode(), referencedModel,
+                                                   referencedModel.getInfo().getVersion()};
 
       struct ReferencedRelation {
         uint64_t mainModelId;
@@ -257,7 +260,22 @@ namespace rexsapi
                       });
       }
 
-      // TODO: clone the load spectrum
+      const auto& loadSpectrum = mainModel.getLoadSpectrum();
+      if (loadSpectrum.hasLoadCases()) {
+        for (const auto& loadCase : loadSpectrum.getLoadCases()) {
+          auto& newLoadCase = modelBuilder.addLoadCase();
+          for (const auto& loadComponent : loadCase.getLoadComponents()) {
+            insertComponent(newLoadCase, loadComponent.getComponent(), loadComponent.getAttributes());
+          }
+        }
+      }
+      if (loadSpectrum.hasAccumulation()) {
+        auto& newAccumulation = modelBuilder.addAccumulation();
+        const auto& accumulation = loadSpectrum.getAccumulation();
+        for (const auto& loadComponent : accumulation.getLoadComponents()) {
+          insertComponent(newAccumulation, loadComponent.getComponent(), loadComponent.getAttributes());
+        }
+      }
 
       return modelBuilder.build(mainModel.getInfo());
     }
@@ -281,16 +299,32 @@ namespace rexsapi
       modelBuilder.addComponent(component.getType(), std::to_string(component.getInternalId()))
         .name(component.getName());
       for (const auto& attr : attributes.empty() ? component.getAttributes() : attributes) {
-        // TODO: handle custom attributes
         if (attr.getValueType() == TValueType::REFERENCE_COMPONENT &&
             attr.getAttributeId() != "referenced_component_id") {
           modelBuilder.addAttribute(attr.getAttributeId())
             .unit(attr.getUnit().getName())
             .reference(std::to_string(attr.getValue().getValue<rexsapi::TIntType>()));
         } else if (attr.isCustomAttribute()) {
-          modelBuilder.addCustomAttribute(attr.getAttributeId(), attr.getValueType()).unit(attr.getUnit().getName()).value(attr.getValue());
+          modelBuilder.addCustomAttribute(attr.getAttributeId(), attr.getValueType())
+            .unit(attr.getUnit().getName())
+            .value(attr.getValue());
         } else {
           modelBuilder.addAttribute(attr.getAttributeId()).unit(attr.getUnit().getName()).value(attr.getValue());
+        }
+      }
+    }
+
+    template<typename Builder>
+    void insertComponent(Builder& builder, const TComponent& component, const TAttributes& attributes) const
+    {
+      builder.addComponent(std::to_string(component.getInternalId()));
+      for (const auto& attr : attributes.empty() ? component.getAttributes() : attributes) {
+        if (attr.isCustomAttribute()) {
+          builder.addCustomAttribute(attr.getAttributeId(), attr.getValueType())
+            .unit(attr.getUnit().getName())
+            .value(attr.getValue());
+        } else {
+          builder.addAttribute(attr.getAttributeId()).unit(attr.getUnit().getName()).value(attr.getValue());
         }
       }
     }
@@ -307,20 +341,21 @@ namespace rexsapi
 
       std::for_each(m_Component.getAttributes().begin(), m_Component.getAttributes().end(),
                     [&attributes](const auto& attribute) {
-        if (attribute.isCustomAttribute()) {
-          attributes.emplace_back(attribute);
-        }
-      });
+                      if (attribute.isCustomAttribute()) {
+                        attributes.emplace_back(attribute);
+                      }
+                    });
 
       return attributes;
     }
 
-    inline std::optional<std::reference_wrapper<const TAttribute>> TAttributeFinder::findAttributeById(const std::string& id) const
+    inline std::optional<std::reference_wrapper<const TAttribute>>
+    TAttributeFinder::findAttributeById(const std::string& id) const
     {
       auto it = std::find_if(m_Component.getAttributes().begin(), m_Component.getAttributes().end(),
                              [&id](const auto& attribute) {
-        return id == attribute.getAttributeId();
-      });
+                               return id == attribute.getAttributeId();
+                             });
       if (it != m_Component.getAttributes().end()) {
         return *it;
       }
@@ -329,7 +364,8 @@ namespace rexsapi
     }
 
 
-    inline std::optional<std::reference_wrapper<const TComponent>> TComponentFinder::findComponentByExternalId(int64_t id) const
+    inline std::optional<std::reference_wrapper<const TComponent>>
+    TComponentFinder::findComponentByExternalId(int64_t id) const
     {
       auto it = std::find_if(m_Components.begin(), m_Components.end(), [&id](const auto& component) {
         return component.getExternalId() == static_cast<uint64_t>(id);
@@ -341,7 +377,8 @@ namespace rexsapi
       return {};
     }
 
-    inline std::optional<std::reference_wrapper<const TComponent>> TComponentFinder::findComponentByInternalId(uint64_t id) const
+    inline std::optional<std::reference_wrapper<const TComponent>>
+    TComponentFinder::findComponentByInternalId(uint64_t id) const
     {
       auto it = std::find_if(m_Components.begin(), m_Components.end(), [&id](const auto& component) {
         return component.getInternalId() == id;
@@ -375,26 +412,26 @@ namespace rexsapi
 
       std::for_each(m_Model.getRelations().begin(), m_Model.getRelations().end(), [&, this](const auto& relation) {
         auto it = std::find_if(
-                               relation.getReferences().begin(), relation.getReferences().end(), [&, this](const auto& reference) {
-                                 if (reference.getComponent().getInternalId() == id &&
-                                     m_Checker.isMainComponentRole(result, m_Version, relation.getType(), reference.getRole())) {
-                                   mainComponent = &reference.getComponent();
-                                   return true;
-                                 }
-                                 return false;
-                               });
+          relation.getReferences().begin(), relation.getReferences().end(), [&, this](const auto& reference) {
+            if (reference.getComponent().getInternalId() == id &&
+                m_Checker.isMainComponentRole(result, m_Version, relation.getType(), reference.getRole())) {
+              mainComponent = &reference.getComponent();
+              return true;
+            }
+            return false;
+          });
 
         if (it != relation.getReferences().end()) {
           std::for_each(
-                        relation.getReferences().begin(), relation.getReferences().end(), [&, this](const auto& reference) {
-                          if (reference.getComponent().getInternalId() != id) {
-                            if (mainLevel && mainComponent) {
-                              m_SubcomponentChecker.isPermissibleSubComponent(result, *mainComponent, reference.getComponent());
-                            }
-                            auto subRelations = findRelationsByReferenceId(result, reference.getComponent().getInternalId(), false);
-                            relations.insert(relations.end(), subRelations.begin(), subRelations.end());
-                          }
-                        });
+            relation.getReferences().begin(), relation.getReferences().end(), [&, this](const auto& reference) {
+              if (reference.getComponent().getInternalId() != id) {
+                if (mainLevel && mainComponent) {
+                  m_SubcomponentChecker.isPermissibleSubComponent(result, *mainComponent, reference.getComponent());
+                }
+                auto subRelations = findRelationsByReferenceId(result, reference.getComponent().getInternalId(), false);
+                relations.insert(relations.end(), subRelations.begin(), subRelations.end());
+              }
+            });
           relations.emplace_back(relation);
         }
       });

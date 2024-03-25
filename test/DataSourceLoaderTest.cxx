@@ -96,7 +96,9 @@ TEST_CASE("Data source loader tests")
     CHECK_FALSE(model);
     CHECK_FALSE(result);
     REQUIRE(result.getErrors().size() == 2);
-    CHECK(result.getErrors()[0].getMessage() == "cannot find referenced component 60 in data_source './database_shaft.rexs'");
-    CHECK(result.getErrors()[1].getMessage() == "could not merge external referenced model from './database_shaft.rexs'");
+    CHECK(result.getErrors()[0].getMessage() ==
+          "cannot find referenced component 60 in data_source './database_shaft.rexs'");
+    CHECK(result.getErrors()[1].getMessage() ==
+          "could not merge external referenced model from './database_shaft.rexs'");
   }
 }
