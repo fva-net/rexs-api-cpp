@@ -235,7 +235,7 @@ namespace rexsapi
         }
         std::for_each(
           relation.getReferences().begin(), relation.getReferences().end(), [&modelBuilder](const auto& reference) {
-            modelBuilder.addRef(reference.getRole(), std::to_string(reference.getComponent().getInternalId()))
+            modelBuilder.addRef(reference.getRole(), TComponentId{reference.getComponent().getInternalId()})
               .hint(reference.getHint());
           });
       }
@@ -255,7 +255,7 @@ namespace rexsapi
                             if (id == refRelation.referencedModelId) {
                               id = refRelation.mainModelId;
                             }
-                            modelBuilder.addRef(reference.getRole(), std::to_string(id)).hint(reference.getHint());
+                            modelBuilder.addRef(reference.getRole(), TComponentId{id}).hint(reference.getHint());
                           });
                       });
       }
@@ -296,14 +296,14 @@ namespace rexsapi
 
     void insertComponent(TModelBuilder& modelBuilder, const TComponent& component, const TAttributes& attributes) const
     {
-      modelBuilder.addComponent(component.getType(), std::to_string(component.getInternalId()))
+      modelBuilder.addComponent(component.getType(), component.getInternalId(), component.getExternalId())
         .name(component.getName());
       for (const auto& attr : attributes.empty() ? component.getAttributes() : attributes) {
         if (attr.getValueType() == TValueType::REFERENCE_COMPONENT &&
             attr.getAttributeId() != "referenced_component_id") {
           modelBuilder.addAttribute(attr.getAttributeId())
             .unit(attr.getUnit().getName())
-            .reference(std::to_string(attr.getValue().getValue<rexsapi::TIntType>()));
+            .reference(TComponentId{static_cast<uint64_t>(attr.getValue().getValue<rexsapi::TIntType>())});
         } else if (attr.isCustomAttribute()) {
           modelBuilder.addCustomAttribute(attr.getAttributeId(), attr.getValueType())
             .unit(attr.getUnit().getName())
@@ -317,7 +317,7 @@ namespace rexsapi
     template<typename Builder>
     void insertComponent(Builder& builder, const TComponent& component, const TAttributes& attributes) const
     {
-      builder.addComponent(std::to_string(component.getInternalId()));
+      builder.addComponent(TComponentId{component.getInternalId()});
       for (const auto& attr : attributes.empty() ? component.getAttributes() : attributes) {
         if (attr.isCustomAttribute()) {
           builder.addCustomAttribute(attr.getAttributeId(), attr.getValueType())

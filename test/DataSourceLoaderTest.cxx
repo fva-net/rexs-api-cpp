@@ -36,7 +36,32 @@ TEST_CASE("Data source loader tests")
     const auto model = modelLoader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_1" /
                                           "placeholder_model.rexs",
                                         result, rexsapi::TMode::STRICT_MODE);
-    CHECK(model);
+    REQUIRE(model);
+    CHECK(result);
+    CHECK(model->getComponents().size() == 9);
+    const ComponentFinder finder{*model};
+    CHECK_NOTHROW(finder.findComponent("18CrMo4 [50]"));
+    CHECK_NOTHROW(finder.findComponent("section [100]"));
+    REQUIRE_NOTHROW(finder.findComponent("section [110]"));
+    CHECK_NOTHROW(finder.findComponent("rolling_bearing_row [80]"));
+    CHECK_NOTHROW(finder.findComponent("rolling_bearing_row [90]"));
+    REQUIRE_NOTHROW(finder.findComponent("Rolling bearing [6]"));
+    const auto& bearing = finder.findComponent("Rolling bearing [6]");
+    CHECK(bearing.getAttributes().size() == 31);
+    CHECK(finder.findComponentsByType("shaft_section").size() == 2);
+    CHECK(model->getRelations().size() == 8);
+  }
+
+  SUBCASE("Load model with sub-references")
+  {
+    const rexsapi::TDataSourceLoader dataSourceLoader{
+      projectDir() / "models", projectDir() / "test" / "example_models" / "external_sources" / "example_10"};
+    const rexsapi::TModelLoader modelLoader{projectDir() / "models", &dataSourceLoader};
+
+    const auto model = modelLoader.load(projectDir() / "test" / "example_models" / "external_sources" / "example_10" /
+                                          "placeholder_model.rexs",
+                                        result, rexsapi::TMode::STRICT_MODE);
+    REQUIRE(model);
     CHECK(result);
     CHECK(model->getComponents().size() == 9);
     const ComponentFinder finder{*model};

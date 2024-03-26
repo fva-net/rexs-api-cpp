@@ -40,7 +40,7 @@ namespace rexsapi
     /**
      * @brief Constructs a new TComponentId object.
      *
-     * A generated id.
+     * A generated or user supplied id.
      *
      * @param id The components unique id
      */
@@ -77,6 +77,29 @@ namespace rexsapi
     }
 
     std::string asString() const;
+
+    /**
+     * @brief Checks if this TComponentId has an integer id value
+     *
+     * @return true
+     * @return false
+     */
+    bool isInteger() const
+    {
+      return m_Id.index() == 0;
+    }
+
+    /**
+     * @brief Returns the integer id
+     *
+     * @exception Will throw std::bad_variant_access if the TComponentId id is not of type integer
+     *
+     * @return uint64_t
+     */
+    uint64_t integer() const
+    {
+      return std::get<uint64_t>(m_Id);
+    }
 
   private:
     using Id = std::variant<uint64_t, std::string>;
@@ -132,6 +155,7 @@ namespace rexsapi
 
     struct TComponentEntry {
       TComponentId m_Id;
+      std::optional<uint64_t> m_ExternalId;
       const database::TComponent* m_DatabaseComponent{nullptr};
       std::string m_Name{};
       std::vector<TAttributeEntry> m_Attributes{};
@@ -150,11 +174,12 @@ namespace rexsapi
         return m_DatabaseModel;
       }
 
-      void addComponent(TComponentId id);
+      void addComponent(TComponentId id, std::optional<uint64_t> externalId = {});
 
-      void addComponent(const std::string& component);
+      void addComponent(const std::string& component, std::optional<uint64_t> id,
+                        std::optional<uint64_t> externalId = {});
 
-      void addComponent(const std::string& component, std::string id);
+      void addComponent(const std::string& component, std::string id, std::optional<uint64_t> externalId = {});
 
       const auto& components() const noexcept
       {
@@ -313,15 +338,20 @@ namespace rexsapi
     /**
      * @brief Adds a new component to the builder and makes it the active component
      *
-     * Internally, the builder will create a new unique component and assign it to the component. The id can be
+     * Internally, the builder will create a new unique component id and assign it to the component. The id can be
      * retrieved by calling TComponentBuilder::id.
      *
      * @param component The component type to add, e.g. "gear_unit". The type has to be allowed by the REXS database
      * model.
+     * @param id Optional id to use for component. Will be used as the generated component id and all references. The
+     * builder will make sure the ids are unique. If user assigned integer ids are used, you are not allowed to mix them
+     * with string ids. Either all or none of the components shall have an explicit user assigned integer id.
+     * @param externalId Optional originating id
      * @return TComponentBuilder& to the builder for chaining calls
      * @throws TException if the component type is not allowed by the REXS database model
      */
-    TComponentBuilder& addComponent(const std::string& component) &;
+    TComponentBuilder& addComponent(const std::string& component, std::optional<uint64_t> id = {},
+                                    std::optional<uint64_t> externalId = {}) &;
 
     /**
      * @brief Adds a new component to the builder and makes it the active component
@@ -331,12 +361,15 @@ namespace rexsapi
      *
      * @param component The component type to add, e.g. "gear_unit". The type has to be allowed by the REXS database
      * model.
-     * @param id A user supplied custom id. Has to be unique for all components of this builder.
+     * @param id A user supplied custom id. Has to be unique for all components of this builder. This
+     * method is not allowed if a component has been supplied a user defined integer id previously.
+     * @param externalId Optional originating id
      * @return TComponentBuilder& to the builder for chaining calls
      * @throws TException if the component type is not allowed by the REXS database model
      * @throws TException if the user supplied id has already been use for another component
      */
-    TComponentBuilder& addComponent(const std::string& component, std::string id) &;
+    TComponentBuilder& addComponent(const std::string& component, std::string id,
+                                    std::optional<uint64_t> externalId = {}) &;
 
     /**
      * @brief Retrieves the component id of the active component
@@ -400,7 +433,8 @@ namespace rexsapi
      * Needs an active attribute with a value of type TValueType::REFERENCE_COMPONENT.
      *
      * @param id The custom user supplied id of the referenced component. The component id has to be one of the already
-     * added components to this builder. Actually, the id is allowed to reference the currently active component.
+     * added components to this builder. Actually, the id is allowed to reference the currently active component. This
+     * method is not allowed if a component has been supplied a user defined integer id previously.
      * @return TComponentBuilder& to the builder for chaining calls
      * @throws TException if there is no active attribute
      * @throws TException if the attributes value type is not TValueType::REFERENCE_COMPONENT
@@ -532,7 +566,8 @@ namespace rexsapi
      * @brief Adds an existing component to the builder and makes it the active component
      *
      * @param id The component id of an existing component. Has to be a component id added previously to the
-     * TModelBuilder used to create this load case builder in order to ensure referencial integrity.
+     * TModelBuilder used to create this load case builder in order to ensure referencial integrity. This
+     * method is not allowed if a component has been supplied a user defined integer id previously.
      * @return TLoadCaseBuilder& to the builder for chaining calls
      * @throws TException if the component has been already added to this load case
      */
@@ -665,7 +700,8 @@ namespace rexsapi
      * @brief Adds an existing component to the builder and makes it the active component
      *
      * @param id The component id of an existing component. Has to be a component id added previously to the
-     * TModelBuilder used to create this accumulation builder in order to ensure referencial integrity.
+     * TModelBuilder used to create this accumulation builder in order to ensure referencial integrity. This
+     * method is not allowed if a component has been supplied a user defined integer id previously.
      * @return TAccumulationBuilder& to the builder for chaining calls
      * @throws TException if the component has been already added to this accumulation
      */
@@ -831,7 +867,8 @@ namespace rexsapi
      * The reference has to refer to a component that has been added to the model builder.
      *
      * @param role The role of the component in the relation
-     * @param id The user supplied id of a component added to the model builder
+     * @param id The user supplied id of a component added to the model builder. This
+     * method is not allowed if a component has been supplied a user defined integer id previously.
      * @return TModelBuilder& to the builder for chaining calls
      * @throws TException if there is no active relation
      */
@@ -854,10 +891,14 @@ namespace rexsapi
      *
      * @param component The component type to add, e.g. "gear_unit". The type has to be allowed by the REXS database
      * model.
+     * @param id Optional id to use for component. Will be used as the generated component id. The builder will make
+     * sure the ids are unique. If you use your own ids, you are not allowed to mix them with string ids.
+     * @param externalId Optional originating id
      * @return TModelBuilder& to the builder for chaining calls
      * @throws TException if the component type is not allowed by the REXS database model
      */
-    TModelBuilder& addComponent(const std::string& component) &;
+    TModelBuilder& addComponent(const std::string& component, std::optional<uint64_t> id = {},
+                                std::optional<uint64_t> externalId = {}) &;
 
     /**
      * @brief Adds a new component to the builder and makes it the active component
@@ -867,12 +908,15 @@ namespace rexsapi
      *
      * @param component The component type to add, e.g. "gear_unit". The type has to be allowed by the REXS database
      * model.
-     * @param id A user supplied custom id. Has to be unique for all components of this builder.
+     * @param id A user supplied custom id. Has to be unique for all components of this builder. This
+     * method is not allowed if a component has been supplied a user defined integer id previously.
+     * @param externalId Optional originating id
      * @return TModelBuilder& to the builder for chaining calls
      * @throws TException if the component type is not allowed by the REXS database model
      * @throws TException if the user supplied id has already been use for another component
      */
-    TModelBuilder& addComponent(const std::string& component, std::string id) &;
+    TModelBuilder& addComponent(const std::string& component, std::string id,
+                                std::optional<uint64_t> externalId = {}) &;
 
     /**
      * @brief Retrieves the component id of the active component
@@ -936,7 +980,8 @@ namespace rexsapi
      * Needs an active attribute with a value of type TValueType::REFERENCE_COMPONENT.
      *
      * @param id The custom user supplied id of the referenced component. The component id has to be one of the already
-     * added components to this builder. Actually, the id is allowed to reference the currently active component.
+     * added components to this builder. Actually, the id is allowed to reference the currently active component. This
+     * method is not allowed if a component has been supplied a user defined integer id previously.
      * @return TModelBuilder& to the builder for chaining calls
      * @throws TException if there is no active attribute
      * @throws TException if the attributes value type is not TValueType::REFERENCE_COMPONENT
@@ -1145,24 +1190,31 @@ namespace rexsapi
   }
 
 
-  inline void detail::TComponents::addComponent(TComponentId id)
+  inline void detail::TComponents::addComponent(TComponentId id, std::optional<uint64_t> externalId)
   {
     checkDuplicateComponent(id);
-    m_Components.emplace_back(detail::TComponentEntry{TComponentId{std::move(id)}});
+    m_Components.emplace_back(detail::TComponentEntry{TComponentId{std::move(id)}, externalId});
   }
 
-  inline void detail::TComponents::addComponent(const std::string& component)
+  inline void detail::TComponents::addComponent(const std::string& component, std::optional<uint64_t> id,
+                                                std::optional<uint64_t> externalId)
   {
     checkDuplicateComponent(component);
-    m_Components.emplace_back(
-      detail::TComponentEntry{getNextComponentId(), &m_DatabaseModel.findComponentById(component)});
+    if (id) {
+      m_Components.emplace_back(
+        detail::TComponentEntry{TComponentId{id.value()}, externalId, &m_DatabaseModel.findComponentById(component)});
+    } else {
+      m_Components.emplace_back(
+        detail::TComponentEntry{getNextComponentId(), externalId, &m_DatabaseModel.findComponentById(component)});
+    }
   }
 
-  inline void detail::TComponents::addComponent(const std::string& component, std::string id)
+  inline void detail::TComponents::addComponent(const std::string& component, std::string id,
+                                                std::optional<uint64_t> externalId)
   {
     checkDuplicateComponent(id);
     m_Components.emplace_back(
-      detail::TComponentEntry{TComponentId{std::move(id)}, &m_DatabaseModel.findComponentById(component)});
+      detail::TComponentEntry{TComponentId{std::move(id)}, externalId, &m_DatabaseModel.findComponentById(component)});
   }
 
   inline TComponentId detail::TComponents::getNextComponentId() noexcept
@@ -1236,15 +1288,21 @@ namespace rexsapi
   }
 
 
-  inline TComponentBuilder& TComponentBuilder::addComponent(const std::string& component) &
+  inline TComponentBuilder& TComponentBuilder::addComponent(const std::string& component, std::optional<uint64_t> id,
+                                                            std::optional<uint64_t> externalId) &
   {
-    m_Components.addComponent(component);
+    if (id) {
+      m_Components.addComponent(component, id, externalId);
+    } else {
+      m_Components.addComponent(component, externalId);
+    }
     return *this;
   }
 
-  inline TComponentBuilder& TComponentBuilder::addComponent(const std::string& component, std::string id) &
+  inline TComponentBuilder& TComponentBuilder::addComponent(const std::string& component, std::string id,
+                                                            std::optional<uint64_t> externalId) &
   {
-    m_Components.addComponent(component, id);
+    m_Components.addComponent(component, id, externalId);
     return *this;
   }
 
@@ -1308,8 +1366,19 @@ namespace rexsapi
     uint64_t internalComponentId{0};
     TComponents components;
 
+    bool assignIds{false};
     for (const auto& component : m_Components.components()) {
-      m_ComponentMapping[component.m_Id] = ++internalComponentId;
+      if (!component.m_Id.isInteger()) {
+        assignIds = true;
+      }
+    }
+
+    for (const auto& component : m_Components.components()) {
+      if (assignIds) {
+        m_ComponentMapping[component.m_Id] = ++internalComponentId;
+      } else {
+        m_ComponentMapping[component.m_Id] = component.m_Id.integer();
+      }
     }
 
     for (const auto& component : m_Components.components()) {
@@ -1323,8 +1392,13 @@ namespace rexsapi
         }
         attributes.emplace_back(attribute.createAttribute(m_ComponentMapping));
       }
-      components.emplace_back(TComponent{m_ComponentMapping[component.m_Id], *component.m_DatabaseComponent,
-                                         component.m_Name, std::move(attributes)});
+      if (component.m_ExternalId) {
+        components.emplace_back(TComponent{component.m_ExternalId.value(), m_ComponentMapping[component.m_Id],
+                                           *component.m_DatabaseComponent, component.m_Name, std::move(attributes)});
+      } else {
+        components.emplace_back(TComponent{m_ComponentMapping[component.m_Id], *component.m_DatabaseComponent,
+                                           component.m_Name, std::move(attributes)});
+      }
     }
 
     return components;
@@ -1522,15 +1596,17 @@ namespace rexsapi
     return *this;
   }
 
-  inline TModelBuilder& TModelBuilder::addComponent(const std::string& component) &
+  inline TModelBuilder& TModelBuilder::addComponent(const std::string& component, std::optional<uint64_t> id,
+                                                    std::optional<uint64_t> externalId) &
   {
-    m_ComponentBuilder.addComponent(component);
+    m_ComponentBuilder.addComponent(component, id, externalId);
     return *this;
   }
 
-  inline TModelBuilder& TModelBuilder::addComponent(const std::string& component, std::string id) &
+  inline TModelBuilder& TModelBuilder::addComponent(const std::string& component, std::string id,
+                                                    std::optional<uint64_t> externalId) &
   {
-    m_ComponentBuilder.addComponent(component, std::move(id));
+    m_ComponentBuilder.addComponent(component, std::move(id), externalId);
     return *this;
   }
 

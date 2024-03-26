@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<model applicationId="FVA Workbench" applicationVersion="8.0" date="2022-12-12T11:06:16+01:00" version="1.5">
+  <relations>
+    <!--Reference relation from Shaft [30] to 18CrMo4 [50] -->
+    <relation id="1" type="reference">
+      <ref hint="shaft" id="30" role="origin"/>
+      <ref hint="material" id="50" role="referenced"/>
+    </relation>
+    <!--Relation between the main component Shaft [30] and the sub-component section [100]-->
+    <relation id="2" type="assembly">
+      <ref hint="shaft" id="30" role="assembly"/>
+      <ref hint="shaft_section" id="100" role="part"/>
+    </relation>
+    <!--Relation between the main component Shaft [30] and the sub-component section [110]-->
+    <relation id="3" type="assembly">
+      <ref hint="shaft" id="30" role="assembly"/>
+      <ref hint="shaft_section" id="110" role="part"/>
+    </relation>
+  </relations>
+  <components>
+    <component id="30" name="Shaft [30]" type="shaft">
+	  </component>
+    <component id="50" name="18CrMo4 [50]" type="material">
+      <attribute id="data_source" unit="none">./database_material.rexs</attribute>
+	    <attribute id="referenced_component_id" unit="none">9</attribute>
+      <attribute id="fatigue_limit_bending" unit="MPa">550.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">440.0</attribute>
+    </component>
+    <component id="100" name="section [100]" type="shaft_section">
+      <attribute id="inner_diameter_begin" unit="mm">0.0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0.0</attribute>
+      <attribute id="length" unit="mm">50.0</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">30.0</attribute>
+      <attribute id="outer_diameter_end" unit="mm">30.0</attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">0.0</attribute>
+    </component>
+    <component id="110" name="section [110]" type="shaft_section">
+      <attribute id="inner_diameter_begin" unit="mm">0.0</attribute>
+      <attribute id="inner_diameter_end" unit="mm">0.0</attribute>
+      <attribute id="length" unit="mm">50.0</attribute>
+      <attribute id="outer_diameter_begin" unit="mm">50.0</attribute>
+      <attribute id="outer_diameter_end" unit="mm">50.0</attribute>
+      <attribute id="u_coordinate_on_shaft" unit="mm">50.0</attribute>
+    </component>
+  </components>
+</model>

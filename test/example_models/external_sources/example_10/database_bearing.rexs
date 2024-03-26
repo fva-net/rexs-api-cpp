@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<model applicationId="FVA Workbench" applicationVersion="8.0" date="2022-12-12T11:06:16+01:00" version="1.5">
+  <relations>
+    <!--Relation between the main component Rolling bearing [60] and the sub-component rolling_bearing_row [80]-->
+    <relation id="1" order="1" type="ordered_assembly">
+      <ref hint="rolling_bearing_with_catalog_geometry" id="60" role="assembly"/>
+      <ref hint="rolling_bearing_row" id="80" role="part"/>
+    </relation>
+    <!--Relation between the main component Rolling bearing [60] and the sub-component rolling_bearing_row [90]-->
+    <relation id="2" order="2" type="ordered_assembly">
+      <ref hint="rolling_bearing_with_catalog_geometry" id="60" role="assembly"/>
+      <ref hint="rolling_bearing_row" id="90" role="part"/>
+    </relation>
+  </relations>
+  <components>
+    <component id="60" name="Rolling bearing [60]" type="rolling_bearing_with_catalog_geometry">
+      <attribute id="axial_factor_y_0" unit="none">2.2</attribute>
+      <attribute id="axial_factor_y_1" unit="none">2.2</attribute>
+      <attribute id="axial_factor_y_2" unit="none">3.3</attribute>
+      <attribute id="bearing_tolerance_class" unit="none">P0</attribute>
+      <attribute id="bearing_type" unit="none">radial_self_aligning_roller_bearing</attribute>
+      <attribute id="catalogue_designation" unit="none">22206 E</attribute>
+      <attribute id="catalogue_value_e" unit="none">0.31</attribute>
+      <attribute id="contamination_factor_according_to_iso_281_2007" unit="none">0.5</attribute>
+      <attribute id="fatigue_limit_load" unit="kN">6.4</attribute>
+      <attribute id="inner_diameter" unit="mm">30.0</attribute>
+      <attribute id="lubrication_type" unit="none">oil_injection</attribute>
+      <attribute id="manufacturer" unit="none">SKF</attribute>
+      <attribute id="number_of_bearing_rows" unit="none">2</attribute>
+      <attribute id="operating_axial_bearing_clearance" unit="mum">0.0</attribute>
+      <attribute id="operating_radial_bearing_clearance" unit="mum">0.0</attribute>
+      <attribute id="outer_diameter" unit="mm">62.0</attribute>
+      <attribute id="radial_clearance_class" unit="none">C0</attribute>
+      <attribute id="radial_dynamic_load_rating" unit="kN">66.1</attribute>
+      <attribute id="radial_factor_x_1" unit="none">1.0</attribute>
+      <attribute id="radial_factor_x_2" unit="none">0.67</attribute>
+      <attribute id="radial_static_load_rating" unit="kN">60.0</attribute>
+      <attribute id="width" unit="mm">20.0</attribute>
+    </component>
+    <component id="80" name="rolling_bearing_row [80]" type="rolling_bearing_row">
+      <attribute id="axial_force_absorption_of_row" unit="none">negative</attribute>
+      <attribute id="position_of_rolling_elements" unit="none">one_rolling_element_on_v_axis</attribute>
+      <attribute id="pressure_angle" unit="deg">11.68</attribute>
+    </component>
+    <component id="90" name="rolling_bearing_row [90]" type="rolling_bearing_row">
+      <attribute id="axial_force_absorption_of_row" unit="none">positive</attribute>
+      <attribute id="position_of_rolling_elements" unit="none">one_rolling_element_on_v_axis</attribute>
+      <attribute id="pressure_angle" unit="deg">11.68</attribute>
+    </component>
+  </components>
+</model>

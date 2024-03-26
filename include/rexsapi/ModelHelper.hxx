@@ -137,7 +137,6 @@ namespace rexsapi::detail
     }
 
   private:
-    // TODO: is this ok?
     inline static uint64_t m_InternalComponentId{0};
     std::unordered_map<uint64_t, uint64_t> m_ComponentsMapping;
   };

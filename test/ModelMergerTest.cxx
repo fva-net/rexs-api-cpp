@@ -50,7 +50,7 @@ TEST_CASE("Model merger test")
       newModel = merger.merge(result, *newModel, "./database_bearing.rexs", *referencedModel2);
     }
 
-    CHECK(newModel);
+    REQUIRE(newModel);
     CHECK(result);
     CHECK(newModel->getComponents().size() == 9);
     const ComponentFinder finder{*newModel};
@@ -99,7 +99,7 @@ TEST_CASE("Model merger test")
       newModel = merger.merge(result, *mainModel, "./database_material.rexs", *referencedModel);
     }
 
-    CHECK(newModel);
+    REQUIRE(newModel);
     CHECK(result);
     CHECK(newModel->getComponents().size() == 7);
 
@@ -190,7 +190,7 @@ TEST_CASE("Model merger test")
       newModel = merger.merge(result, *newModel, "./database_bearing.rexs", *referencedModel2);
     }
 
-    CHECK(newModel);
+    REQUIRE(newModel);
     CHECK(result);
     CHECK(newModel->getComponents().size() == 21);
     CHECK(newModel->getRelations().size() == 20);
