@@ -265,7 +265,7 @@ namespace rexsapi
         for (const auto& loadCase : loadSpectrum.getLoadCases()) {
           auto& newLoadCase = modelBuilder.addLoadCase();
           for (const auto& loadComponent : loadCase.getLoadComponents()) {
-            insertComponent(newLoadCase, loadComponent.getComponent(), loadComponent.getAttributes());
+            insertComponent(newLoadCase, loadComponent.getComponent(), loadComponent.getLoadAttributes());
           }
         }
       }
@@ -273,7 +273,7 @@ namespace rexsapi
         auto& newAccumulation = modelBuilder.addAccumulation();
         const auto& accumulation = loadSpectrum.getAccumulation();
         for (const auto& loadComponent : accumulation.getLoadComponents()) {
-          insertComponent(newAccumulation, loadComponent.getComponent(), loadComponent.getAttributes());
+          insertComponent(newAccumulation, loadComponent.getComponent(), loadComponent.getLoadAttributes());
         }
       }
 

@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - External sub components checker (#31)
 - New check method for main components to TRelationTypeChecker (#36)
 - TModelMerger to merge multiple TModel instances into a new instance (#36)
+- The TModelBuilder can now use user supplied integers as ids
 
 ## [1.1.0]
 
