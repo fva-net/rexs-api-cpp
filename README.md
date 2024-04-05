@@ -11,7 +11,7 @@ The REXSapi library is a C++ implementation of the [REXS specification](https://
 
 # Status
 
-The project is now released and is already used in production. However, the API will probably still change a bit due to the adaption of the 1.5 standards version.
+The project is now released and is already used in production.
 
 # Supported REXS Versions
 
