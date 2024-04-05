@@ -22,13 +22,13 @@
 #include <rexsapi/RexsVersion.hxx>
 
 /**
- * @brief Namespace for REXS model related stuff
+ * @brief Namespace for REXS model related stuff.
  *
  */
 namespace rexsapi
 {
   /**
-   * @brief Represents meta information about a model
+   * @brief Represents meta information about a model.
    *
    */
   class TModelInfo
@@ -79,7 +79,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents a REXS model loaded from a file or created by the TModelBuilder
+   * @brief Represents a REXS model loaded from a file or created by the TModelBuilder.
    *
    * A TModel instance is the main REXS object that abstracts a complete REXS model as described by the REXS
    * standard. It can be queried for meta information, components, relations, and load spectrum, drilling down to
@@ -92,7 +92,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Construct a new TModel object
+     * @brief Construct a new TModel object.
      *
      * Models are immutable objects, once created they cannot be changed.
      *
@@ -104,7 +104,7 @@ namespace rexsapi
      * @param spectrum The load spectrum of this model. The optionality of the spectrum is implied in the absensce of
      * load cases and accumulations in the spectrum.
      */
-    TModel(TModelInfo info, TComponents components, TRelations relations, TLoadSpectrum spectrum)
+    TModel(TModelInfo info, TComponents&& components, TRelations&& relations, TLoadSpectrum&& spectrum)
     : m_Info{std::move(info)}
     , m_Components{std::move(components)}
     , m_Relations{std::move(relations)}

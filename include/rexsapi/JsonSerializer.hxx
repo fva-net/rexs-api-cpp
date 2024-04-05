@@ -25,7 +25,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Outputs a json object into a string
+   * @brief Outputs a json object into a string.
    *
    * Will add a UTF-8 BOM to the beginning of the buffer.
    *
@@ -39,7 +39,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns the json string of the serialized model
+     * @brief Returns the json string of the serialized model.
      *
      * @return const std::string& to the json string
      */
@@ -54,7 +54,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Outputs a json object into a file
+   * @brief Outputs a json object into a file.
    *
    * Will add a UTF-8 BOM to the beginning of the file.
    *
@@ -63,7 +63,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TJsonFileSerializer object
+     * @brief Constructs a new TJsonFileSerializer object.
      *
      * @param file The filesystem path to save the json object to
      * @param indent The amount of indentation for nested structures. Set to -1 for the most compact format.
@@ -80,7 +80,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Outputs the json object into a file
+     * @brief Outputs the json object into a file.
      *
      * @param doc The json obejct containing the REXS json model
      * @throws TException if the file cannot be written

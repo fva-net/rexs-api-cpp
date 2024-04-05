@@ -13,6 +13,8 @@ target_sources(rexsapi INTERFACE
   ${PROJECT_SOURCE_DIR}/include/rexsapi/CodedValue.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/Component.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ConversionHelper.hxx
+  ${PROJECT_SOURCE_DIR}/include/rexsapi/DataSourceLoader.hxx
+  ${PROJECT_SOURCE_DIR}/include/rexsapi/DataSourceResolver.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/Defines.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/Exception.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/FileTypes.hxx
@@ -30,9 +32,11 @@ target_sources(rexsapi INTERFACE
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelBuilder.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelHelper.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelLoader.hxx
+  ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelMerger.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelSaver.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/ModelVisitor.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/Relation.hxx
+  ${PROJECT_SOURCE_DIR}/include/rexsapi/ExternalSubcomponentsChecker.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/RelationTypeChecker.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/Result.hxx
   ${PROJECT_SOURCE_DIR}/include/rexsapi/RexsVersion.hxx

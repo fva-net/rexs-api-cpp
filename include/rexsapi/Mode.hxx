@@ -23,7 +23,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Defines how to handle issues found while processing models
+   * @brief Defines how to handle issues found while processing models.
    *
    * In RELAXED_MODE most errors will be downgraded to warnings to allow processing of non standard compliant models.
    * The STRICT_MODE will leave all errors as they are.
@@ -34,7 +34,7 @@ namespace rexsapi
   };
 
   /**
-   * @brief Returns the string representation of a mode
+   * @brief Returns the string representation of a mode.
    *
    * @param mode The mode to convert
    * @return std::string representation of the mode
@@ -88,10 +88,11 @@ namespace rexsapi
           case TErrorLevel::CRIT:
             return TErrorLevel::CRIT;
           case TErrorLevel::WARN:
+            [[fallthrough]];
           case TErrorLevel::ERR:
             return TErrorLevel::WARN;
         }
-        [[fallthrough]];
+        break;
       case TMode::STRICT_MODE:
         return level;
     }

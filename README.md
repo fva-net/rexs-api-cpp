@@ -1,7 +1,7 @@
 ![Supported Platforms](https://img.shields.io/badge/platforms-Linux%20%7C%20Windows%20%7C%20Mac-blue.svg)
 ![License: Apache 2](https://img.shields.io/badge/license-Apache%202-blue)
 ![Language: C++17](https://img.shields.io/badge/language-C%2B%2B17-blue.svg)
-![Version:](https://img.shields.io/badge/version-1.1.0-green)
+![Version:](https://img.shields.io/badge/version-2.2.0-green)
 [![GitHub Build Status](https://github.com/fva-net/rexs-api-cpp/workflows/CMake%20Build%20Matrix/badge.svg)](https://github.com/fva-net/rexs-api-cpp/actions)
 [![Coverage Status](https://coveralls.io/repos/github/BearinxSimulationSuite/REXSapi/badge.svg?branch=main)](https://coveralls.io/github/BearinxSimulationSuite/REXSapi?branch=main)
 
@@ -15,7 +15,7 @@ The project is now released and is already used in production. However, the API 
 
 # Supported REXS Versions
 
-The library uses REXS database model files in order to validate REXS model files. Database model files can be downloaded from the [REXS database page](https://database.rexs.info/). Currently, the implementation supports versions 1.0 to 1.5, but newer database files should also work. Version 1.0 to 1.5 database model files in english and german can also be found in the models directory of this project.
+The library uses REXS database model files in order to validate REXS model files. Database model files can be downloaded from the [REXS database page](https://database.rexs.info/). Currently, the implementation supports versions 1.0 to 1.6, but newer database files should also work. Version 1.0 to 1.6 database model files in english and german can also be found in the models directory of this project.
 
 The library supports REXS model files in xml and json format. Compressed REXS zip archives can also be loaded. The loading and storing mechanism can be easily extended to support other sources besides files for model loading and storing.
 
@@ -101,7 +101,7 @@ modelBuilder.addRelation(rexsapi::TRelationType::SIDE)
     
 ... [more relations]
 
-auto model = modelBuilder.build("REXSApi Model Builder", "1.0", "en");
+auto model = modelBuilder.build("REXSApi Model Builder", "1.2", "en");
 ```
 First you add components and attributes to the model. The last added component or attribute are the so called active component or attribute. All following method calls always affect the currently active component or attribute. The same is true for relations. Attributes need real C++ types as values.
 
@@ -156,6 +156,7 @@ File ".FVA-Industriegetriebe_2stufig_1-4.rexs" processed with 10 warnings
 The `model_converter` can convert REXS model files between xml and json format. Files can be converted in any direction, even into the same format. You can convert complete directories with one go. As with the `model_checker`, the tool supports a relaxed mode for loading non-standard complying model files. If files do not conform to the standard, converting them may result in removed elements.
 
 ### Options
+
 | Option | Description |
 |:--|:--|
 | --help, -h | Show usage and options |
@@ -230,7 +231,7 @@ include(FetchContent)
 FetchContent_Declare(
   rexsapi
   GIT_REPOSITORY https://github.com/fva-net/rexs-api-cpp.git
-  GIT_TAG origin/v1.0.0
+  GIT_TAG origin/v1.1.0
 )
 
 FetchContent_MakeAvailable(rexsapi)
@@ -247,8 +248,9 @@ The library is header only. A build is only necessary if you want to run the tes
 ## Linux
 
 - You will need the following software packages
-  - g++ 9.3.0 or higher
-  - cmake 3.16.3 or higher
+  - g++ 11.4.0 or higher
+  - clang 15.0.7 or higher
+  - cmake 3.22 or higher
 - To install the dependencies on ubuntu
   - Call `sudo apt-get install cmake g++`
 - Create a build directory in the source directory of REXSapi and change to it
@@ -260,15 +262,15 @@ The library is header only. A build is only necessary if you want to run the tes
 ## Windows
 
 - You will need the following software packages
-  - Visual Studio 2019 or higher
-- CMake support is build into Visual Studio 2019
+  - Visual Studio 2022 or higher
+- CMake support is build into Visual Studio 2022
 - Open the local folder of the REXSapi project
 - Visual Studio will configure the project automatically
 
 ## Mac
 - You will need the following software packages
   - XCode 12.4 or higher
-  - cmake 3.16.3 or higher
+  - cmake 3.22 or higher
 - To install cmake on Mac
   - Call `brew install cmake`
 - Create a build directory in the source directory of REXSapi and change to it
@@ -281,14 +283,14 @@ The library is header only. A build is only necessary if you want to run the tes
 
 REXSapi uses the following thirdparty open source software
 
-- [cli11 2.3.2](https://github.com/CLIUtils/CLI11)
+- [cli11 2.4.1](https://github.com/CLIUtils/CLI11)
 - [date 3.0.1](https://github.com/HowardHinnant/date)
 - [doctest 2.4.10](https://github.com/doctest/doctest)
-- [fmt 9.1.0](https://github.com/fmtlib/fmt)
+- [fmt 10.2.1](https://github.com/fmtlib/fmt)
 - [nlohmann json 3.11.2](https://github.com/nlohmann/json)
 - [miniz 3.0.2](https://github.com/richgel999/miniz)
-- [pugixml 1.13](https://github.com/zeux/pugixml)
-- [valijson 1.0](https://github.com/tristanpenman/valijson)
+- [pugixml 1.14](https://github.com/zeux/pugixml)
+- [valijson 1.0.2](https://github.com/tristanpenman/valijson)
 
 # License
 REXsapi is licensed under the Apache-2.0 license.

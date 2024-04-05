@@ -1,0 +1,106 @@
+{
+  "1.5": {
+    "material": [],
+    "sn_curve": [],
+    "lubricant": [],
+    "bevel_gear_tool": [],
+    "cutter_wheel_tool": [],
+    "rack_shaped_tool": [],
+    "worm_grinding_disc_tool": [],
+    "worm_wheel_hob_tool": [],
+    "zero_degree_grinding_disk_tool": [],
+    "rolling_bearing_with_catalog_geometry": [
+      "rolling_bearing_row",
+      "rolling_element",
+      "material",
+      "lubricant",
+      "rolling_element_contact"
+    ],
+    "rolling_bearing_with_detailed_geometry": [
+      "rolling_bearing_row",
+      "rolling_element",
+      "material",
+      "lubricant",
+      "rolling_element_contact"
+    ],
+    "shaft": [
+      "shaft_section",
+      "shaft_shoulder",
+      "shaft_shoulder_with_undercut",
+      "round_groove",
+      "rectangular_groove",
+      "v_notch",
+      "transverse_bore",
+      "fkm_evaluation_point",
+      "additional_mass",
+      "material"
+    ],
+    "cylindrical_gear": [
+      "cylindrical_gear_flank",
+      "material",
+      "sn-curve",
+      "profile_slope",
+      "tip_relief",
+      "root_relief",
+      "profile_crowning",
+      "helix_crowning",
+      "helix_slope",
+      "end_relief_datum_face",
+      "end_relief_non_datum_face",
+      "topographical_modification",
+      "triangular_tip_relief",
+      "triangular_root_relief",
+      "profile_twist",
+      "profile_deviation",
+      "helix_deviation",
+      "flank_geometry",
+      "cutter_wheel_tool",
+      "rack_shaped_tool",
+      "zero_degree_grinding_disk_tool",
+      "cylindrical_gear_manufacturing_settings"
+    ],
+    "ring_gear": [
+      "cylindrical_gear_flank",
+      "material",
+      "sn-curve",
+      "profile_slope",
+      "tip_relief",
+      "root_relief",
+      "profile_crowning",
+      "helix_crowning",
+      "helix_slope",
+      "end_relief_datum_face",
+      "end_relief_non_datum_face",
+      "topographical_modification",
+      "triangular_tip_relief",
+      "triangular_root_relief",
+      "profile_twist",
+      "profile_deviation",
+      "helix_deviation",
+      "flank_geometry",
+      "cutter_wheel_tool",
+      "cylindrical_gear_manufacturing_settings"
+    ],
+    "bevel_gear": [
+      "bevel_gear_flank",
+      "material",
+      "sn-curve",
+      "bevel_gear_tool",
+      "bevel_gear_manufacturing_settings"
+    ],
+    "worm_gear": [
+      "worm_gear_flank",
+      "material",
+      "sn-curve",
+      "worm_grinding_disc_tool",
+      "worm_gear_manufacturing_settings"
+    ],
+    "worm_wheel": [
+      "worm_gear_flank",
+      "material",
+      "sn-curve",
+      "worm_wheel_hob_tool",
+      "worm_gear_manufacturing_settings"
+    ]
+  }
+}

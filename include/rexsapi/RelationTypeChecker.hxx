@@ -57,7 +57,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Checks relations for correctness
+   * @brief Checks relations for correctness.
    *
    * Checks either a model or a single relation for correctness. Correctness means that a relation has the necessary
    * reference roles mandated by the standard according to the relations (or models) version. Additionally, a relation
@@ -67,7 +67,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TRelationTypeChecker object
+     * @brief Constructs a new TRelationTypeChecker object.
      *
      * The checker will downgrade non-critical errors to warnings if relaxed mode is used. However, the checking might
      * downgrade errors, but the check methods will nevertheless return false upon any errors.
@@ -80,7 +80,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Checks all the relations of the given model
+     * @brief Checks all the relations of the given model.
      *
      * @param result Describes the outcome of the check. Will contain messages upon issues encountered.
      * @param model The model to check the relations for. Will use the models version for the check.
@@ -90,7 +90,7 @@ namespace rexsapi
     bool check(TResult& result, const TModel& model) const;
 
     /**
-     * @brief Checks a single relation
+     * @brief Checks a single relation.
      *
      * @param result Describes the outcome of the check. Will contain messages upon issues encountered.
      * @param version The version to use for the check
@@ -99,6 +99,19 @@ namespace rexsapi
      * @return false if the realtion is not correct
      */
     bool check(TResult& result, const TRexsVersion& version, const TRelation& relation) const;
+
+    /**
+     * @brief Checks if the given relation role is a main component for the relation type.
+     *
+     * @param result Describes the outcome of the check. Will contain messages upon issues encountered.
+     * @param version The version to use for the check
+     * @param relationType The relation type to check main components for
+     * @param role The role to check main component
+     * @return true
+     * @return false
+     */
+    bool isMainComponentRole(TResult& result, const TRexsVersion& version, const TRelationType relationType,
+                             const TRelationRole role) const;
 
   private:
     bool checkRelation(TResult& result, const TRexsVersion& version, const detail::TRelationTypeMapping* mapping,
@@ -194,6 +207,29 @@ namespace rexsapi
       if (role.m_Role == reference.getRole()) {
         return true;
       }
+    }
+
+    return false;
+  }
+
+  inline bool TRelationTypeChecker::isMainComponentRole(TResult& result, const TRexsVersion& version,
+                                                        const TRelationType relationType,
+                                                        const TRelationRole role) const
+  {
+    const auto* mapping = findVersion(version);
+    if (mapping == nullptr) {
+      result.addError(
+        TError{TErrorLevel::ERR, fmt::format("cannot find configuration for version {}", version.asString())});
+      return false;
+    }
+
+    const auto it =
+      std::find_if(mapping->m_Entries.begin(), mapping->m_Entries.end(), [relationType](const auto& entry) {
+        return entry.m_Type == relationType;
+      });
+
+    if (it != mapping->m_Entries.end()) {
+      return it->m_Roles[0].m_Role == role;
     }
 
     return false;
@@ -511,11 +547,110 @@ namespace rexsapi
         { "component": "C2", "role": "shaft" }
       ]
     }
+  },
+  "1.6": {
+    "assembly": {
+      "ordered": false,
+      "roles": [
+        { "component": "K1", "role": "assembly" },
+        { "component": "K2", "role": "part" }
+      ]
+    },
+    "ordered_assembly": {
+      "ordered": true,
+      "roles": [
+        { "component": "K1", "role": "assembly" },
+        { "component": "K2", "role": "part" }
+      ]
+    },
+    "stage": {
+      "ordered": false,
+      "roles": [
+        { "component": "S", "role": "stage" },
+        { "component": "R1", "role": "gear_1" },
+        { "component": "R2", "role": "gear_2" }
+      ]
+    },
+    "stage_gear_data": {
+      "ordered": false,
+      "roles": [
+        { "component": "S", "role": "stage" },
+        { "component": "R", "role": "gear" },
+        { "component": "D", "role": "stage_gear_data" }
+      ]
+    },
+    "side": {
+      "ordered": false,
+      "roles": [
+        { "component": "M", "role": "assembly" },
+        { "component": "IP", "role": "inner_part" },
+        { "component": "OP", "role": "outer_part" }
+      ]
+    },
+    "flank": {
+      "ordered": false,
+      "roles": [
+        { "component": "R", "role": "gear" },
+        { "component": "C1", "role": "left" },
+        { "component": "C2", "role": "right" }
+      ]
+    },
+    "reference": {
+      "ordered": false,
+      "roles": [
+        { "component": "R", "role": "origin" },
+        { "component": "P", "role": "referenced" }
+      ]
+    },
+    "manufacturing_step": {
+      "ordered": true,
+      "roles": [
+        { "component": "F", "role": "workpiece" },
+        { "component": "T", "role": "tool" },
+        { "component": "M", "role": "manufacturing_settings" }
+      ]
+    },
+    "planet_shaft": {
+      "ordered": false,
+      "roles": [
+        { "component": "C1", "role": "planetary_stage" },
+        { "component": "C2", "role": "shaft" }
+      ]
+    },
+    "central_shaft": {
+      "ordered": false,
+      "roles": [
+        { "component": "C1", "role": "planetary_stage" },
+        { "component": "C2", "role": "shaft" }
+      ]
+    },
+    "planet_carrier_shaft": {
+      "ordered": false,
+      "roles": [
+        { "component": "C1", "role": "planetary_stage" },
+        { "component": "C2", "role": "shaft" }
+      ]
+    },
+    "planet_pin": {
+      "ordered": false,
+      "roles": [
+        { "component": "C1", "role": "planetary_stage" },
+        { "component": "C2", "role": "shaft" }
+      ]
+    },
+    "contact": {
+      "ordered": false,
+      "roles": [
+        { "component": "S", "role": "assembly" },
+        { "component": "A", "role": "side_1" },
+        { "component": "B", "role": "side_2" }
+      ]
+    }
   }
 }
     )";
 
-      TRelationTypeMappings mappings = parseMappings(result, relationTypes);
+      auto mappings = parseMappings(result, relationTypes);
       if (!result) {
         throw TException{fmt::format("cannot load relation types mapping")};
       }

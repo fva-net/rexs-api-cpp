@@ -27,7 +27,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Represents all allowed REXS value types
+   * @brief Represents all allowed REXS value types.
    *
    */
   enum class TValueType : uint8_t {
@@ -52,7 +52,7 @@ namespace rexsapi
   };
 
   /**
-   * @brief Creates a value type from a string
+   * @brief Creates a value type from a string.
    *
    * @param type The string representation of a value type
    * @return TValueType for the corresponding string
@@ -61,7 +61,7 @@ namespace rexsapi
   static TValueType typeFromString(const std::string& type);
 
   /**
-   * @brief Returns a string representation of a value type
+   * @brief Returns a string representation of a value type.
    *
    * @param type The type to represent as string
    * @return std::string representation of the value type
@@ -70,7 +70,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents a bool type that can be used as a bool in a std::vector
+   * @brief Represents a bool type that can be used as a bool in a std::vector.
    *
    */
   struct Bool {
@@ -83,7 +83,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns the bool value of the underlying bool
+     * @brief Returns the bool value of the underlying bool.
      *
      * @return true
      * @return false
@@ -113,7 +113,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents the REXS matrix type
+   * @brief Represents the REXS matrix type.
    *
    * @tparam T The C++ type for this matrix. Currently, integer, boolean, floating point and string are allowed.
    */
@@ -129,7 +129,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Converts a matrix to a different matrix type
+     * @brief Converts a matrix to a different matrix type.
      *
      * @param m The matrix to convert. Has to have an underlying type that can be converted
      *          to this matrix type.
@@ -155,7 +155,7 @@ namespace rexsapi
     ~TMatrix() = default;
 
     /**
-     * @brief Checks if a martrix is valid
+     * @brief Checks if a martrix is valid.
      *
      * A valid matrix has the same column count for every row.
      *
@@ -181,7 +181,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief The store for the actual matrix values
+     * @brief The store for the actual matrix values.
      *
      * Currently, the only way to access the matrix values.
      *
@@ -191,7 +191,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents the REXS date_time type
+   * @brief Represents the REXS date_time type.
    *
    */
   class TDatetime
@@ -200,7 +200,7 @@ namespace rexsapi
     using time_point = std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds>;
 
     /**
-     * @brief Construct a new TDatetime object from a string
+     * @brief Construct a new TDatetime object from a string.
      *
      * @param datetime The string has to be in ISO8601 format `yyyy-mm-ddThh:mm:ss[+/-]<offset to UTC>`
      * @throws std::exception if the string cannot be parsed or the date time is invalid
@@ -217,7 +217,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Construct a new TDatetime object from a std::chrono::time_point
+     * @brief Construct a new TDatetime object from a std::chrono::time_point.
      *
      * @param datetime A time point
      */
@@ -232,7 +232,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns a new TDatetime object constructed with the current date and time
+     * @brief Returns a new TDatetime object constructed with the current date and time.
      *
      * @return A new TDatetime object set to the current date and time
      */
@@ -264,7 +264,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns the time point
+     * @brief Returns the time point.
      *
      * @return time_point
      */
@@ -279,13 +279,14 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents all currently allowed REXS relation types
+   * @brief Represents all currently allowed REXS relation types.
    *
    */
   enum class TRelationType {
     ASSEMBLY,              //!< assembly
     CENTRAL_SHAFT,         //!< shaft
     CONNECTION,            //!< connection
+    CONTACT,               //!< contact
     COUPLING,              //!< coupling
     FLANK,                 //!< flank
     MANUFACTURING_STEP,    //!< manufacturing_step
@@ -301,7 +302,7 @@ namespace rexsapi
   };
 
   /**
-   * @brief Creates a relation type from a string
+   * @brief Creates a relation type from a string.
    *
    * @param type The string representation of a relation type
    * @return TRelationType for the corresponding string
@@ -310,7 +311,7 @@ namespace rexsapi
   static TRelationType relationTypeFromString(const std::string& type);
 
   /**
-   * @brief Returns a string representation of a relation type
+   * @brief Returns a string representation of a relation type.
    *
    * @param type The type to represent as string
    * @return std::string representation of the relation type
@@ -319,7 +320,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents all currently allowed REXS relation roles
+   * @brief Represents all currently allowed REXS relation roles.
    *
    */
   enum class TRelationRole {
@@ -346,7 +347,7 @@ namespace rexsapi
   };
 
   /**
-   * @brief Creates a relation role from a string
+   * @brief Creates a relation role from a string.
    *
    * @param role The string representation of a relation role
    * @return TRelationRole for the corresponding string
@@ -355,7 +356,7 @@ namespace rexsapi
   static TRelationRole relationRoleFromString(const std::string& role);
 
   /**
-   * @brief Returns a string representation of a relation role
+   * @brief Returns a string representation of a relation role.
    *
    * @param role The role to represent as string
    * @return std::string representation of the relation role
@@ -364,7 +365,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Defines if a role is a top or sub level type
+   * @brief Defines if a role is a top or sub level type.
    *
    */
   enum class TRelationRoleType {
@@ -373,7 +374,7 @@ namespace rexsapi
   };
 
   /**
-   * @brief Returns the role type for a specific role
+   * @brief Returns the role type for a specific role.
    *
    * @param role The role to get the type for
    * @return TRelationRoleType corresponding to the role
@@ -501,6 +502,8 @@ namespace rexsapi
         return "central_shaft";
       case TRelationType::CONNECTION:
         return "connection";
+      case TRelationType::CONTACT:
+        return "contact";
       case TRelationType::COUPLING:
         return "coupling";
       case TRelationType::FLANK:
@@ -540,6 +543,9 @@ namespace rexsapi
     }
     if (type == "connection") {
       return TRelationType::CONNECTION;
+    }
+    if (type == "contact") {
+      return TRelationType::CONTACT;
     }
     if (type == "coupling") {
       return TRelationType::COUPLING;

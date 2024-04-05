@@ -42,6 +42,7 @@ TEST_CASE("Loader result test")
     CHECK(result.getErrors()[0].isError());
     CHECK(result.getErrors()[1].getMessage() == "my second message: offset 32");
     CHECK(result.getErrors()[1].isError());
+    CHECK(result.getErrors()[1].getLevel() == rexsapi::TErrorLevel::ERR);
 
     result.reset();
     CHECK(result);

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<model applicationId="FVA Workbench" applicationVersion="8.0" date="2022-12-12T11:20:21+01:00" version="1.5">
+  <components>
+    <component id="3" name="17Cr3 [3]" type="material">
+      <attribute id="fatigue_limit_bending" unit="MPa">400.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">320.0</attribute>
+      <attribute id="fatigue_limit_torsion" unit="MPa">240.0</attribute>
+    </component>
+    <component id="4" name="28Cr4 [4]" type="material">
+      <attribute id="fatigue_limit_bending" unit="MPa">450.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">360.0</attribute>
+      <attribute id="fatigue_limit_torsion" unit="MPa">270.0</attribute>
+    </component>
+    <component id="5" name="16MnCr5 [5]" type="material">
+      <attribute id="fatigue_limit_bending" unit="MPa">500.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">400.0</attribute>
+      <attribute id="fatigue_limit_torsion" unit="MPa">300.0</attribute>
+    </component>
+    <component id="6" name="20MnCr5 [6]" type="material">
+      <attribute id="fatigue_limit_bending" unit="MPa">600.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">480.0</attribute>
+      <attribute id="fatigue_limit_torsion" unit="MPa">360.0</attribute>
+    </component>
+    <component id="7" name="18CrMo4 [7]" type="material">
+      <attribute id="fatigue_limit_bending" unit="MPa">550.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">440.0</attribute>
+      <attribute id="fatigue_limit_torsion" unit="MPa">330.0</attribute>
+    </component>
+    <component id="8" name="18CrMoS4 [8]" type="material">
+      <attribute id="fatigue_limit_bending" unit="MPa">550.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">440.0</attribute>
+      <attribute id="fatigue_limit_torsion" unit="MPa">330.0</attribute>
+    </component>
+    <component id="9" name="20MoCr3 [9]" type="material">
+      <attribute id="fatigue_limit_bending" unit="MPa">450.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">360.0</attribute>
+      <attribute id="fatigue_limit_torsion" unit="MPa">270.0</attribute>
+    </component>
+    <component id="10" name="16NiCr4 [10]" type="material">
+      <attribute id="fatigue_limit_bending" unit="MPa">500.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">400.0</attribute>
+      <attribute id="fatigue_limit_torsion" unit="MPa">300.0</attribute>
+    </component>
+    <component id="11" name="17CrNi6-6 [11]" type="material">
+      <attribute id="fatigue_limit_bending" unit="MPa">600.0</attribute>
+      <attribute id="fatigue_limit_compression_tension" unit="MPa">480.0</attribute>
+      <attribute id="fatigue_limit_torsion" unit="MPa">360.0</attribute>
+    </component>
+  </components>
+</model>

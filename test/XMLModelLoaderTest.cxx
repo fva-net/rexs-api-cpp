@@ -140,7 +140,7 @@ TEST_CASE("XML model loader test")
     CHECK_FALSE(result);
     REQUIRE(result.getErrors().size() == 1);
     CHECK(result.getErrors()[0].getMessage() ==
-          "Load: duplicate attribute found for attribute id=u_coordinate_on_shaft");
+          "Load: duplicate attribute found for attribute id=u_coordinate_on_shaft of component id=3");
     REQUIRE(model);
     CHECK(model->getInfo().getApplicationId() == "REXSApi Unit Test");
     REQUIRE(model->getInfo().getApplicationLanguage().has_value());
@@ -196,6 +196,15 @@ TEST_CASE("XML model loader test")
       "16MnCr5 [239]: value is out of range for attribute id=thermal_expansion_coefficient_minus of component id=239");
     CHECK(result.getErrors()[4].getMessage() ==
           "Schneckenrad [9]: value is out of range for attribute id=throat_radius_worm_wheel of component id=9");
+  }
+
+  SUBCASE("Load version 1.6 rexs file")
+  {
+    const auto model =
+      loadModel(result, projectDir() / "test" / "example_models" / "FVA-Industriegetriebe_2_stufig_1-6.rexs", registry);
+    CHECK(model);
+    CHECK(result);
+    CHECK_FALSE(result.isCritical());
   }
 
   SUBCASE("Load complex model from file in strict mode")

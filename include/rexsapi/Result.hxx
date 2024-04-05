@@ -31,7 +31,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Defines the severity of an error
+   * @brief Defines the severity of an error.
    *
    */
   enum class TErrorLevel {
@@ -41,7 +41,7 @@ namespace rexsapi
   };
 
   /**
-   * @brief Returns the string representation of an error level
+   * @brief Returns the string representation of an error level.
    *
    * @param level The error level to get the string representation for
    * @return std::string representation of the error level
@@ -61,7 +61,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents an error
+   * @brief Represents an error.
    *
    * Errors are created for most of the problemes processing models. They all contain a severity and a message. They
    * might contain a position, if the error occured while processing files.
@@ -78,7 +78,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns if this error is of error or critical level
+     * @brief Returns if this error is of error or critical level.
      *
      * @return true either error or critical level
      * @return false a warning
@@ -89,7 +89,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns if this error is of critical level
+     * @brief Returns if this error is of critical level.
      *
      * @return true critical level
      * @return false either error or warning level
@@ -100,7 +100,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns if this error is of warning level
+     * @brief Returns if this error is of warning level.
      *
      * @return true warning level
      * @return false either error or critical level
@@ -118,6 +118,11 @@ namespace rexsapi
       return fmt::format("{}", m_Message);
     }
 
+    TErrorLevel getLevel() const
+    {
+      return m_Level;
+    }
+
   private:
     TErrorLevel m_Level;
     std::string m_Message;
@@ -126,7 +131,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents the outcome of some operation
+   * @brief Represents the outcome of some operation.
    *
    * Many operation either return or take a result as argument. A result can contain any number of errors, that describe
    * and categorize the issues discovered while processing. The result has a bool operator and can be converted to true
@@ -143,7 +148,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns the status of the result
+     * @brief Returns the status of the result.
      *
      * @return true there are errors with error or critical level
      * @return false there is either no error or only warnings
@@ -156,7 +161,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns if the result contains critical errors
+     * @brief Returns if the result contains critical errors.
      *
      * @return true there are critical errors
      * @return false no critcal errors
@@ -179,7 +184,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Removes all errors
+     * @brief Removes all errors.
      *
      * The result can be reused after this operation.
      *

@@ -35,14 +35,14 @@
 namespace rexsapi
 {
   /**
-   * @brief Load a json schema from a filesystem path
+   * @brief Load a json schema from a filesystem path.
    *
    */
   class TFileJsonSchemaLoader
   {
   public:
     /**
-     * @brief Constructs a new TFileJsonSchemaLoader object
+     * @brief Constructs a new TFileJsonSchemaLoader object.
      *
      * @param jsonFile The filesystem path to the json schema
      */
@@ -52,7 +52,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Loads the json schema from the specfified path
+     * @brief Loads the json schema from the specfified path.
      *
      * @return json object of the json schema
      * @throws TException if the schema cannot be loaded or parsed
@@ -65,7 +65,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Load a json schema from a string
+   * @brief Load a json schema from a string.
    *
    */
   class TBufferJsonSchemaLoader
@@ -82,7 +82,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Loads the json schema from the specfified string
+     * @brief Loads the json schema from the specfified string.
      *
      * @return json object of the json schema
      * @throws TException if the schema cannot be parsed
@@ -95,14 +95,14 @@ namespace rexsapi
 
 
   /**
-   * @brief Validates a json document with a json schema
+   * @brief Validates a json document with a json schema.
    *
    */
   class TJsonSchemaValidator
   {
   public:
     /**
-     * @brief Constructs a new TJsonSchemaValidator object
+     * @brief Constructs a new TJsonSchemaValidator object.
      *
      * @tparam TJsonSchemaLoader Loader class for loading the json schema. The TFileJsonSchemaLoader and
      * TBufferJsonSchemaLoader classes are provided as default implementations. The loader class has to define the
@@ -125,7 +125,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Validates the given json document against the configured json schema
+     * @brief Validates the given json document against the configured json schema.
      *
      * @param doc The json document to validate
      * @param errors Will be filled with issues encountered while validating the document

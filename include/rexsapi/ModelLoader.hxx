@@ -27,7 +27,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Creates a model registry containing all models found in the given filesystem path
+   * @brief Creates a model registry containing all models found in the given filesystem path.
    *
    * The filesystem path should contain REXS database model files for different versions and languages. Additionally,
    * the XML database model schema file (*rexs-dbmodel.xsd*) has to be available in the path.
@@ -41,7 +41,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Easy to use model loader convenience class abstracting REXS model load operations
+   * @brief Easy to use model loader convenience class abstracting REXS model load operations.
    *
    * All allowed kinds of REXS model files can be loaded trasparently with this loader. The loader will also create it's
    * own model registry. For the successful creation of the model registry, all schema files have to be available to
@@ -51,28 +51,32 @@ namespace rexsapi
    *
    * Allows loading of multiple REXS model files with the same loader.
    */
-  class TModelLoader
+  class TModelLoader final
   {
   public:
     /**
-     * @brief Constructs a new TModelLoader object
+     * @brief Constructs a new TModelLoader object.
      *
      * @param databasePath filesystem path containing REXS database model files for different versions and languages and
      * all relevant schema files. The necessary schema files are:
      * - rexs-dbmodel.xsd
      * - rexs-schema.xsd
      * - rexs-schema.json
+     * @param dataSourceResolver Will be used to load external model data sources if set. Triggers an error if not set
+     *                           and model has external references.
      * @throws TException if the model registry or the schema validators cannot be created
      */
-    explicit TModelLoader(const std::filesystem::path& databasePath)
+    explicit TModelLoader(const std::filesystem::path& databasePath,
+                          const TDataSourceResolver* dataSourceResolver = nullptr)
     : m_Registry{createModelRegistry(databasePath)}
     , m_XMLSchemaValidator{createXMLSchemaValidator(databasePath)}
     , m_JsonValidator{createJsonSchemaValidator(databasePath)}
+    , m_DataSourceResolver{dataSourceResolver}
     {
     }
 
     /**
-     * @brief Constructs a new TModelLoader object
+     * @brief Constructs a new TModelLoader object.
      *
      * @param databasePath filesystem path containing REXS database model files for different versions and languages and
      * all relevant schema files. The necessary schema files are:
@@ -80,18 +84,22 @@ namespace rexsapi
      * - rexs-schema.xsd
      * - rexs-schema.json
      * @param customExtensionMappings Additional custom extension mappings to respect for REXS model file type detection
+     * @param dataSourceResolver Will be used to load external model data sources if set. Triggers an error if not set
+     *                           and model has external references.
      * @throws TException if the model registry or the schema validators cannot be created
      */
-    TModelLoader(const std::filesystem::path& databasePath, TCustomExtensionMappings customExtensionMappings)
+    TModelLoader(const std::filesystem::path& databasePath, TCustomExtensionMappings customExtensionMappings,
+                 const TDataSourceResolver* dataSourceResolver = nullptr)
     : m_Registry{createModelRegistry(databasePath)}
     , m_XMLSchemaValidator{createXMLSchemaValidator(databasePath)}
     , m_JsonValidator{createJsonSchemaValidator(databasePath)}
     , m_ExtensionChecker{std::move(customExtensionMappings)}
+    , m_DataSourceResolver{dataSourceResolver}
     {
     }
 
     /**
-     * @brief Loads a RESX model file and creates a TModel instance
+     * @brief Loads a RESX model file and creates a TModel instance.
      *
      * The given file can contain a REXS model in XML or JSON format. The files extension has to be one of the allowed
      * extensions:
@@ -127,6 +135,7 @@ namespace rexsapi
     const TXSDSchemaValidator m_XMLSchemaValidator;
     const TJsonSchemaValidator m_JsonValidator;
     const TExtensionChecker m_ExtensionChecker;
+    const TDataSourceResolver* m_DataSourceResolver{};
   };
 
 
@@ -136,9 +145,11 @@ namespace rexsapi
     class TFileModelLoader
     {
     public:
-      explicit TFileModelLoader(const TSchemaValidator& validator, std::filesystem::path path)
+      explicit TFileModelLoader(const TSchemaValidator& validator, std::filesystem::path path,
+                                const TDataSourceResolver* dataSourceResolver = nullptr)
       : m_Validator{validator}
       , m_Path{std::move(path)}
+      , m_DataSourceResolver{dataSourceResolver}
       {
       }
 
@@ -148,6 +159,7 @@ namespace rexsapi
     private:
       const TSchemaValidator& m_Validator;
       std::filesystem::path m_Path;
+      const TDataSourceResolver* m_DataSourceResolver{};
     };
 
 
@@ -155,15 +167,19 @@ namespace rexsapi
     class TBufferModelLoader
     {
     public:
-      explicit TBufferModelLoader(const TSchemaValidator& validator, const std::string& buffer)
+      explicit TBufferModelLoader(const TSchemaValidator& validator, const std::string& buffer,
+                                  const TDataSourceResolver* dataSourceResolver = nullptr)
       : m_Validator{validator}
       , m_Buffer{buffer.begin(), buffer.end()}
+      , m_DataSourceResolver{dataSourceResolver}
       {
       }
 
-      explicit TBufferModelLoader(const TSchemaValidator& validator, std::vector<uint8_t> buffer)
+      explicit TBufferModelLoader(const TSchemaValidator& validator, std::vector<uint8_t> buffer,
+                                  const TDataSourceResolver* dataSourceResolver = nullptr)
       : m_Validator{validator}
       , m_Buffer{std::move(buffer)}
+      , m_DataSourceResolver{dataSourceResolver}
       {
       }
 
@@ -173,6 +189,7 @@ namespace rexsapi
     private:
       const TSchemaValidator& m_Validator;
       std::vector<uint8_t> m_Buffer;
+      const TDataSourceResolver* m_DataSourceResolver{};
     };
   }
 
@@ -197,12 +214,14 @@ namespace rexsapi
     try {
       switch (m_ExtensionChecker.getFileType(path)) {
         case TFileType::XML: {
-          detail::TFileModelLoader<TXSDSchemaValidator, TXMLModelLoader> loader{m_XMLSchemaValidator, path};
+          detail::TFileModelLoader<TXSDSchemaValidator, TXMLModelLoader> loader{m_XMLSchemaValidator, path,
+                                                                                m_DataSourceResolver};
           model = loader.load(mode, result, m_Registry);
           break;
         }
         case TFileType::JSON: {
-          detail::TFileModelLoader<TJsonSchemaValidator, TJsonModelLoader> loader{m_JsonValidator, path};
+          detail::TFileModelLoader<TJsonSchemaValidator, TJsonModelLoader> loader{m_JsonValidator, path,
+                                                                                  m_DataSourceResolver};
           model = loader.load(mode, result, m_Registry);
           break;
         }
@@ -211,12 +230,12 @@ namespace rexsapi
             detail::ZipArchive archive{path, m_ExtensionChecker};
             auto [buffer, type] = archive.load();
             if (type == TFileType::XML) {
-              detail::TBufferModelLoader<TXSDSchemaValidator, TXMLModelLoader> loader{m_XMLSchemaValidator,
-                                                                                      std::move(buffer)};
+              detail::TBufferModelLoader<TXSDSchemaValidator, TXMLModelLoader> loader{
+                m_XMLSchemaValidator, std::move(buffer), m_DataSourceResolver};
               model = loader.load(mode, result, m_Registry);
             } else if (type == TFileType::JSON) {
-              detail::TBufferModelLoader<TJsonSchemaValidator, TJsonModelLoader> loader{m_JsonValidator,
-                                                                                        std::move(buffer)};
+              detail::TBufferModelLoader<TJsonSchemaValidator, TJsonModelLoader> loader{
+                m_JsonValidator, std::move(buffer), m_DataSourceResolver};
               model = loader.load(mode, result, m_Registry);
             }
           } catch (const std::exception& ex) {
@@ -253,7 +272,7 @@ namespace rexsapi
   detail::TBufferModelLoader<TSchemaValidator, TLoader>::load(TMode mode, TResult& result,
                                                               const rexsapi::database::TModelRegistry& registry)
   {
-    TLoader loader{mode, m_Validator};
+    TLoader loader{mode, m_Validator, m_DataSourceResolver};
     return loader.load(result, registry, m_Buffer);
   }
 
@@ -266,7 +285,7 @@ namespace rexsapi
     if (!result) {
       return {};
     }
-    return TLoader{mode, m_Validator}.load(result, registry, buffer);
+    return TLoader{mode, m_Validator, m_DataSourceResolver}.load(result, registry, buffer);
   }
 }
 

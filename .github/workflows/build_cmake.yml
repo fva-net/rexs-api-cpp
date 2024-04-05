@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 env:
-  CMAKE_VERSION: 3.16.3
+  CMAKE_VERSION: 3.22
 
 jobs:
   build-linux:
@@ -21,11 +21,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
         build_type: [Debug, Release]
-        cxx: [g++, g++-10, clang++-10]
+        cxx: [g++, clang++-15]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install dependencies
         run: sudo apt-get install ${{ matrix.cxx }} ninja-build lcov doxygen
       - name: Check Coverage
@@ -63,7 +63,7 @@ jobs:
           genhtml coverage_filtered.info --output-directory html
       - name: Archive code coverage results
         if: ${{ env.COVERAGE == 'ON' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report
           path: html
@@ -85,9 +85,9 @@ jobs:
           echo "VERSION=$version" >> "$GITHUB_ENV"
       - name: Upload rexsapi package
         if: ${{ matrix.build_type == 'Release' && matrix.cxx == 'g++' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: rexsapi-${{env.VERSION}}
+          name: rexsapi-linux-${{env.VERSION}}
           path: build/rexsapi-linux-*.zip
 
   build-macos:
@@ -96,10 +96,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-11]
+        os: [macos-12]
         build_type: [Debug, Release]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install dependencies
         run: brew install doxygen
       - name: Configure
@@ -120,9 +120,9 @@ jobs:
           echo "VERSION=$version" >> "$GITHUB_ENV"
       - name: Upload rexsapi package
         if: ${{ matrix.build_type == 'Release' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: rexsapi-${{env.VERSION}}
+          name: rexsapi-darwin-${{env.VERSION}}
           path: build/rexsapi-darwin-*.zip
 
   build-windows:
@@ -131,10 +131,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019]
+        os: [windows-2022]
         build_type: [Debug, Release]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install dependencies
         run: choco install doxygen.install
       - name: Configure
@@ -168,46 +168,36 @@ jobs:
         shell: python
       - name: Upload rexsapi package
         if: ${{ matrix.build_type == 'Release' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: rexsapi-${{env.VERSION}}
+          name: rexsapi-windows-${{env.VERSION}}
           path: build/rexsapi-*.zip
 
   create_release:
     permissions: write-all
     name: Create release
     if: startsWith( github.ref, 'refs/tags/')
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: [build-linux, build-windows, build-macos]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Extract release notes
         id: extract-release-notes
-        uses: ffurrer2/extract-release-notes@v1
+        uses: ffurrer2/extract-release-notes@v2
         with:
           changelog_file: CHANGELOG.md
       - name: Get release name
         run: |
           version=$(grep "project("  CMakeLists.txt | cut -d ' ' -f3)
           echo "VERSION=$version" >> "$GITHUB_ENV"
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           path: artifacts
       - name: Create release
         id: create_release
-        uses: thomaseizinger/create-release@1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
           name: ${{ github.ref_name }}
           body: ${{ steps.extract-release-notes.outputs.release_notes }}
-          prerelease: false
-          draft: false
-      - name: Upload release artifacts
-        uses: pyTooling/Actions/releaser@r0
-        with:
-          tag: ${{ github.ref }}
-          rm: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          files: |
-            ./artifacts/rexsapi-${{env.VERSION}}/rexsapi-*.zip
+          artifacts: "./artifacts/rexsapi-*/rexsapi-*.zip"
+          removeArtifacts: true

@@ -32,7 +32,7 @@ TEST_CASE("Relation type checker test")
   SUBCASE("Load mappings")
   {
     auto mappings = rexsapi::detail::loadMappings();
-    CHECK(mappings.size() == 3);
+    CHECK(mappings.size() == 4);
   }
 
   SUBCASE("Check relation")
@@ -101,6 +101,22 @@ TEST_CASE("Relation type checker test")
   SUBCASE("Load broken mapping")
   {
     rexsapi::detail::parseMappings(result, "no-json");
+    CHECK_FALSE(result);
+  }
+
+  SUBCASE("Check for main component")
+  {
+    CHECK(checker.isMainComponentRole(result, rexsapi::TRexsVersion{1, 5}, rexsapi::TRelationType::ASSEMBLY, rexsapi::TRelationRole::ASSEMBLY));
+    CHECK_FALSE(checker.isMainComponentRole(result, rexsapi::TRexsVersion{1, 5}, rexsapi::TRelationType::ASSEMBLY, rexsapi::TRelationRole::PART));
+    CHECK(checker.isMainComponentRole(result, rexsapi::TRexsVersion{1, 5}, rexsapi::TRelationType::STAGE_GEAR_DATA, rexsapi::TRelationRole::STAGE));
+    CHECK_FALSE(checker.isMainComponentRole(result, rexsapi::TRexsVersion{1, 5}, rexsapi::TRelationType::STAGE_GEAR_DATA, rexsapi::TRelationRole::GEAR));
+    CHECK_FALSE(checker.isMainComponentRole(result, rexsapi::TRexsVersion{1, 5}, rexsapi::TRelationType::STAGE_GEAR_DATA, rexsapi::TRelationRole::STAGE_GEAR_DATA));
+    CHECK(result);
+  }
+
+  SUBCASE("Check for main component unknown version")
+  {
+    CHECK_FALSE(checker.isMainComponentRole(result, rexsapi::TRexsVersion{0, 9}, rexsapi::TRelationType::STAGE_GEAR_DATA, rexsapi::TRelationRole::STAGE));
     CHECK_FALSE(result);
   }
 }

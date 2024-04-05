@@ -26,7 +26,7 @@
 namespace rexsapi::database
 {
   /**
-   * @brief Represents a single enum value of an enum
+   * @brief Represents a single enum value of an enum.
    *
    */
   struct TEnumValue {
@@ -36,7 +36,7 @@ namespace rexsapi::database
 
 
   /**
-   * @brief Represents the enum values of an attribute
+   * @brief Represents the enum values of an attribute.
    *
    * Enum values should not be created manually, but imported from the REXS database model using the
    * TModelRegistry.
@@ -61,7 +61,7 @@ namespace rexsapi::database
     }
 
     /**
-     * @brief Checks if a given value is contained in this enumeration
+     * @brief Checks if a given value is contained in this enumeration.
      *
      * @param value The value to check this enumeration for
      * @return true if the value is contained

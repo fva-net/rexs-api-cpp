@@ -25,7 +25,7 @@
 namespace rexsapi::database
 {
   /**
-   * @brief The database model registry contains all REXS database model versions
+   * @brief The database model registry contains all REXS database model versions.
    *
    * It contains one REXS database model for each version and language combination loaded into it. The registry has to
    * be used to retrieve REXS database models for a specfic version. The database model can then be used to create or
@@ -42,7 +42,7 @@ namespace rexsapi::database
     TModelRegistry& operator=(TModelRegistry&&) = delete;
 
     /**
-     * @brief Retrieves a database model for a specific version and language
+     * @brief Retrieves a database model for a specific version and language.
      *
      * @param version The database model version to retrieve
      * @param language The language of the database model to retrieve
@@ -55,7 +55,7 @@ namespace rexsapi::database
                                          bool strict = true) const;
 
     /**
-     * @brief Creates a model registry
+     * @brief Creates a model registry.
      *
      * @tparam TModelLoader Loader class for loading the schema and database model files. The TXmlModelLoader class is
      * provided as default implementation. The loader has to define the following method <br> ```TResult load(const

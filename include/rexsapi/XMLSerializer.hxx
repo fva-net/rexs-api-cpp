@@ -22,7 +22,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Outputs an xml object into a file
+   * @brief Outputs an xml object into a file.
    *
    */
   class TXMLFileSerializer
@@ -44,7 +44,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Outputs the xml object into a file
+     * @brief Outputs the xml object into a file.
      *
      * Will add a UTF-8 BOM to the beginning of the file.
      *
@@ -63,7 +63,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Outputs an xml object into a string
+   * @brief Outputs an xml object into a string.
    *
    * Will add a UTF-8 BOM to the beginning of the buffer.
    *
@@ -79,7 +79,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns the xml string of the serialized model
+     * @brief Returns the xml string of the serialized model.
      *
      * @return const std::string& to the xml string
      */

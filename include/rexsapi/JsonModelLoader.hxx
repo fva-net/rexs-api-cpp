@@ -17,10 +17,12 @@
 #ifndef REXSAPI_JSON_MODEL_LOADER_HXX
 #define REXSAPI_JSON_MODEL_LOADER_HXX
 
+#include <rexsapi/DataSourceResolver.hxx>
 #include <rexsapi/Json.hxx>
 #include <rexsapi/JsonSchemaValidator.hxx>
 #include <rexsapi/JsonValueDecoder.hxx>
 #include <rexsapi/ModelHelper.hxx>
+#include <rexsapi/ModelMerger.hxx>
 #include <rexsapi/RelationTypeChecker.hxx>
 #include <rexsapi/database/ModelRegistry.hxx>
 
@@ -29,7 +31,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Creates TModel instances from REXS json buffer
+   * @brief Creates TModel instances from REXS json buffer.
    *
    * A json model loader can create TModel instances from supplied buffer. The buffer has to contain a REXS model in
    * json format that validates against the json schema. Additionally, a mode can be chosen in order to define how to
@@ -41,20 +43,24 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TJsonModelLoader object
+     * @brief Constructs a new TJsonModelLoader object.
      *
      * @param mode Defines how to handle encountered issues while processing a model buffer
      * @param validator The json schema for validating the buffer
+     * @param dataSourceResolver Will be used to load external model data sources if set. Triggers an error if not set
+     *                           and model has external references.
      */
-    explicit TJsonModelLoader(TMode mode, const TJsonSchemaValidator& validator)
+    explicit TJsonModelLoader(TMode mode, const TJsonSchemaValidator& validator,
+                              const TDataSourceResolver* dataSourceResolver = nullptr)
     : m_Mode{mode}
     , m_LoaderHelper{mode}
     , m_Validator{validator}
+    , m_DataSourceResolver{dataSourceResolver}
     {
     }
 
     /**
-     * @brief Processes a buffer and creates a TModel instance upon success
+     * @brief Processes a buffer and creates a TModel instance upon success.
      *
      * Will first validate the buffer against the json schema. Only valid buffer will be processed.
      *
@@ -93,6 +99,7 @@ namespace rexsapi
     detail::TModeAdapter m_Mode;
     detail::TModelHelper<detail::TJsonValueDecoder> m_LoaderHelper;
     const TJsonSchemaValidator& m_Validator;
+    const TDataSourceResolver* m_DataSourceResolver{};
   };
 
 
@@ -117,10 +124,10 @@ namespace rexsapi
         language = j["/model/applicationLanguage"_json_pointer].get<std::string>();
       }
 
-      const TModelInfo info{j["/model/applicationId"_json_pointer].get<std::string>(),
-                            j["/model/applicationVersion"_json_pointer].get<std::string>(),
-                            j["/model/date"_json_pointer].get<std::string>(),
-                            TRexsVersion{j["/model/version"_json_pointer].get<std::string>()}, language};
+      TModelInfo info{j["/model/applicationId"_json_pointer].get<std::string>(),
+                      j["/model/applicationVersion"_json_pointer].get<std::string>(),
+                      j["/model/date"_json_pointer].get<std::string>(),
+                      TRexsVersion{j["/model/version"_json_pointer].get<std::string>()}, language};
 
       const auto& dbModel =
         registry.getModel(info.getVersion(), language.value_or("en"), m_Mode.getMode() == TMode::STRICT_MODE);
@@ -137,10 +144,49 @@ namespace rexsapi
       TLoadCases loadCases = getLoadCases(result, componentMapping, components, dbModel, j);
       std::optional<TAccumulation> accumulation = getAccumulation(result, componentMapping, components, dbModel, j);
 
-      TModel model{info, std::move(components), std::move(relations),
-                   TLoadSpectrum{std::move(loadCases), std::move(accumulation)}};
-      TRelationTypeChecker checker{m_Mode.getMode()};
-      checker.check(result, model);
+      std::optional<TModel> model = TModel{std::move(info), std::move(components), std::move(relations),
+                                           TLoadSpectrum{std::move(loadCases), std::move(accumulation)}};
+      const TRelationTypeChecker checker{m_Mode.getMode()};
+      checker.check(result, *model);
+
+      const rexsapi::TModelMerger merger{m_Mode.getMode(), registry};
+      std::set<std::string, std::less<>> referencedDataSources;
+      const detail::TComponentFinder finder{model->getComponents()};
+      for (const auto& attribute : finder.findAllAttributesByAttributeId("data_source")) {
+        referencedDataSources.emplace(attribute.getValueAsString());
+      }
+      if (m_DataSourceResolver != nullptr) {
+        for (const auto& dataSource : referencedDataSources) {
+          TResult subResult;
+          auto referencedModel = m_DataSourceResolver->load(dataSource, subResult, m_Mode.getMode());
+          if (subResult.hasIssues()) {
+            for (const auto& error : subResult.getErrors()) {
+              result.addError(TError{error.getLevel(), fmt::format("{}: {}", dataSource, error.getMessage())});
+            }
+          }
+          if (!referencedModel) {
+            result.addError(
+              TError{TErrorLevel::CRIT, fmt::format("{}: could not load external referenced model", dataSource)});
+            return {};
+          }
+          model = merger.merge(result, *model, dataSource, *referencedModel);
+          if (!model) {
+            result.addError(TError{TErrorLevel::CRIT,
+                                   fmt::format("could not merge external referenced model from '{}'", dataSource)});
+            return {};
+          }
+        }
+      } else if (!referencedDataSources.empty()) {
+        result.addError(
+          TError{m_Mode.adapt(TErrorLevel::ERR),
+                 fmt::format("model contains external referenced components but no data source resolver was given")});
+      }
+
+      if (!finder.findAllAttributesByAttributeId("referenced_component_id").empty()) {
+        result.addError(
+          TError{m_Mode.adapt(TErrorLevel::ERR), fmt::format("could not resolve all external referenced components")});
+      }
+
       return model;
     } catch (const json::exception& ex) {
       result.addError(TError{TErrorLevel::CRIT, fmt::format("cannot parse json document: {}", ex.what())});
@@ -161,8 +207,8 @@ namespace rexsapi
         std::string context = componentName.empty() ? componentType.getName() : componentName;
         TAttributes attributes = getAttributes(context, result, componentId, componentType, component);
 
-        components.emplace_back(
-          TComponent{componentMapping.addComponent(componentId), componentType, componentName, std::move(attributes)});
+        components.emplace_back(TComponent{componentId, componentMapping.addComponent(componentId), componentType,
+                                           componentName, std::move(attributes)});
       } catch (const std::exception& ex) {
         result.addError(
           TError{m_Mode.adapt(TErrorLevel::ERR), fmt::format("component id={}: {}", componentId, ex.what())});
@@ -196,22 +242,23 @@ namespace rexsapi
       if (!isCustom) {
         const auto& att = componentType.findAttributeById(id);
         if (!unit.empty() && TUnit{unit} != att.getUnit()) {
-          result.addError(
-            TError{m_Mode.adapt(TErrorLevel::ERR),
-                   fmt::format("{}: specified incorrect unit ({}) for attribute id={}", context, unit, id)});
+          result.addError(TError{m_Mode.adapt(TErrorLevel::ERR),
+                                 fmt::format("{}: specified incorrect unit ({}) for attribute id={} of component id={}",
+                                             context, unit, id, componentId)});
         }
         TValue value;
         if (type != att.getValueType()) {
-          result.addError(
-            TError{m_Mode.adapt(TErrorLevel::ERR), fmt::format("{}: specified incorrect type ({}) for attribute id={}",
-                                                               context, toTypeString(type), id)});
+          result.addError(TError{m_Mode.adapt(TErrorLevel::ERR),
+                                 fmt::format("{}: specified incorrect type ({}) for attribute id={} of component id={}",
+                                             context, toTypeString(type), id, componentId)});
         } else {
           value = m_LoaderHelper.getValue(result, context, id, componentId, att, attribute);
         }
         TAttribute newAttribute{att, std::move(value)};
         if (checkDuplicate(attributes, newAttribute)) {
           result.addError(
-            TError{TErrorLevel::ERR, fmt::format("{}: duplicate attribute found for attribute id={}", context, id)});
+            TError{TErrorLevel::ERR, fmt::format("{}: duplicate attribute found for attribute id={} of component id={}",
+                                                 context, id, componentId)});
         }
         attributes.emplace_back(std::move(newAttribute));
       } else {

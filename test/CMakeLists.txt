@@ -9,7 +9,9 @@ add_executable(rexsapi_test
   AttributeTest.cxx
   Base64Test.cxx
   CodedValuesTest.cxx
+  ComponentTest.cxx
   ConversionHelperTest.cxx
+  DataSourceLoaderTest.cxx
   FileUtilsTest.cxx
   JsonModelLoaderTest.cxx
   JsonModelSerializerTest.cxx
@@ -19,9 +21,11 @@ add_executable(rexsapi_test
   ModelBuilderTest.cxx
   ModelHelperTest.cxx
   ModelLoaderTest.cxx
+  ModelMergerTest.cxx
   ModelTest.cxx
   ModelVisitorTest.cxx
   ModeTest.cxx
+  PermissibleSubcomponentsMappingTest.cxx
   RelationTypeCheckerTest.cxx
   ResultTest.cxx
   RexsVersionTest.cxx

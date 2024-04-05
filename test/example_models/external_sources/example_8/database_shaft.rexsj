@@ -1,0 +1,257 @@
+﻿{
+  "model": {
+    "applicationId": "FVA Workbench",
+    "applicationVersion": "8.0",
+    "date": "2022-12-12T11:06:16+01:00",
+    "version": "1.5",
+    "relations": [
+      {
+        "id": 1,
+        "type": "reference",
+        "refs": [
+          {
+            "id": 1,
+            "role": "origin",
+            "hint": "shaft"
+          },
+          {
+            "id": 2,
+            "role": "referenced",
+            "hint": "material"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "type": "assembly",
+        "refs": [
+          {
+            "id": 1,
+            "role": "assembly",
+            "hint": "shaft"
+          },
+          {
+            "id": 3,
+            "role": "part",
+            "hint": "shaft_section"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "type": "assembly",
+        "refs": [
+          {
+            "id": 1,
+            "role": "assembly",
+            "hint": "shaft"
+          },
+          {
+            "id": 4,
+            "role": "part",
+            "hint": "shaft_section"
+          }
+        ]
+      }
+    ],
+    "components": [
+      {
+        "id": 1,
+        "type": "shaft",
+        "name": "Shaft [30]",
+        "attributes": []
+      },
+      {
+        "id": 2,
+        "type": "material",
+        "name": "18CrMo4 [50]",
+        "attributes": [
+          {
+            "id": "core_hardness_vickers",
+            "unit": "HV",
+            "floating_point": 550.0
+          },
+          {
+            "id": "density",
+            "unit": "kg / dm^3",
+            "floating_point": 7.85
+          },
+          {
+            "id": "elastic_modulus",
+            "unit": "N / mm^2",
+            "floating_point": 210000.0
+          },
+          {
+            "id": "endurance_limit_flank",
+            "unit": "N / mm^2",
+            "floating_point": 1500.0
+          },
+          {
+            "id": "endurance_limit_root",
+            "unit": "N / mm^2",
+            "floating_point": 461.0
+          },
+          {
+            "id": "fatigue_limit_bending",
+            "unit": "MPa",
+            "floating_point": 550.0
+          },
+          {
+            "id": "fatigue_limit_compression_tension",
+            "unit": "MPa",
+            "floating_point": 440.0
+          },
+          {
+            "id": "fatigue_limit_torsion",
+            "unit": "MPa",
+            "floating_point": 330.0
+          },
+          {
+            "id": "fatigue_strength_factor_compression",
+            "unit": "none",
+            "floating_point": 0.4
+          },
+          {
+            "id": "fatigue_strength_factor_shear",
+            "unit": "none",
+            "floating_point": 0.577
+          },
+          {
+            "id": "heat_treated_material_type_iso_6336_2006",
+            "unit": "none",
+            "enum": "case_hardened_wrought_steel"
+          },
+          {
+            "id": "material_designation",
+            "unit": "none",
+            "string": "18CrMo4"
+          },
+          {
+            "id": "material_type_din_743_2012",
+            "unit": "none",
+            "enum": "case_hardening_steel"
+          },
+          {
+            "id": "poisson_ratio",
+            "unit": "none",
+            "floating_point": 0.3
+          },
+          {
+            "id": "surface_hardness_brinell",
+            "unit": "HB",
+            "floating_point": 693.5
+          },
+          {
+            "id": "surface_hardness_vickers",
+            "unit": "HV",
+            "floating_point": 750.0
+          },
+          {
+            "id": "tensile_strength",
+            "unit": "N / mm^2",
+            "floating_point": 1100.0
+          },
+          {
+            "id": "thermal_capacity",
+            "unit": "J / (kg K)",
+            "floating_point": 430.0
+          },
+          {
+            "id": "thermal_conductivity",
+            "unit": "W / (m K)",
+            "floating_point": 40.0
+          },
+          {
+            "id": "thermal_expansion_coefficient_minus",
+            "unit": "1e-6 / C",
+            "floating_point": 8.0
+          },
+          {
+            "id": "thermal_expansion_coefficient_plus",
+            "unit": "1e-6 / C",
+            "floating_point": 11.0
+          },
+          {
+            "id": "yield_strength",
+            "unit": "N / mm^2",
+            "floating_point": 775.0
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "type": "shaft_section",
+        "name": "section [100]",
+        "attributes": [
+          {
+            "id": "inner_diameter_begin",
+            "unit": "mm",
+            "floating_point": 0.0
+          },
+          {
+            "id": "inner_diameter_end",
+            "unit": "mm",
+            "floating_point": 0.0
+          },
+          {
+            "id": "length",
+            "unit": "mm",
+            "floating_point": 50.0
+          },
+          {
+            "id": "outer_diameter_begin",
+            "unit": "mm",
+            "floating_point": 30.0
+          },
+          {
+            "id": "outer_diameter_end",
+            "unit": "mm",
+            "floating_point": 30.0
+          },
+          {
+            "id": "u_coordinate_on_shaft",
+            "unit": "mm",
+            "floating_point": 0.0
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "type": "shaft_section",
+        "name": "section [110]",
+        "attributes": [
+          {
+            "id": "inner_diameter_begin",
+            "unit": "mm",
+            "floating_point": 0.0
+          },
+          {
+            "id": "inner_diameter_end",
+            "unit": "mm",
+            "floating_point": 0.0
+          },
+          {
+            "id": "length",
+            "unit": "mm",
+            "floating_point": 50.0
+          },
+          {
+            "id": "outer_diameter_begin",
+            "unit": "mm",
+            "floating_point": 50.0
+          },
+          {
+            "id": "outer_diameter_end",
+            "unit": "mm",
+            "floating_point": 50.0
+          },
+          {
+            "id": "u_coordinate_on_shaft",
+            "unit": "mm",
+            "floating_point": 50.0
+          }
+        ]
+      }
+    ]
+  }
+}

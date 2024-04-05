@@ -1,0 +1,207 @@
+﻿{
+  "model": {
+    "applicationId": "FVA Workbench",
+    "applicationVersion": "8.0",
+    "date": "2022-12-12T11:06:16+01:00",
+    "version": "1.5",
+    "relations": [
+      {
+        "id": 1,
+        "type": "ordered_assembly",
+        "order": 1,
+        "refs": [
+          {
+            "id": 1,
+            "role": "assembly",
+            "hint": "rolling_bearing_with_catalog_geometry"
+          },
+          {
+            "id": 2,
+            "role": "part",
+            "hint": "rolling_bearing_row"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "type": "ordered_assembly",
+        "order": 2,
+        "refs": [
+          {
+            "id": 1,
+            "role": "assembly",
+            "hint": "rolling_bearing_with_catalog_geometry"
+          },
+          {
+            "id": 3,
+            "role": "part",
+            "hint": "rolling_bearing_row"
+          }
+        ]
+      }
+    ],
+    "components": [
+      {
+        "id": 1,
+        "type": "rolling_bearing_with_catalog_geometry",
+        "name": "Rolling bearing [60]",
+        "attributes": [
+          {
+            "id": "axial_factor_y_0",
+            "unit": "none",
+            "floating_point": 2.2
+          },
+          {
+            "id": "axial_factor_y_1",
+            "unit": "none",
+            "floating_point": 2.2
+          },
+          {
+            "id": "axial_factor_y_2",
+            "unit": "none",
+            "floating_point": 3.3
+          },
+          {
+            "id": "bearing_tolerance_class",
+            "unit": "none",
+            "enum": "P0"
+          },
+          {
+            "id": "bearing_type",
+            "unit": "none",
+            "enum": "radial_self_aligning_roller_bearing"
+          },
+          {
+            "id": "catalogue_designation",
+            "unit": "none",
+            "string": "22206 E"
+          },
+          {
+            "id": "catalogue_value_e",
+            "unit": "none",
+            "floating_point": 0.31
+          },
+          {
+            "id": "contamination_factor_according_to_iso_281_2007",
+            "unit": "none",
+            "floating_point": 0.5
+          },
+          {
+            "id": "fatigue_limit_load",
+            "unit": "kN",
+            "floating_point": 6.4
+          },
+          {
+            "id": "inner_diameter",
+            "unit": "mm",
+            "floating_point": 30.0
+          },
+          {
+            "id": "lubrication_type",
+            "unit": "none",
+            "enum": "oil_injection"
+          },
+          {
+            "id": "manufacturer",
+            "unit": "none",
+            "string": "SKF"
+          },
+          {
+            "id": "number_of_bearing_rows",
+            "unit": "none",
+            "integer": 2
+          },
+          {
+            "id": "operating_axial_bearing_clearance",
+            "unit": "mum",
+            "floating_point": 0.0
+          },
+          {
+            "id": "operating_radial_bearing_clearance",
+            "unit": "mum",
+            "floating_point": 0.0
+          },
+          {
+            "id": "outer_diameter",
+            "unit": "mm",
+            "floating_point": 62.0
+          },
+          {
+            "id": "radial_clearance_class",
+            "unit": "none",
+            "enum": "C0"
+          },
+          {
+            "id": "radial_dynamic_load_rating",
+            "unit": "kN",
+            "floating_point": 66.1
+          },
+          {
+            "id": "radial_factor_x_1",
+            "unit": "none",
+            "floating_point": 1.0
+          },
+          {
+            "id": "radial_factor_x_2",
+            "unit": "none",
+            "floating_point": 0.67
+          },
+          {
+            "id": "radial_static_load_rating",
+            "unit": "kN",
+            "floating_point": 60.0
+          },
+          {
+            "id": "width",
+            "unit": "mm",
+            "floating_point": 20.0
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "type": "rolling_bearing_row",
+        "name": "rolling_bearing_row [80]",
+        "attributes": [
+          {
+            "id": "axial_force_absorption_of_row",
+            "unit": "none",
+            "enum": "negative"
+          },
+          {
+            "id": "position_of_rolling_elements",
+            "unit": "none",
+            "enum": "one_rolling_element_on_v_axis"
+          },
+          {
+            "id": "pressure_angle",
+            "unit": "deg",
+            "floating_point": 11.68
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "type": "rolling_bearing_row",
+        "name": "rolling_bearing_row [90]",
+        "attributes": [
+          {
+            "id": "axial_force_absorption_of_row",
+            "unit": "none",
+            "enum": "positive"
+          },
+          {
+            "id": "position_of_rolling_elements",
+            "unit": "none",
+            "enum": "one_rolling_element_on_v_axis"
+          },
+          {
+            "id": "pressure_angle",
+            "unit": "deg",
+            "floating_point": 11.68
+          }
+        ]
+      }
+    ]
+  }
+}

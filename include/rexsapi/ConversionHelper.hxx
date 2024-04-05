@@ -28,7 +28,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Converts a string into an unsigned 64 bit integer
+   * @brief Converts a string into an unsigned 64 bit integer.
    *
    * The conversion will only be successful, if the string actually contains an unsigned 64 bit integer and is in range.
    *
@@ -58,7 +58,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Converts a string into a signed 64 bit integer
+   * @brief Converts a string into a signed 64 bit integer.
    *
    * The conversion will only be successful, if the string actually contains a signed 64 bit integer and is in range.
    *
@@ -86,7 +86,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Converts a string into a double
+   * @brief Converts a string into a double.
    *
    * The conversion will only be successful, if the string actually contains a double and is in range.
    *
@@ -113,7 +113,7 @@ namespace rexsapi
   }
 
   /**
-   * @brief Formats a double according to the REXS standard
+   * @brief Formats a double according to the REXS standard.
    *
    * The string will have a maximum of 15 significant digits. Will output scientific format if appropriate.
    *
@@ -130,7 +130,7 @@ namespace rexsapi
   }
 
   /**
-   * @brief Returns an ISO8601 string representation of the given time point
+   * @brief Returns an ISO8601 string representation of the given time point.
    *
    * @param timepoint The timepoint to format
    * @return std::string of the conversion
@@ -151,7 +151,7 @@ namespace rexsapi
   }
 
   /**
-   * @brief Converts a string to upper case
+   * @brief Converts a string to upper case.
    *
    * @param s String to convert
    * @return std::string The converted string

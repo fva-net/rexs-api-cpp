@@ -1,0 +1,294 @@
+﻿{
+  "model": {
+    "applicationId": "FVA Workbench",
+    "applicationVersion": "8.0",
+    "date": "2022-12-12T11:06:16+01:00",
+    "version": "1.5",
+    "relations": [
+      {
+        "id": 1,
+        "type": "assembly",
+        "refs": [
+          {
+            "id": 1,
+            "role": "assembly",
+            "hint": "gear_unit"
+          },
+          {
+            "id": 2,
+            "role": "part",
+            "hint": "gear_casing"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "type": "assembly",
+        "refs": [
+          {
+            "id": 1,
+            "role": "assembly",
+            "hint": "gear_unit"
+          },
+          {
+            "id": 3,
+            "role": "part",
+            "hint": "shaft"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "type": "side",
+        "refs": [
+          {
+            "id": 2,
+            "role": "outer_part",
+            "hint": "gear_casing"
+          },
+          {
+            "id": 3,
+            "role": "inner_part",
+            "hint": "shaft"
+          },
+          {
+            "id": 4,
+            "role": "assembly",
+            "hint": "rolling_bearing_with_catalog_geometry"
+          }
+        ]
+      }
+    ],
+    "components": [
+      {
+        "id": 1,
+        "type": "gear_unit",
+        "name": "Gear unit [1]",
+        "attributes": [
+          {
+            "id": "account_for_gravity",
+            "unit": "none",
+            "boolean": true
+          },
+          {
+            "id": "account_for_shear_deformation",
+            "unit": "none",
+            "boolean": true
+          },
+          {
+            "id": "direction_vector_gravity_u",
+            "unit": "none",
+            "floating_point": 0.0
+          },
+          {
+            "id": "direction_vector_gravity_v",
+            "unit": "none",
+            "floating_point": 1.0
+          },
+          {
+            "id": "direction_vector_gravity_w",
+            "unit": "none",
+            "floating_point": 0.0
+          },
+          {
+            "id": "gear_shift_index",
+            "unit": "none",
+            "integer": 1
+          },
+          {
+            "id": "gravitational_acceleration",
+            "unit": "m / s^2",
+            "floating_point": 9.81
+          },
+          {
+            "id": "number_of_gears",
+            "unit": "none",
+            "integer": 1
+          },
+          {
+            "id": "number_of_nodes_in_mesh_width_for_loaddistribution",
+            "unit": "none",
+            "integer": 18
+          },
+          {
+            "id": "operating_time",
+            "unit": "h",
+            "floating_point": 100000.0
+          },
+          {
+            "id": "operating_time_vdi_2736_2014",
+            "unit": "h",
+            "floating_point": 100000.0
+          },
+          {
+            "id": "reference_component_for_position",
+            "unit": "none",
+            "reference_component": 1
+          },
+          {
+            "id": "support_vector",
+            "unit": "mm",
+            "floating_point_array": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "id": "u_axis_vector",
+            "unit": "mm",
+            "floating_point_array": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "id": "w_axis_vector",
+            "unit": "mm",
+            "floating_point_array": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "type": "gear_casing",
+        "name": "Casing [2]",
+        "attributes": [
+          {
+            "id": "type_of_gear_casing_construction_vdi_2736_2014",
+            "unit": "none",
+            "enum": "closed"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "type": "shaft",
+        "name": "Shaft [3]",
+        "attributes": [
+          {
+            "id": "data_source",
+            "unit": "none",
+            "file_reference": "./database_shaft.rexs"
+          },
+          {
+            "id": "referenced_component_id",
+            "unit": "none",
+            "reference_component": 30
+          },
+          {
+            "id": "reference_component_for_position",
+            "unit": "none",
+            "reference_component": 1
+          },
+          {
+            "id": "support_vector",
+            "unit": "mm",
+            "floating_point_array": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "id": "u_axis_vector",
+            "unit": "mm",
+            "floating_point_array": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "id": "w_axis_vector",
+            "unit": "mm",
+            "floating_point_array": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "type": "rolling_bearing_with_catalog_geometry",
+        "name": "Rolling bearing [6]",
+        "attributes": [
+          {
+            "id": "data_source",
+            "unit": "none",
+            "file_reference": "./database_bearing.rexs"
+          },
+          {
+            "id": "referenced_component_id",
+            "unit": "none",
+            "reference_component": 60
+          },
+          {
+            "id": "axial_force_absorption",
+            "unit": "none",
+            "enum": "negative"
+          },
+          {
+            "id": "radial_force_absorption",
+            "unit": "none",
+            "boolean": true
+          },
+          {
+            "id": "reference_component_for_position",
+            "unit": "none",
+            "reference_component": 1
+          },
+          {
+            "id": "speed_outer_ring",
+            "unit": "1 / min",
+            "floating_point": 0.0
+          },
+          {
+            "id": "support_vector",
+            "unit": "mm",
+            "floating_point_array": [
+              40.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "id": "u_axis_vector",
+            "unit": "mm",
+            "floating_point_array": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "id": "u_coordinate_on_shaft_inner_side",
+            "unit": "mm",
+            "floating_point": 40.0
+          },
+          {
+            "id": "u_coordinate_on_shaft_outer_side",
+            "unit": "mm",
+            "floating_point": 40.0
+          },
+          {
+            "id": "w_axis_vector",
+            "unit": "mm",
+            "floating_point_array": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

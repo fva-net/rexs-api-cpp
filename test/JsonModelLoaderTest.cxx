@@ -28,8 +28,8 @@ namespace
                                            const rexsapi::database::TModelRegistry& registry,
                                            rexsapi::TMode mode = rexsapi::TMode::STRICT_MODE)
   {
-    const rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
-    const rexsapi::TJsonSchemaValidator jsonValidator{schemaLoader};
+    static const rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
+    static const rexsapi::TJsonSchemaValidator jsonValidator{schemaLoader};
 
     rexsapi::detail::TFileModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{jsonValidator,
                                                                                                        path};
@@ -205,27 +205,38 @@ namespace
     }
   }
 })";
+
+  std::optional<rexsapi::TModel> loadModelBuffer(rexsapi::TResult& result, const std::string& buffer,
+                                                 const rexsapi::database::TModelRegistry& registry,
+                                                 rexsapi::TMode mode = rexsapi::TMode::STRICT_MODE)
+  {
+    static const rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
+    static const rexsapi::TJsonSchemaValidator validator{schemaLoader};
+
+    rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
+                                                                                                         buffer};
+
+    return loader.load(mode, result, registry);
+  }
 }
+
 
 TEST_CASE("Json model loader test")
 {
-  const rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
-  const rexsapi::TJsonSchemaValidator validator{schemaLoader};
   rexsapi::TResult result;
   const auto registry = createModelRegistry();
 
   SUBCASE("Load valid document from buffer")
   {
-    rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
-                                                                                                         MemModel};
-    const auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+    const auto model = loadModelBuffer(result, MemModel, registry, rexsapi::TMode::RELAXED_MODE);
     CHECK_FALSE(result);
     REQUIRE(result.getErrors().size() == 4);
     CHECK(result.getErrors()[0].getMessage() ==
           "Transmission unit: attribute id=matrix_correction is not part of component gear_unit id=1");
     CHECK(result.getErrors()[1].getMessage() ==
           "Transmission unit: attribute id=element_structure is not part of component gear_unit id=1");
-    CHECK(result.getErrors()[2].getMessage() == "Welle 1: duplicate attribute found for attribute id=display_color");
+    CHECK(result.getErrors()[2].getMessage() ==
+          "Welle 1: duplicate attribute found for attribute id=display_color of component id=2");
     CHECK(result.getErrors()[3].getMessage() ==
           "load_case id=1: attribute id=load_duration_fraction is not part of component gear_unit id=1");
     CHECK_FALSE(result.isCritical());
@@ -470,9 +481,7 @@ TEST_CASE("Json model loader test")
   }
 })";
 
-    rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
-                                                                                                         buffer};
-    const auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+    const auto model = loadModelBuffer(result, buffer, registry, rexsapi::TMode::RELAXED_MODE);
     CHECK(result);
     CHECK(result.getErrors().size() == 10);
     CHECK_FALSE(result.isCritical());
@@ -491,9 +500,7 @@ TEST_CASE("Json model loader test")
     ]}
   })";
 
-    rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
-                                                                                                         buffer};
-    const auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+    const auto model = loadModelBuffer(result, buffer, registry, rexsapi::TMode::RELAXED_MODE);
     CHECK_FALSE(result);
     CHECK(result.isCritical());
     CHECK_FALSE(model);
@@ -508,9 +515,7 @@ TEST_CASE("Json model loader test")
     "date":"2021-07-01T12:18:38+01:00",
   })";
 
-    rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
-                                                                                                         buffer};
-    const auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+    const auto model = loadModelBuffer(result, buffer, registry, rexsapi::TMode::RELAXED_MODE);
     CHECK_FALSE(result);
     CHECK(result.isCritical());
     CHECK_FALSE(model);
@@ -520,14 +525,12 @@ TEST_CASE("Json model loader test")
   {
     std::string buffer{MemModel};
     replace(buffer, R"("version":"1.5")", R"("version":"1.99")");
-    rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,
-                                                                                                         buffer};
-    const auto model = loader.load(rexsapi::TMode::RELAXED_MODE, result, registry);
+    const auto model = loadModelBuffer(result, buffer, registry, rexsapi::TMode::RELAXED_MODE);
     CHECK_FALSE(result);
     CHECK_FALSE(result.isCritical());
     REQUIRE(model);
     result.reset();
 
-    CHECK_THROWS((void)loader.load(rexsapi::TMode::STRICT_MODE, result, registry));
+    CHECK_THROWS((void)loadModelBuffer(result, buffer, registry, rexsapi::TMode::STRICT_MODE));
   }
 }

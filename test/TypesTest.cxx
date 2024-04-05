@@ -28,6 +28,7 @@ TEST_CASE("Relation type test")
     CHECK(rexsapi::relationTypeFromString("assembly") == rexsapi::TRelationType::ASSEMBLY);
     CHECK(rexsapi::relationTypeFromString("central_shaft") == rexsapi::TRelationType::CENTRAL_SHAFT);
     CHECK(rexsapi::relationTypeFromString("connection") == rexsapi::TRelationType::CONNECTION);
+    CHECK(rexsapi::relationTypeFromString("contact") == rexsapi::TRelationType::CONTACT);
     CHECK(rexsapi::relationTypeFromString("coupling") == rexsapi::TRelationType::COUPLING);
     CHECK(rexsapi::relationTypeFromString("flank") == rexsapi::TRelationType::FLANK);
     CHECK(rexsapi::relationTypeFromString("manufacturing_step") == rexsapi::TRelationType::MANUFACTURING_STEP);
@@ -48,6 +49,7 @@ TEST_CASE("Relation type test")
     CHECK(rexsapi::toRelationTypeString(rexsapi::TRelationType::ASSEMBLY) == "assembly");
     CHECK(rexsapi::toRelationTypeString(rexsapi::TRelationType::CENTRAL_SHAFT) == "central_shaft");
     CHECK(rexsapi::toRelationTypeString(rexsapi::TRelationType::CONNECTION) == "connection");
+    CHECK(rexsapi::toRelationTypeString(rexsapi::TRelationType::CONTACT) == "contact");
     CHECK(rexsapi::toRelationTypeString(rexsapi::TRelationType::COUPLING) == "coupling");
     CHECK(rexsapi::toRelationTypeString(rexsapi::TRelationType::FLANK) == "flank");
     CHECK(rexsapi::toRelationTypeString(rexsapi::TRelationType::MANUFACTURING_STEP) == "manufacturing_step");

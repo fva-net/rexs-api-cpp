@@ -17,11 +17,13 @@
 #ifndef REXSAPI_HXX
 #define REXSAPI_HXX
 
+#include <rexsapi/DataSourceLoader.hxx>
 #include <rexsapi/Defines.hxx>
 #include <rexsapi/JsonModelSerializer.hxx>
 #include <rexsapi/JsonSerializer.hxx>
 #include <rexsapi/ModelBuilder.hxx>
 #include <rexsapi/ModelLoader.hxx>
+#include <rexsapi/ModelMerger.hxx>
 #include <rexsapi/ModelSaver.hxx>
 #include <rexsapi/ModelVisitor.hxx>
 #include <rexsapi/Version.hxx>

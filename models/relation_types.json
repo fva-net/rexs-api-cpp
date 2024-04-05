@@ -249,5 +249,104 @@
         { "component": "C2", "role": "shaft" }
       ]
     }
+  },
+  "1.6": {
+    "assembly": {
+      "ordered": false,
+      "roles": [
+        { "component": "K1", "role": "assembly" },
+        { "component": "K2", "role": "part" }
+      ]
+    },
+    "ordered_assembly": {
+      "ordered": true,
+      "roles": [
+        { "component": "K1", "role": "assembly" },
+        { "component": "K2", "role": "part" }
+      ]
+    },
+    "stage": {
+      "ordered": false,
+      "roles": [
+        { "component": "S", "role": "stage" },
+        { "component": "R1", "role": "gear_1" },
+        { "component": "R2", "role": "gear_2" }
+      ]
+    },
+    "stage_gear_data": {
+      "ordered": false,
+      "roles": [
+        { "component": "S", "role": "stage" },
+        { "component": "R", "role": "gear" },
+        { "component": "D", "role": "stage_gear_data" }
+      ]
+    },
+    "side": {
+      "ordered": false,
+      "roles": [
+        { "component": "M", "role": "assembly" },
+        { "component": "IP", "role": "inner_part" },
+        { "component": "OP", "role": "outer_part" }
+      ]
+    },
+    "flank": {
+      "ordered": false,
+      "roles": [
+        { "component": "R", "role": "gear" },
+        { "component": "C1", "role": "left" },
+        { "component": "C2", "role": "right" }
+      ]
+    },
+    "reference": {
+      "ordered": false,
+      "roles": [
+        { "component": "R", "role": "origin" },
+        { "component": "P", "role": "referenced" }
+      ]
+    },
+    "manufacturing_step": {
+      "ordered": true,
+      "roles": [
+        { "component": "F", "role": "workpiece" },
+        { "component": "T", "role": "tool" },
+        { "component": "M", "role": "manufacturing_settings" }
+      ]
+    },
+    "planet_shaft": {
+      "ordered": false,
+      "roles": [
+        { "component": "C1", "role": "planetary_stage" },
+        { "component": "C2", "role": "shaft" }
+      ]
+    },
+    "central_shaft": {
+      "ordered": false,
+      "roles": [
+        { "component": "C1", "role": "planetary_stage" },
+        { "component": "C2", "role": "shaft" }
+      ]
+    },
+    "planet_carrier_shaft": {
+      "ordered": false,
+      "roles": [
+        { "component": "C1", "role": "planetary_stage" },
+        { "component": "C2", "role": "shaft" }
+      ]
+    },
+    "planet_pin": {
+      "ordered": false,
+      "roles": [
+        { "component": "C1", "role": "planetary_stage" },
+        { "component": "C2", "role": "shaft" }
+      ]
+    },
+    "contact": {
+      "ordered": false,
+      "roles": [
+        { "component": "S", "role": "assembly" },
+        { "component": "A", "role": "side_1" },
+        { "component": "B", "role": "side_2" }
+      ]
+    }
   }
 }

@@ -22,7 +22,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Represents a component in a load case or accumulation
+   * @brief Represents a component in a load case or accumulation.
    *
    * References an existing component and adds additional load attributes to it.
    *
@@ -32,7 +32,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TLoadComponent object
+     * @brief Constructs a new TLoadComponent object.
      *
      * Load components are immutable objects, once created they cannot be changed.
      *
@@ -57,7 +57,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns the complete set of attributes including the referenced components
+     * @brief Returns the complete set of attributes including the referenced components.
      *
      * Will combine the referenced components attributes with the additional load case attributes.
      *
@@ -69,7 +69,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns exclusively the additional load attributes
+     * @brief Returns exclusively the additional load attributes.
      *
      * Will not return the referenced components attributes.
      *
@@ -90,7 +90,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents a single load spectrum load case
+   * @brief Represents a single load spectrum load case.
    *
    * Aggregates load case components with load attributes.
    *
@@ -119,7 +119,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents the load spectrum accumulation
+   * @brief Represents the load spectrum accumulation.
    *
    * Aggregates accumulation components with load attributes.
    *
@@ -146,7 +146,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents the load spectrum containing load cases and an optional accumulation
+   * @brief Represents the load spectrum containing load cases and an optional accumulation.
    *
    * A load spectrum should not be created manually but by using the TModelBuilder.
    */
@@ -154,7 +154,7 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new TLoadSpectrum object
+     * @brief Constructs a new TLoadSpectrum object.
      *
      * A load spectrum can contain a number of load cases and one optional accumulation.
      *
@@ -171,7 +171,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Check of this load spectrum contains any load cases
+     * @brief Check of this load spectrum contains any load cases.
      *
      * @return true if there are load cases
      * @return false if no load cases are available
@@ -187,7 +187,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Check of this load spectrum contains an accumulation
+     * @brief Check of this load spectrum contains an accumulation.
      *
      * @return true if there is an accumulation available
      * @return false if no accumulation is available
@@ -198,7 +198,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns the accumulation if available
+     * @brief Returns the accumulation if available.
      *
      * @return const TAccumulation& to the accumulation
      * @throws TException if there is no accumulation available

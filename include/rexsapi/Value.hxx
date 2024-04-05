@@ -27,7 +27,7 @@
 namespace rexsapi
 {
   /**
-   * @brief Defines how to encode a value
+   * @brief Defines how to encode a value.
    *
    * Has only effect on integer and floating point array and matrix values.
    *
@@ -41,7 +41,7 @@ namespace rexsapi
 
 
   /**
-   * @brief Represents a value of a REXS model attribute
+   * @brief Represents a value of a REXS model attribute.
    *
    * Each standard compliant REXS model attribute has a value. As each attribute has a concrete value type that can be
    * mapped to a C++ type, the actual value has a concrete underlying type.
@@ -55,14 +55,14 @@ namespace rexsapi
   {
   public:
     /**
-     * @brief Constructs a new empty TValue object
+     * @brief Constructs a new empty TValue object.
      *
      * TValue::isEmpty will return true for default constructed TValue objects.
      */
     TValue() = default;
 
     /**
-     * @brief Constructs a new TValue object with a value of a specific C++ type
+     * @brief Constructs a new TValue object with a value of a specific C++ type.
      *
      * @tparam T The C++ type of the value. Has to be one of the allowed types in order to compile.
      * @param val The actual value to construct this object with
@@ -74,7 +74,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Constructs a new TValue object with a string
+     * @brief Constructs a new TValue object with a string.
      *
      * Will be of rexsapi::TStringType type.
      *
@@ -86,7 +86,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Constructs a new TValue object with an integer
+     * @brief Constructs a new TValue object with an integer.
      *
      * Will be of rexsapi::TIntType type.
      *
@@ -98,7 +98,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Constructs a new TValue object with a boolean
+     * @brief Constructs a new TValue object with a boolean.
      *
      * Will be of rexsapi::TBoolType type.
      *
@@ -110,7 +110,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Assigns a different value to this object
+     * @brief Assigns a different value to this object.
      *
      * @tparam T The C++ type of the value. Has to be one of the allowed types in order to compile.
      * @param val The actual value to assign to this object
@@ -124,7 +124,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Assigns a different value to this object
+     * @brief Assigns a different value to this object.
      *
      * Will be of rexsapi::TIntType type.
      *
@@ -138,7 +138,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Assigns a different value to this object
+     * @brief Assigns a different value to this object.
      *
      * Will be of rexsapi::TStringType type.
      *
@@ -152,7 +152,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Checks if this object has a value assigned
+     * @brief Checks if this object has a value assigned.
      *
      * @return true default constructed, no value assigned
      * @return false some value assigned
@@ -163,7 +163,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Extracts a concrete value type from this object
+     * @brief Extracts a concrete value type from this object.
      *
      * @tparam T The type to extract from this object. Should always use one of the provided typedefs like
      * rexsapi::TFloatType, etc.
@@ -177,7 +177,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Extracts a concrete typed value from this object or a default value if empty
+     * @brief Extracts a concrete typed value from this object or a default value if empty.
      *
      * @tparam T The type to extract from this object. Should always use one of the provided typedefs like
      * rexsapi::TFloatType, etc.
@@ -201,14 +201,14 @@ namespace rexsapi
     }
 
     /**
-     * @brief Returns a string representation of the underlying C++ value
+     * @brief Returns a string representation of the underlying C++ value.
      *
      * @return std::string representation of the underlying C++ value
      */
     std::string asString() const;
 
     /**
-     * @brief Sets the encoding type for this value
+     * @brief Sets the encoding type for this value.
      *
      * Will only be effective for integer or float types. Other types will ignore the setting.
      *
@@ -225,7 +225,7 @@ namespace rexsapi
     }
 
     /**
-     * @brief Checks if the given value type corresponds to the underlying C++ type
+     * @brief Checks if the given value type corresponds to the underlying C++ type.
      *
      * @param type The type to check
      * @return true the underlying C++ type can be converted to the value type
@@ -295,7 +295,7 @@ namespace rexsapi
     std::function<R(TArrayOfIntArraysTag, const TArrayOfIntArraysType&)>>;
 
   /**
-   * @brief Dispatches a value to the corresponding function type of the given dispatcher functions
+   * @brief Dispatches a value to the corresponding function type of the given dispatcher functions.
    *
    * Can be used to work on values in a generic way. E.g., a REXS attribute always has a value type and a value. In
    * order to not have multiple long switch statements for value types, a dispatcher function tuple can be created and

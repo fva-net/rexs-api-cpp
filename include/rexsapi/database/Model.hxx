@@ -30,13 +30,13 @@
 /** @file */
 
 /**
- * @brief Namespace for all REXS database model related stuff
+ * @brief Namespace for all REXS database model related stuff.
  *
  */
 namespace rexsapi::database
 {
   /**
-   * @brief Represents the current status of an imported REXS model
+   * @brief Represents the current status of an imported REXS model.
    *
    */
   enum class TStatus {
@@ -45,7 +45,7 @@ namespace rexsapi::database
   };
 
   /**
-   * @brief Converts a string into a TStatus
+   * @brief Converts a string into a TStatus.
    *
    * @param status The status string to convert. Allowed values are: "RELEASED" and "IN_DEVELOPMENT"
    * @return TStatus The converted status
@@ -80,7 +80,7 @@ namespace rexsapi::database
   {
   public:
     /**
-     * @brief Constructs a new TModel object
+     * @brief Constructs a new TModel object.
      *
      * @param version The REXS version of this model
      * @param language The language of this model. All parts of the model like attributes and components will have names
@@ -119,7 +119,7 @@ namespace rexsapi::database
     }
 
     /**
-     * @brief Checks if this model has been released
+     * @brief Checks if this model has been released.
      *
      * @return true if the model has been released
      * @return false if the model has not been released
@@ -132,7 +132,7 @@ namespace rexsapi::database
     bool addUnit(TUnit&& unit);
 
     /**
-     * @brief Retrieves a unit by id
+     * @brief Retrieves a unit by id.
      *
      * @param unitId The unit id to retrieve. Corresponds to the _unit_ "id" attribute of the REXS database model.
      * @return const TUnit& to the found unit
@@ -141,7 +141,7 @@ namespace rexsapi::database
     [[nodiscard]] const TUnit& findUnitById(uint64_t unitId) const;
 
     /**
-     * @brief Retrieves a unit by name
+     * @brief Retrieves a unit by name.
      *
      * @param name The unit name to retrieve. Corresponds to the _unit_ "name" attribute of the REXS database model.
      * @return const TUnit& to the found unit
@@ -152,7 +152,7 @@ namespace rexsapi::database
     bool addType(uint64_t id, TValueType type);
 
     /**
-     * @brief Retrievs a value type by id
+     * @brief Retrievs a value type by id.
      *
      * @param valueTypeId The value type id to retrieve. Corresponds to the _valueType_ "id" attribute of the REXS
      * database model.
@@ -164,7 +164,7 @@ namespace rexsapi::database
     bool addAttribute(TAttribute&& attribute);
 
     /**
-     * @brief Retrieve an attribute by id
+     * @brief Retrieve an attribute by id.
      *
      * @param attributeId The attribute id to retrieve. Corresponds to the _attribute_ "attributeId" attribute of the
      * REXS database model.
@@ -174,7 +174,7 @@ namespace rexsapi::database
     [[nodiscard]] const TAttribute& findAttributeById(const std::string& attributeId) const;
 
     /**
-     * @brief Checks if an attribute with the given id is part of the model
+     * @brief Checks if an attribute with the given id is part of the model.
      *
      * @param attributeId The attribute id to check for. Corresponds to the _attribute_ "attributeId" attribute of the
      * REXS database model.
@@ -186,7 +186,7 @@ namespace rexsapi::database
     bool addComponent(TComponent&& component);
 
     /**
-     * @brief Retrieve a component by id
+     * @brief Retrieve a component by id.
      *
      * @param componentId The component id to retrieve. Corresponds to the _component_ "componentId" attribute of the
      * REXS database model.

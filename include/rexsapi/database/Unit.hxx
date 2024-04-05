@@ -17,6 +17,7 @@
 #ifndef REXSAPI_DATABASE_UNIT_HXX
 #define REXSAPI_DATABASE_UNIT_HXX
 
+#include <cstdint>
 #include <string>
 
 /** @file */
@@ -35,7 +36,7 @@ namespace rexsapi::database
   {
   public:
     /**
-     * @brief Constructs a new TUnit object
+     * @brief Constructs a new TUnit object.
      *
      * Units are immutable objects, once created they cannot be changed.
      *
@@ -64,7 +65,7 @@ namespace rexsapi::database
     }
 
     /**
-     * @brief Compares two units for equality
+     * @brief Compares two units for equality.
      *
      * @param lhs The left hand unit to compare
      * @param rhs The right hand unit to compare
@@ -77,7 +78,7 @@ namespace rexsapi::database
     }
 
     /**
-     * @brief Compares two units for inequality
+     * @brief Compares two units for inequality.
      *
      * @param lhs The left hand unit to compare
      * @param rhs The right hand unit to compare
