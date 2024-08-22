@@ -17,7 +17,7 @@ env:
 
 jobs:
   build-linux:
-    name: ${{ matrix.os }} ${{ matrix.build_type }} ${{ matrix.cxx }}
+    name: ${{ matrix.os }} ${{ matrix.build_type }} ${{ matrix.cxx }} CXX-${{matrix.cxx_version}}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -86,14 +86,14 @@ jobs:
           version=$(grep "project("  CMakeLists.txt | cut -d ' ' -f3)
           echo "VERSION=$version" >> "$GITHUB_ENV"
       - name: Upload rexsapi package
-        if: ${{ matrix.build_type == 'Release' && matrix.cxx == 'g++' }}
+        if: ${{ matrix.build_type == 'Release' && matrix.cxx == 'g++' && matrix.cxx_version == 17 }}
         uses: actions/upload-artifact@v4
         with:
           name: rexsapi-linux-${{env.VERSION}}
           path: build/rexsapi-linux-*.zip
 
   build-macos:
-    name: ${{ matrix.os }} ${{ matrix.build_type }}
+    name: ${{ matrix.os }} ${{ matrix.build_type }} CXX-${{matrix.cxx_version}}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -122,14 +122,14 @@ jobs:
           version=$(grep "project("  CMakeLists.txt | cut -d ' ' -f3)
           echo "VERSION=$version" >> "$GITHUB_ENV"
       - name: Upload rexsapi package
-        if: ${{ matrix.build_type == 'Release' }}
+        if: ${{ matrix.build_type == 'Release' && matrix.cxx_version == 17 }}
         uses: actions/upload-artifact@v4
         with:
           name: rexsapi-darwin-${{env.VERSION}}
           path: build/rexsapi-darwin-*.zip
 
   build-windows:
-    name: ${{ matrix.os }} ${{ matrix.build_type }}
+    name: ${{ matrix.os }} ${{ matrix.build_type }} CXX-${{matrix.cxx_version}}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -171,7 +171,7 @@ jobs:
                         env.write(entry.format(m.group(1)))
         shell: python
       - name: Upload rexsapi package
-        if: ${{ matrix.build_type == 'Release' }}
+        if: ${{ matrix.build_type == 'Release' && matrix.cxx_version == 17 }}
         uses: actions/upload-artifact@v4
         with:
           name: rexsapi-windows-${{env.VERSION}}

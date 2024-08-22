@@ -21,7 +21,7 @@
 #include <rexsapi/Exception.hxx>
 #include <rexsapi/Format.hxx>
 
-#if (__cplusplus >= 202002L || _MSVC_LANG >= 202002L) && not __APPLE__
+#if ((__cplusplus >= 202002L || _MSVC_LANG >= 202002L) && !defined(__APPLE__))
 #include <chrono>
 namespace rexs_date = std::chrono;
 namespace rexs_format = std;
