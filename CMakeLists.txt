@@ -32,9 +32,9 @@ include(cmake/fetch_valijson.cmake)
 
 if(NOT DEFINED CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
-  set(CMAKE_CXX_STANDARD_REQUIRED ON)
-  set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(CMAKE_CXX_STANDARD LESS 17)
   message(FATAL_ERROR "CMAKE_CXX_STANDARD is less than 17, REXSapi only works with C++17 and above.")

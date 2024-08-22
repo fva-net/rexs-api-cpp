@@ -4,6 +4,7 @@ on:
   push:
     paths-ignore:
       - "**/README.md"
+      - "**/CHANGELOG.md"
   pull_request:
   release:
     branches:
@@ -24,6 +25,7 @@ jobs:
         os: [ubuntu-22.04]
         build_type: [Debug, Release]
         cxx: [g++, clang++-15]
+        cxx_version: [17, 20]
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -39,7 +41,7 @@ jobs:
       - name: Configure
         env:
           CXX: ${{ matrix.cxx }}
-        run: mkdir build && cd build && cmake -GNinja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCOVERAGE=${{ env.COVERAGE }} ..
+        run: mkdir build && cd build && cmake -GNinja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_STANDARD=${{matrix.cxx_version}} -DCOVERAGE=${{ env.COVERAGE }} ..
       - name: Build
         run: cmake --build build
       - name: Test
@@ -98,12 +100,13 @@ jobs:
       matrix:
         os: [macos-12]
         build_type: [Debug, Release]
+        cxx_version: [17, 20]
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
         run: brew install doxygen
       - name: Configure
-        run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ..
+        run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_STANDARD=${{matrix.cxx_version}} ..
       - name: Build
         run: cmake --build build --config ${{ matrix.build_type }}
       - name: Test
@@ -133,12 +136,13 @@ jobs:
       matrix:
         os: [windows-2022]
         build_type: [Debug, Release]
+        cxx_version: [17, 20]
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
         run: choco install doxygen.install
       - name: Configure
-        run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ..
+        run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_STANDARD=${{matrix.cxx_version}} ..
       - name: Build
         run: cmake --build build --config ${{ matrix.build_type }}
       - name: Test
