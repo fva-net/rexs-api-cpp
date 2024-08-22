@@ -305,7 +305,7 @@ TEST_CASE("XML value decoder error test")
     <attribute id="string"></attribute>
     <attribute id="enum">unknown enum</attribute>
     <attribute id="reference component">PR</attribute>
-    <attribute id="date time">2022-02-30T08:50:27+02:00</attribute>
+    <attribute id="date time">2022-30T08:50:27+02:00</attribute>
     <attribute id="integer array">
       <array>
         <c>1.1</c>

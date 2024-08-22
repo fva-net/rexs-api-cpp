@@ -190,6 +190,6 @@ TEST_CASE("Datetime test")
 
   SUBCASE("Illegal date")
   {
-    CHECK_THROWS(rexsapi::TDatetime{"2023-02-31T13:49:36+02:00"});
+    CHECK_THROWS(rexsapi::TDatetime{"2023-02T13:49:36+02:00"});
   }
 }

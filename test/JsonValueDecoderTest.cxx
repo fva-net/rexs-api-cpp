@@ -295,7 +295,7 @@ TEST_CASE("Json value decoder error test")
     "enum": { "enum": "unknown enum" },
     "reference component": { "reference_component": "PR" },
     "file reference": { "file_reference": 4711 },
-    "date time": { "date_time": "2023-02-31T11:11:11+00:00" },
+    "date time": { "date_time": "2023-02-31T11:11+00:00" },
     "float array": { "floating_point_array": ["a", "b", "c"] },
     "integer array": { "integer_array": ["a", "b", "c"] },
     "boolean array": { "boolean_array": ["true", "false", "false"] },

@@ -24,11 +24,9 @@
 #if ((__cplusplus >= 202002L || _MSVC_LANG >= 202002L) && !defined(__APPLE__))
 #include <chrono>
 namespace rexs_date = std::chrono;
-namespace rexs_format = std;
 #else
 #include <date/date.h>
 namespace rexs_date = date;
-namespace rexs_format = date;
 #endif
 #include <sstream>
 #include <vector>
@@ -211,7 +209,8 @@ namespace rexsapi
     /**
      * @brief Construct a new TDatetime object from a string.
      *
-     * @param datetime The string has to be in ISO8601 format `yyyy-mm-ddThh:mm:ss[+/-]<offset to UTC>`
+     * @param datetime The string has to be in ISO8601 format `yyyy-mm-ddThh:mm:ss[+/-]<offset to UTC>`. 
+                       The offset requires a : between hours and minutes.
      * @throws std::exception if the string cannot be parsed or the date time is invalid
      */
     explicit TDatetime(const std::string& datetime)
@@ -257,7 +256,11 @@ namespace rexsapi
      */
     inline std::string asUTCString() const
     {
-      return rexs_format::format("%FT%T%Ez", m_Timepoint);
+  #if ((__cplusplus >= 202002L || _MSVC_LANG >= 202002L) && !defined(__APPLE__))
+      return std::format("{:%FT%T%Ez}", m_Timepoint);
+  #else
+      return date::format("%FT%T%Ez", m_Timepoint);
+  #endif
     }
 
     /**
