@@ -36,7 +36,6 @@
 #if defined(__clang__)
 #undef REXS_HAS_CHRONO_DATE
 #endif
-#endif
 
 #if defined(__APPLE__)
 #undef REXS_HAS_CHRONO_DATE
