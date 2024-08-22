@@ -21,17 +21,27 @@
 #include <rexsapi/Exception.hxx>
 #include <rexsapi/Format.hxx>
 
-#if (__cplusplus >= 202002L || _MSVC_LANG >= 202002L)
+#if defined(_MSVC_LANG)
+#if _MSVC_LANG >= 202002L
 #define REXS_HAS_CHRONO_DATE
+#endif
+#endif
+
+#if defined(__GNUC__) && __cplusplus >= 202002L
+#if __GNUC__ > 14 || (__GNUC_ == 14 && __GNUC_MINOR__ > 1)
+#define REXS_HAS_CHRONO_DATE
+#endif
+#endif
+
+#if defined(__clang__)
+#undef REXS_HAS_CHRONO_DATE
+#endif
 #endif
 
 #if defined(__APPLE__)
 #undef REXS_HAS_CHRONO_DATE
 #endif
 
-#if defined(__GNUC__) && __GNUC__ <= 14 && __GNUC_MINOR__ < 1
-#undef REXS_HAS_CHRONO_DATE
-#endif
 
 #if defined(REXS_HAS_CHRONO_DATE)
 #include <chrono>
