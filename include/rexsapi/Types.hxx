@@ -21,7 +21,16 @@
 #include <rexsapi/Exception.hxx>
 #include <rexsapi/Format.hxx>
 
+#if __cplusplus >= 202002L || _MSVC_LANG >= 202002L
+#include <chrono>
+namespace rexs_date = std::chrono;
+namespace rexs_format = std;
+#else
 #include <date/date.h>
+namespace rexs_date = date;
+namespace rexs_format = date;
+#endif
+#include <sstream>
 #include <vector>
 
 namespace rexsapi
@@ -207,9 +216,8 @@ namespace rexsapi
      */
     explicit TDatetime(const std::string& datetime)
     {
-      auto op = date::parse("%FT%T%Ez", m_Timepoint);
       std::istringstream in{datetime};
-      in >> op;
+      in >> rexs_date::parse("%FT%T%Ez", m_Timepoint);
 
       if (!in.good()) {
         throw std::runtime_error{"illegal date specified: " + datetime};
@@ -249,7 +257,7 @@ namespace rexsapi
      */
     inline std::string asUTCString() const
     {
-      return date::format("%FT%T%Ez", m_Timepoint);
+      return rexs_format::format("%FT%T%Ez", m_Timepoint);
     }
 
     /**
