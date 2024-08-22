@@ -159,7 +159,7 @@ TEST_CASE("Datetime test")
   SUBCASE("Parse")
   {
     const rexsapi::TDatetime dt{"2023-03-28T13:49:36+02:00"};
-#if ((__cplusplus >= 202002L || _MSVC_LANG >= 202002L) && !defined(__APPLE__))
+#if defined(REXS_HAS_CHRONO_DATE)
     auto rexs_march = std::chrono::March;
 #else
     auto rexs_march = date::mar;
