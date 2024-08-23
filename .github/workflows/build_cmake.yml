@@ -86,7 +86,7 @@ jobs:
           version=$(grep "project(" CMakeLists.txt | cut -d ' ' -f3)
           echo "VERSION=$version" >> "$GITHUB_ENV"
       - name: Upload rexsapi package
-        if: ${{ matrix.build_type == 'Release' && matrix.cxx == 'g++' }}
+        if: ${{ matrix.build_type == 'Release' && matrix.cxx == 'g++' && matrix.cxx_version == 17 }}
         uses: actions/upload-artifact@v4
         with:
           name: rexsapi-linux-${{env.VERSION}}
