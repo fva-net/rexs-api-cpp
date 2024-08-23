@@ -277,7 +277,7 @@ namespace rexsapi
      */
     inline std::string asUTCString() const
     {
-  #if ((__cplusplus >= 202002L || _MSVC_LANG >= 202002L) && !defined(__APPLE__))
+  #if defined(REXS_HAS_CHRONO_DATE)
       return std::format("{:%FT%T%Ez}", m_Timepoint);
   #else
       return date::format("%FT%T%Ez", m_Timepoint);
