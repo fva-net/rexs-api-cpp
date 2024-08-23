@@ -28,7 +28,7 @@
 #endif
 
 #if defined(__GNUC__) && __cplusplus >= 202002L
-#if __GNUC__ > 14 || (__GNUC_ == 14 && __GNUC_MINOR__ >= 1)
+#if __GNUC__ > 14 || (__GNUC__ == 14 && __GNUC_MINOR__ >= 1)
 #define REXS_HAS_CHRONO_DATE
 #endif
 #endif
