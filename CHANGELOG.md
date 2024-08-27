@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Code now builds with C++20 and C++23 (#53)
-- Clang format sytle file fixed (#54)
+- Clang format style file fixed (#54)
 
 ## [2.0.0]
 
