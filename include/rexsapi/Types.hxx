@@ -21,7 +21,35 @@
 #include <rexsapi/Exception.hxx>
 #include <rexsapi/Format.hxx>
 
+#if defined(_MSVC_LANG)
+#if _MSVC_LANG >= 202002L
+#define REXS_HAS_CHRONO_DATE
+#endif
+#endif
+
+#if defined(__GNUC__) && __cplusplus >= 202002L
+#if __GNUC__ > 14 || (__GNUC__ == 14 && __GNUC_MINOR__ >= 1)
+#define REXS_HAS_CHRONO_DATE
+#endif
+#endif
+
+#if defined(__clang__)
+#undef REXS_HAS_CHRONO_DATE
+#endif
+
+#if defined(__APPLE__)
+#undef REXS_HAS_CHRONO_DATE
+#endif
+
+
+#if defined(REXS_HAS_CHRONO_DATE)
+#include <chrono>
+namespace rexs_date = std::chrono;
+#else
 #include <date/date.h>
+namespace rexs_date = date;
+#endif
+#include <sstream>
 #include <vector>
 
 namespace rexsapi
@@ -202,14 +230,14 @@ namespace rexsapi
     /**
      * @brief Construct a new TDatetime object from a string.
      *
-     * @param datetime The string has to be in ISO8601 format `yyyy-mm-ddThh:mm:ss[+/-]<offset to UTC>`
+     * @param datetime The string has to be in ISO8601 format `yyyy-mm-ddThh:mm:ss[+/-]<offset to UTC>`. 
+                       The offset requires a : between hours and minutes.
      * @throws std::exception if the string cannot be parsed or the date time is invalid
      */
     explicit TDatetime(const std::string& datetime)
     {
-      auto op = date::parse("%FT%T%Ez", m_Timepoint);
       std::istringstream in{datetime};
-      in >> op;
+      in >> rexs_date::parse("%FT%T%Ez", m_Timepoint);
 
       if (!in.good()) {
         throw std::runtime_error{"illegal date specified: " + datetime};
@@ -249,7 +277,11 @@ namespace rexsapi
      */
     inline std::string asUTCString() const
     {
+  #if defined(REXS_HAS_CHRONO_DATE)
+      return std::format("{:%FT%T%Ez}", m_Timepoint);
+  #else
       return date::format("%FT%T%Ez", m_Timepoint);
+  #endif
     }
 
     /**

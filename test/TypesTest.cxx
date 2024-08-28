@@ -159,8 +159,13 @@ TEST_CASE("Datetime test")
   SUBCASE("Parse")
   {
     const rexsapi::TDatetime dt{"2023-03-28T13:49:36+02:00"};
-    using namespace date;
-    CHECK(dt.asTimepoint() == date::sys_days{2023_y / mar / 28} + std::chrono::hours{11} + std::chrono::minutes{49} +
+#if defined(REXS_HAS_CHRONO_DATE)
+    auto rexs_march = std::chrono::March;
+#else
+    auto rexs_march = date::mar;
+#endif
+    CHECK(dt.asTimepoint() == rexs_date::sys_days{rexs_date::year{2023} / rexs_march / 28} + std::chrono::hours{11} +
+                                std::chrono::minutes{49} +
                                 std::chrono::seconds{36});
     CHECK(dt.asUTCString() == "2023-03-28T11:49:36+00:00");
     const auto s = dt.asLocaleString();
@@ -185,6 +190,6 @@ TEST_CASE("Datetime test")
 
   SUBCASE("Illegal date")
   {
-    CHECK_THROWS(rexsapi::TDatetime{"2023-02-31T13:49:36+02:00"});
+    CHECK_THROWS(rexsapi::TDatetime{"2023-02T13:49:36+02:00"});
   }
 }

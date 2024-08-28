@@ -22,15 +22,17 @@ The library supports REXS model files in xml and json format. Compressed REXS zi
 # Supported Platforms
 
 The library can be used on
+
 - Linux
 - Windows
 - Mac OS X
 
 You need a C++17 compatible compiler to use the library.
+The library should also build with C++20 and C++23.
 
 # Getting Started
 
-In order to use REXSapi it is most convinient to just include the `Rexsapi.hxx` header. Mind that you have to include this header along the `REXSAPI_MINIZ_IMPL` define right before the include in *exactly* one compilation unit (cpp file) in order to add the miniz implementation to the project.
+In order to use REXSapi it is most convinient to just include the `Rexsapi.hxx` header. Mind that you have to include this header along the `REXSAPI_MINIZ_IMPL` define right before the include in _exactly_ one compilation unit (cpp file) in order to add the miniz implementation to the project.
 
 ```cpp
 #define REXSAPI_MINIZ_IMPL
@@ -44,7 +46,7 @@ Loading a REXS model file is straight forward. You need the REXS database model 
 ```cpp
 const rexsapi::TModelLoader loader{"/path/to/rexs/database/models"};
 rexsapi::TResult result;
-const std::optional<rexsapi::TModel> model = 
+const std::optional<rexsapi::TModel> model =
         loader.load("/path/to/your/rexs/model/file", result, rexsapi::TMode::STRICT_MODE);
 if (result) {
   std::cout << "sucessfully loaded REXS model\n";
@@ -91,18 +93,19 @@ modelBuilder.addAttribute("axial_force_absorption").value("negative");
 modelBuilder.addAttribute("support_vector").unit("mm").value(
         rexsapi::TFloatArrayType{70.0, 0.0, 0.0}).coded();
 modelBuilder.addComponent("gear_casing", "gear-casing-id");
-        
+
 ... [more attributes and components]
 
 modelBuilder.addRelation(rexsapi::TRelationType::SIDE)
     .addRef(rexsapi::TRelationRole::ASSEMBLY, "bearing-id")
     .addRef(rexsapi::TRelationRole::INNER_PART, "gear-casing-id");
     .addRef(rexsapi::TRelationRole::OUTER_PART, "shaft-id");
-    
+
 ... [more relations]
 
 auto model = modelBuilder.build("REXSApi Model Builder", "1.2", "en");
 ```
+
 First you add components and attributes to the model. The last added component or attribute are the so called active component or attribute. All following method calls always affect the currently active component or attribute. The same is true for relations. Attributes need real C++ types as values.
 
 If all necessary components have been added, you can start to add relations that reference these components via unique string ids. Alternatively, you can also use automatically generated ids that can be retrieved from the model builder after adding a component. You have to specify the correct roles for a specific relation type. The model builder will check all components, attributes, and relations against the chosen REXS database model version and will throw exceptions on any error in order to guarantee the construction of a standard compliant model.
@@ -135,16 +138,16 @@ The `model_checker` checks files for compatibility with the REXSapi library. You
 
 ### Options
 
-| Option | Description |
-|:--|:--|
-| --help, -h | Show usage and options |
-| --mode-strict | This is the default mode. Files will be checked to comply strictly to the standard. |
-| --mode-relaxed | This mode will relax the checking and produce warnings instead of errors for non-standard constructs. |
-| --warnings, -w | Enables the printing of warnings to the console. Otherwise, only errors will be printed. |
-| -r | If directories are specified as arguments, recurse into sub-directories. |
-| -m | Custom file extension mapping of the form ".rexs.in:xml". Will load files with the extension ".rexs.in" as xml files. Can be specified multiple times, but has to precede some other option or be terminated with --.
-| --database, -d | The path to the model database files including the schemas (json and xml). |
-| | Files and directories to look for model files to process. |
+| Option         | Description                                                                                                                                                                                                           |
+| :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --help, -h     | Show usage and options                                                                                                                                                                                                |
+| --mode-strict  | This is the default mode. Files will be checked to comply strictly to the standard.                                                                                                                                   |
+| --mode-relaxed | This mode will relax the checking and produce warnings instead of errors for non-standard constructs.                                                                                                                 |
+| --warnings, -w | Enables the printing of warnings to the console. Otherwise, only errors will be printed.                                                                                                                              |
+| -r             | If directories are specified as arguments, recurse into sub-directories.                                                                                                                                              |
+| -m             | Custom file extension mapping of the form ".rexs.in:xml". Will load files with the extension ".rexs.in" as xml files. Can be specified multiple times, but has to precede some other option or be terminated with --. |
+| --database, -d | The path to the model database files including the schemas (json and xml).                                                                                                                                            |
+|                | Files and directories to look for model files to process.                                                                                                                                                             |
 
 ```bash
 > ./model_checker --mode-relaxed -d ../models -m .rexs.in:xml -- FVA-Industriegetriebe_2stufig_1-4.rexs
@@ -157,17 +160,17 @@ The `model_converter` can convert REXS model files between xml and json format. 
 
 ### Options
 
-| Option | Description |
-|:--|:--|
-| --help, -h | Show usage and options |
-| --mode-strict | This is the default mode. Files will be checked to comply strictly to the standard. |
-| --mode-relaxed | This mode will relax the checking and produce warnings instead of errors for non-standard constructs. |
-| --format, -f | The output format of the tool. Either json or xml. |
-| -r | If directories are specified as arguments, recurse into sub-directories. |
-| -m | Custom file extension mapping of the form ".rexs.in:xml". Will load files with the extension ".rexs.in" as xml files. Can be specified multiple times, but has to precede some other option or be terminated with --.
-| --output, -o | The output path to write converted file to. |
-| --database, -d | The path to the model database files including the schemas (json and xml). |
-| | Files and directories to look for model files to process. |
+| Option         | Description                                                                                                                                                                                                           |
+| :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --help, -h     | Show usage and options                                                                                                                                                                                                |
+| --mode-strict  | This is the default mode. Files will be checked to comply strictly to the standard.                                                                                                                                   |
+| --mode-relaxed | This mode will relax the checking and produce warnings instead of errors for non-standard constructs.                                                                                                                 |
+| --format, -f   | The output format of the tool. Either json or xml.                                                                                                                                                                    |
+| -r             | If directories are specified as arguments, recurse into sub-directories.                                                                                                                                              |
+| -m             | Custom file extension mapping of the form ".rexs.in:xml". Will load files with the extension ".rexs.in" as xml files. Can be specified multiple times, but has to precede some other option or be terminated with --. |
+| --output, -o   | The output path to write converted file to.                                                                                                                                                                           |
+| --database, -d | The path to the model database files including the schemas (json and xml).                                                                                                                                            |
+|                | Files and directories to look for model files to process.                                                                                                                                                             |
 
 ```bash
 > ./model_converter --mode-relaxed -f json -d ../models -m .rexs.in:xml --output /out FVA-Industriegetriebe_2stufig_1-4.rexs
@@ -179,16 +182,17 @@ Converted FVA-Industriegetriebe_2stufig_1-4.rexs to /out/FVA-Industriegetriebe_2
 The `model_dumper` prints the loaded model to the console. As with the `model_checker`, the tool supports a relaxed mode for loading non-standard complying model files. The tool can be used to check if the specific model can be loaded with the REXSapi correctly.
 
 ### Options
-| Option | Description |
-|:--|:--|
-| --help, -h | Show usage and options |
-| --mode-strict | This is the default mode. Files will be checked to comply strictly to the standard. |
-| --mode-relaxed | This mode will relax the checking and produce warnings instead of errors for non-standard constructs. |
-| -m | Custom file extension mapping of the form ".rexs.in:xml". Will load files with the extension ".rexs.in" as xml files. Can be specified multiple times, but has to precede some other option or be terminated with --.
-| -s | Show some statistics of the model |
-| --attributes, -a | Show the component attributes |
-| --database, -d | The path to the model database files including the schemas (json and xml). |
-| | The REXS model file to dump. |
+
+| Option           | Description                                                                                                                                                                                                           |
+| :--------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --help, -h       | Show usage and options                                                                                                                                                                                                |
+| --mode-strict    | This is the default mode. Files will be checked to comply strictly to the standard.                                                                                                                                   |
+| --mode-relaxed   | This mode will relax the checking and produce warnings instead of errors for non-standard constructs.                                                                                                                 |
+| -m               | Custom file extension mapping of the form ".rexs.in:xml". Will load files with the extension ".rexs.in" as xml files. Can be specified multiple times, but has to precede some other option or be terminated with --. |
+| -s               | Show some statistics of the model                                                                                                                                                                                     |
+| --attributes, -a | Show the component attributes                                                                                                                                                                                         |
+| --database, -d   | The path to the model database files including the schemas (json and xml).                                                                                                                                            |
+|                  | The REXS model file to dump.                                                                                                                                                                                          |
 
 ```bash
 > ./model_dumper --mode-relaxed -d ../models FVA-Industriegetriebe_2stufig_1-4.rexs
@@ -206,7 +210,7 @@ See CHANGELOG.md for detailed changelog information.
 
 # Integration
 
-The library is header only and can be easily integrated into existing projects. Using CMake is the recommended way to use the library. However, the library also comes as a zip package which can be used without CMake. You have to set the C++ standard of your project to C++17 in order to build with the library. 
+The library is header only and can be easily integrated into existing projects. Using CMake is the recommended way to use the library. However, the library also comes as a zip package which can be used without CMake. You have to set the C++ standard of your project to C++17 in order to build with the library.
 
 The library has dependencies to other open source software. This dependencies will be either automatically downloaded by CMake or are prepackaged in the zip package. You can also use your own versions of the thirdparty libraries, but make sure the versions are compatible to the versions used by the REXSapi.
 
@@ -268,6 +272,7 @@ The library is header only. A build is only necessary if you want to run the tes
 - Visual Studio will configure the project automatically
 
 ## Mac
+
 - You will need the following software packages
   - XCode 12.4 or higher
   - cmake 3.22 or higher
@@ -293,6 +298,7 @@ REXSapi uses the following thirdparty open source software
 - [valijson 1.0.2](https://github.com/tristanpenman/valijson)
 
 # License
+
 REXsapi is licensed under the Apache-2.0 license.
 
 See the LICENSE file for more information.

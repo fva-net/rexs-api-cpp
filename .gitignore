@@ -8,3 +8,4 @@ check_loc.sh
 ignore_files.txt
 CMakeSettings.json
 docker
+.DS_Store
