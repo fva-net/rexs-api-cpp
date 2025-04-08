@@ -17,7 +17,7 @@ if(NOT DEFINED REXSAPI_MASTER_PROJECT)
 endif()
 
 option(BUILD_WITH_EXAMPLES "Build with examples" ${REXSAPI_MASTER_PROJECT})
-option(BUILD_WIHT_TESTS "Build with tests" ${REXSAPI_MASTER_PROJECT})
+option(BUILD_WITH_TESTS "Build with tests" ${REXSAPI_MASTER_PROJECT})
 option(BUILD_WITH_TOOLS "Build with tools" ON)
 option(BUILD_WITH_DOCS "Build documentation" ${REXSAPI_MASTER_PROJECT})
 
@@ -66,7 +66,7 @@ if(BUILD_WITH_EXAMPLES)
   add_subdirectory(examples)
 endif()
 
-if(BUILD_WIHT_TESTS)
+if(BUILD_WITH_TESTS)
   enable_testing()
   message(STATUS "Building with tests")
   add_subdirectory(test)
