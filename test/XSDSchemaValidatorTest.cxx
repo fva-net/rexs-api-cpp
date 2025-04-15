@@ -32,7 +32,7 @@ namespace
               <xsd:element ref="Suites" maxOccurs="1" minOccurs="1"/>
               <xsd:element ref="Tests" maxOccurs="1" minOccurs="0"/>
             </xsd:sequence>
-            <xsd:attribute name="version" type="xsd:integer" use="required"/>
+            <xsd:attribute name="version" type="xsd:int" use="required"/>
             <xsd:attribute name="date" type="xsd:string" use="optional"/>
             <xsd:attribute name="status" type="Status" use="optional"/>
           </xsd:complexType>
@@ -81,7 +81,7 @@ namespace
           </xsd:complexType>
         </xsd:element>
         <xsd:simpleType name="Number">
-          <xsd:restriction base="xsd:integer"/>
+          <xsd:restriction base="xsd:int"/>
         </xsd:simpleType>
       </xsd:schema>
     )";
@@ -102,7 +102,7 @@ TEST_CASE("XSD file schema loader test")
 {
   SUBCASE("Load existing schema")
   {
-    rexsapi::TFileXsdSchemaLoader loader{projectDir() / "models" / "rexs-dbmodel.xsd"};
+    rexsapi::TFileXsdSchemaLoader loader{projectDir() / "models" / "rexs-schema.xsd"};
     auto doc = loader.load();
     CHECK_FALSE(doc.empty());
   }
@@ -120,10 +120,10 @@ TEST_CASE("XSD schema validator test")
   {
     pugi::xml_document doc;
     pugi::xml_parse_result parseResult =
-      doc.load_file((projectDir() / "models" / "rexs_model_1.4_en.xml").string().c_str());
+      doc.load_file((projectDir() / "models" / "rexs_schema_1.4_en.xml").string().c_str());
     CHECK(parseResult);
 
-    rexsapi::TFileXsdSchemaLoader loader{projectDir() / "models" / "rexs-dbmodel.xsd"};
+    rexsapi::TFileXsdSchemaLoader loader{projectDir() / "models" / "rexs-schema.xsd"};
     rexsapi::TXSDSchemaValidator val{loader};
 
     std::vector<std::string> errors;
@@ -138,7 +138,7 @@ TEST_CASE("XSD schema validator test")
       doc.load_file((projectDir() / "test" / "example_models" / "FVA_worm_stage_1-4.rexs").string().c_str());
     CHECK(parseResult);
 
-    rexsapi::TFileXsdSchemaLoader loader{projectDir() / "models" / "rexs-schema.xsd"};
+    rexsapi::TFileXsdSchemaLoader loader{projectDir() / "models" / "rexs-file.xsd"};
     rexsapi::TXSDSchemaValidator val{loader};
 
     std::vector<std::string> errors;

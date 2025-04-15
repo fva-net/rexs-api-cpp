@@ -22,7 +22,7 @@
 
 TEST_CASE("Test rexs model registry")
 {
-  const rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-dbmodel.xsd"};
+  const rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
   const rexsapi::database::TFileResourceLoader resourceLoader{projectDir() / "models"};
   const rexsapi::database::TXmlModelLoader modelLoader{resourceLoader, schemaLoader};
   const auto [registry, success] = rexsapi::database::TModelRegistry::createModelRegistry(modelLoader);

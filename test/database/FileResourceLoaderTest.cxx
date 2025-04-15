@@ -27,8 +27,8 @@ namespace
   {
     std::string v{buffer.begin(), buffer.end()};
     CHECK(v.find("<?xml") != std::string::npos);
-    CHECK(v.find("<rexsModel") != std::string::npos);
-    CHECK(v.find("</rexsModel>") != std::string::npos);
+    CHECK(v.find("<rexsSchema") != std::string::npos);
+    CHECK(v.find("</rexsSchema>") != std::string::npos);
   }
 }
 

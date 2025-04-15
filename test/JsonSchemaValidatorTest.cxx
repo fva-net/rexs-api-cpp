@@ -202,7 +202,7 @@ TEST_CASE("File json schema loader")
 {
   SUBCASE("Load file")
   {
-    rexsapi::TFileJsonSchemaLoader loader{projectDir() / "models" / "rexs-schema.json"};
+    rexsapi::TFileJsonSchemaLoader loader{projectDir() / "models" / "rexs-file.json"};
     const auto doc = loader.load();
     CHECK_FALSE(doc.empty());
   }

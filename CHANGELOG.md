@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Spelling error in CMakeLists.txt corrected.
 
+### Changed
+
+- Changed to new schema format on REXS hp
+
 ## [2.1.0]
 
 ### Fixed

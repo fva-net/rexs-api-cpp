@@ -865,10 +865,10 @@ namespace rexsapi
     auto type1 = std::make_unique<detail::TPodType<detail::TStringType>>(fmt::format("{}:string", detail::xsdSchemaNS));
     m_Types.try_emplace(type1->getName(), std::move(type1));
     auto type2 =
-      std::make_unique<detail::TPodType<detail::TIntegerType>>(fmt::format("{}:integer", detail::xsdSchemaNS));
+      std::make_unique<detail::TPodType<detail::TIntegerType>>(fmt::format("{}:int", detail::xsdSchemaNS));
     m_Types.try_emplace(type2->getName(), std::move(type2));
     auto type3 =
-      std::make_unique<detail::TPodType<detail::TDecimalType>>(fmt::format("{}:decimal", detail::xsdSchemaNS));
+      std::make_unique<detail::TPodType<detail::TDecimalType>>(fmt::format("{}:double", detail::xsdSchemaNS));
     m_Types.try_emplace(type3->getName(), std::move(type3));
     auto type4 =
       std::make_unique<detail::TPodType<detail::TBooleanType>>(fmt::format("{}:boolean", detail::xsdSchemaNS));
@@ -926,9 +926,10 @@ namespace rexsapi
 
     for (const auto& element :
          node.select_nodes(fmt::format("{0}:complexType/{0}:sequence/{0}:element", detail::xsdSchemaNS).c_str())) {
-      auto min = convertToUint64(element.node().attribute("minOccurs").as_string());
+      auto minString = std::string(element.node().attribute("minOccurs").as_string());
+      auto min = (minString=="") ? 1  : convertToUint64(minString);
       auto maxString = std::string(element.node().attribute("maxOccurs").as_string());
-      auto max = maxString == "unbounded" ? std::numeric_limits<uint64_t>::max() : convertToUint64(maxString);
+      auto max = (maxString=="") ? 1 : (maxString == "unbounded" ? std::numeric_limits<uint64_t>::max() : convertToUint64(maxString));
 
       if (const auto refName = element.node().attribute("ref"); !refName.empty()) {
         const detail::TElement& ref = findOrRegisterElement(refName.as_string());

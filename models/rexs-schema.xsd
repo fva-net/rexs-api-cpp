@@ -1,201 +1,207 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2020 FVA GmbH
+  
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+  use this file except in compliance with the License. You may obtain a copy
+  of the License at
+  
+    http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  License for the specific language governing permissions and limitations under
+  the License.
+-->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.0"
-            elementFormDefault="qualified">
+            xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" jaxb:version="3.0" elementFormDefault="qualified" >
 
-	<xsd:element name="model">
+	<xsd:element name="rexsSchema">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element ref="relations"     minOccurs="0" maxOccurs="1"/>
-				<xsd:element ref="components"    minOccurs="0" maxOccurs="1"/>
-				<xsd:element ref="load_spectrum" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="units" minOccurs="0"/>
+				<xsd:element ref="valueTypes" minOccurs="0"/>
+				<xsd:element ref="components" minOccurs="0"/>
+				<xsd:element ref="attributes" minOccurs="0"/>
+				<xsd:element ref="componentAttributeMappings" minOccurs="0"/>
+				<xsd:element ref="relations" minOccurs="0"/>
 			</xsd:sequence>
-			<xsd:attribute name="version"            type="xsd:string" use="required"/>
-			<xsd:attribute name="applicationId"      type="xsd:string" use="required"/>
-			<xsd:attribute name="applicationVersion" type="xsd:string" use="required"/>
-			<xsd:attribute name="date"               type="xsd:string" use="required"/>
-			<xsd:anyAttribute processContents="skip"/>
-		</xsd:complexType>
-		<xsd:key          name="relationId">
-			<xsd:selector xpath="./relations/relation"/>
-			<xsd:field    xpath="@id"/>
-		</xsd:key>
-		<xsd:key          name="componentId">
-			<xsd:selector xpath="./components/component"/>
-			<xsd:field    xpath="@id"/>
-		</xsd:key>
-		<xsd:key          name="loadSpectrumId">
-			<xsd:selector xpath="./load_spectrum"/>
-			<xsd:field    xpath="@id"/>
-		</xsd:key>
-		<xsd:keyref       name="componentIdRef" refer="componentId">
-			<xsd:selector xpath="./relations/relation/ref"/>
-			<xsd:field    xpath="@id"/>
-		</xsd:keyref>
-		<xsd:keyref       name="componentIdLoadCase" refer="componentId">
-			<xsd:selector xpath="./load_spectrum/load_case/component"/>
-			<xsd:field    xpath="@id"/>
-		</xsd:keyref>
-		<xsd:keyref       name="componentIdAccumulation" refer="componentId">
-			<xsd:selector xpath="./load_spectrum/accumulation/component"/>
-			<xsd:field    xpath="@id"/>
-		</xsd:keyref>
-	</xsd:element>
-
-	<xsd:element name="relations">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element ref="relation" minOccurs="0" maxOccurs="unbounded"/>
-			</xsd:sequence>
-			<xsd:anyAttribute processContents="skip"/>
+			<xsd:attribute name="version" type="xsd:string" use="required"/>
+			<xsd:attribute name="status" type="versionStatusType" use="required"/>
+			<xsd:attribute name="language" type="xsd:string" use="required"/>
+			<xsd:attribute name="createdDate" type="xsd:string" use="required"/>
+			<xsd:attribute name="provider" type="xsd:string"/>
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="relation">
+	<xsd:element name="units">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element ref="ref" minOccurs="1" maxOccurs="unbounded"/>
+				<xsd:element ref="unit" maxOccurs="unbounded" minOccurs="0"/>
 			</xsd:sequence>
-			<xsd:attribute name="id"    type="xsd:integer"            use="required"/>
-			<xsd:attribute name="type"  type="xsd:string"             use="required"/>
-			<xsd:attribute name="order" type="xsd:nonNegativeInteger" use="optional"/>
-			<xsd:anyAttribute processContents="skip"/>
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="ref">
+	<xsd:element name="valueTypes">
 		<xsd:complexType>
-			<xsd:attribute name="id"   type="xsd:integer" use="required"/>
-			<xsd:attribute name="role" type="xsd:string"  use="required"/>
-			<xsd:attribute name="hint" type="xsd:string"  use="optional"/>
-			<xsd:anyAttribute processContents="skip"/>
+			<xsd:sequence>
+				<xsd:element ref="valueType" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
 
 	<xsd:element name="components">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element ref="component" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="component" maxOccurs="unbounded" minOccurs="0"/>
 			</xsd:sequence>
-			<xsd:anyAttribute processContents="skip"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="attributes">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="attribute" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="enumValues">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="enumValue" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="componentAttributeMappings">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="componentAttributeMapping" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="relations">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="relation" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="roles">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="role" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="allowedCombinations">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="allowedCombination" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="unit">
+		<xsd:complexType>
+			<xsd:attribute name="id" type="xsd:int" use="required"/>
+			<xsd:attribute name="name" type="xsd:string" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="valueType">
+		<xsd:complexType>
+			<xsd:attribute name="id" type="xsd:int" use="required"/>
+			<xsd:attribute name="name" type="xsd:string" use="required"/>
 		</xsd:complexType>
 	</xsd:element>
 
 	<xsd:element name="component">
 		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element ref="attribute" minOccurs="0" maxOccurs="unbounded"/>
-			</xsd:sequence>
-			<xsd:attribute name="id"   type="xsd:integer" use="required"/>
-			<xsd:attribute name="type" type="xsd:string"  use="required"/>
-			<xsd:attribute name="name" type="xsd:string"  use="optional"/>
-			<xsd:anyAttribute processContents="skip"/>
+			<xsd:attribute name="numericId" type="xsd:int" use="required"/>
+			<xsd:attribute name="componentId" type="xsd:string" use="required"/>
+			<xsd:attribute name="name" type="xsd:string" use="required"/>
+			<xsd:attribute name="databaseId" type="xsd:int" use="required"/>
 		</xsd:complexType>
 	</xsd:element>
 
 	<xsd:element name="attribute">
-		<xsd:complexType mixed="true">
-			<xsd:sequence>
-				<xsd:element ref="array"           minOccurs="0" maxOccurs="1"/>
-				<xsd:element ref="matrix"          minOccurs="0" maxOccurs="1"/>
-				<xsd:element ref="array_of_arrays" minOccurs="0" maxOccurs="1"/>
-			</xsd:sequence>
-			<xsd:attribute name="id"   type="xsd:string" use="required"/>
-			<xsd:attribute name="unit" type="xsd:string" use="optional"/>
-			<xsd:anyAttribute processContents="skip"/>
-		</xsd:complexType>
-	</xsd:element>
-
-	<xsd:element name="array">
-		<xsd:complexType mixed="true">
-			<xsd:sequence>
-				<xsd:element ref="c" minOccurs="0" maxOccurs="unbounded"/>
-			</xsd:sequence>
-			<xsd:attribute name="code" type="codeType" use="optional"/>
-			<xsd:anyAttribute processContents="skip"/>
-		</xsd:complexType>
-	</xsd:element>
-
-	<xsd:element name="matrix">
-		<xsd:complexType mixed="true">
-			<xsd:sequence>
-				<xsd:element ref="r" minOccurs="0" maxOccurs="unbounded"/>
-			</xsd:sequence>
-			<xsd:attribute name="code"    type="codeType"    use="optional"/>
-			<xsd:attribute name="rows"    type="xsd:integer" use="optional"/>
-			<xsd:attribute name="columns" type="xsd:integer" use="optional"/>
-			<xsd:anyAttribute processContents="skip"/>
-		</xsd:complexType>
-	</xsd:element>
-
-	<xsd:element name="r">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element name="c" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+				<xsd:element ref="enumValues" minOccurs="0"/>
 			</xsd:sequence>
+			<xsd:attribute name="numericId" type="xsd:int" use="required"/>
+			<xsd:attribute name="attributeId" type="xsd:string" use="required"/>
+			<xsd:attribute name="valueType" type="xsd:int" use="required"/>
+			<xsd:attribute name="unit" type="xsd:int" use="required"/>
+			<xsd:attribute name="symbol" type="xsd:string"/>
+			<xsd:attribute name="name" type="xsd:string" use="required"/>
+			<xsd:attribute name="rangeMin" type="xsd:double"/>
+			<xsd:attribute name="rangeMinIntervalOpen" type="xsd:boolean"/>
+			<xsd:attribute name="rangeMax" type="xsd:double"/>
+			<xsd:attribute name="rangeMaxIntervalOpen" type="xsd:boolean"/>
+			<xsd:attribute name="databaseId" type="xsd:int" use="required"/>
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="c">
+	<xsd:element name="enumValue">
 		<xsd:complexType>
-			<xsd:simpleContent>
-				<xsd:extension base="c"></xsd:extension>
-			</xsd:simpleContent>
+			<xsd:attribute name="value" type="xsd:string" use="required"/>
+			<xsd:attribute name="name" type="xsd:string" use="required"/>
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:simpleType name="c">
-		<xsd:restriction base="xsd:string"/>
-	</xsd:simpleType>
-
-	<xsd:element name="array_of_arrays">
+	<xsd:element name="componentAttributeMapping">
 		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element ref="array" minOccurs="1" maxOccurs="unbounded"/>
-			</xsd:sequence>
-			<xsd:anyAttribute processContents="skip"/>
+			<xsd:attribute name="componentId" type="xsd:string" use="required"/>
+			<xsd:attribute name="attributeId" type="xsd:string" use="required"/>
+			<xsd:attribute name="attributeNumericId" type="xsd:int" use="required"/>
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="load_spectrum">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element ref="load_case"    minOccurs="1" maxOccurs="unbounded"/>
-				<xsd:element ref="accumulation" minOccurs="0" maxOccurs="1"/>
-			</xsd:sequence>
-			<xsd:attribute name="id" type="xsd:integer" use="required"/>
-			<xsd:anyAttribute processContents="skip"/>
-		</xsd:complexType>
-		<xsd:key          name="loadCaseId">
-			<xsd:selector xpath="./load_case"/>
-			<xsd:field    xpath="@id"/>
-		</xsd:key>
-	</xsd:element>
-
-	<xsd:element name="load_case">
+	<xsd:element name="relation">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element ref="component" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="roles" minOccurs="0"/>
+				<xsd:element ref="allowedCombinations" minOccurs="0"/>
 			</xsd:sequence>
-			<xsd:attribute name="id" type="xsd:integer" use="required"/>
-			<xsd:anyAttribute processContents="skip"/>
+			<xsd:attribute name="numericId" type="xsd:int" use="required"/>
+			<xsd:attribute name="relationId" type="xsd:string" use="required"/>
+			<xsd:attribute name="orderRequired" type="xsd:boolean" use="required"/>
+			<xsd:attribute name="databaseId" type="xsd:int" use="required"/>
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="accumulation">
+	<xsd:element name="role">
+		<xsd:complexType>
+			<xsd:attribute name="roleId" type="xsd:string" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="allowedCombination">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element ref="component" minOccurs="1" maxOccurs="unbounded"/>
+				<xsd:element ref="allowedCombinationRole" maxOccurs="unbounded" minOccurs="0"/>
 			</xsd:sequence>
-			<xsd:anyAttribute processContents="skip"/>
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:simpleType name="codeType">
+	<xsd:element name="allowedCombinationRole">
+		<xsd:complexType>
+			<xsd:attribute name="roleId" type="xsd:string" use="required"/>
+			<xsd:attribute name="componentId" type="xsd:string" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:simpleType name="versionStatusType">
 		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="int32"/>
-			<xsd:enumeration value="float64"/>
-			<xsd:enumeration value="float32"/>
+			<xsd:enumeration value="IN_DEVELOPMENT"/>
+			<xsd:enumeration value="RELEASED"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 

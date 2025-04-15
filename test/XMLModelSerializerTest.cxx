@@ -46,7 +46,7 @@ namespace
 
   private:
     rexsapi::database::TModelRegistry m_Registry{createModelRegistry()};
-    rexsapi::TFileXsdSchemaLoader m_SchemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
+    rexsapi::TFileXsdSchemaLoader m_SchemaLoader{projectDir() / "models" / "rexs-file.xsd"};
     rexsapi::TXSDSchemaValidator m_Validator{m_SchemaLoader};
   };
 
@@ -67,7 +67,7 @@ namespace
 
   private:
     rexsapi::database::TModelRegistry m_Registry{createModelRegistry()};
-    rexsapi::TFileXsdSchemaLoader m_SchemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
+    rexsapi::TFileXsdSchemaLoader m_SchemaLoader{projectDir() / "models" / "rexs-file.xsd"};
     rexsapi::TXSDSchemaValidator m_Validator{m_SchemaLoader};
   };
 }

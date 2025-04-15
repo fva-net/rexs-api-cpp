@@ -54,7 +54,7 @@ namespace
 
 TEST_CASE("XML database model loader test")
 {
-  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-dbmodel.xsd"};
+  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
   std::vector<rexsapi::database::TModel> models;
 
   SUBCASE("Load existing models")
