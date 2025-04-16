@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Changed to new schema format on REXS hp
+- Preparation for semantic versioning (major.minor.patch)
 
 ## [2.1.0]
 

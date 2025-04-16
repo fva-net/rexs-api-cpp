@@ -44,7 +44,7 @@ TEST_CASE("Rexs version test")
   SUBCASE("To string")
   {
     CHECK(rexsapi::TRexsVersion{"1.4"}.asString() == "1.4");
-    CHECK(rexsapi::TRexsVersion{"21.99"}.asString() == "21.99");
+    CHECK(rexsapi::TRexsVersion{"21.99"}.asString() == "21.99.0");
   }
 
   SUBCASE("Compare")
