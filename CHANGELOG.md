@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- REXS 1.7 added (#57)
 - Changed to new schema format on REXS hp
 - Preparation for semantic versioning (major.minor.patch)
 

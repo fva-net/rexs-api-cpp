@@ -54,28 +54,28 @@ TEST_CASE("Test rexs model registry")
   SUBCASE("Get non existing model non-strict mode")
   {
     const auto& model = registry.getModel(rexsapi::TRexsVersion{"1.99"}, "de", false);
-    CHECK(model.getVersion() == rexsapi::TRexsVersion{"1.6"});
+    CHECK(model.getVersion() == rexsapi::TRexsVersion{"1.7"});
     CHECK(model.getLanguage() == "de");
   }
 
   SUBCASE("Get non existing model in between versions non-strict mode")
   {
     const auto& model = registry.getModel(rexsapi::TRexsVersion{"1.55"}, "de", false);
-    CHECK(model.getVersion() == rexsapi::TRexsVersion{"1.6"});
+    CHECK(model.getVersion() == rexsapi::TRexsVersion{"1.7"});
     CHECK(model.getLanguage() == "de");
   }
 
   SUBCASE("Get non existing model in between versions non-strict mode")
   {
     const auto& model = registry.getModel(rexsapi::TRexsVersion{"1.55"}, "es", false);
-    CHECK(model.getVersion() == rexsapi::TRexsVersion{"1.6"});
+    CHECK(model.getVersion() == rexsapi::TRexsVersion{"1.7"});
     CHECK(model.getLanguage() == "en");
   }
 
   SUBCASE("Get non existing model non-strict mode with unknown language")
   {
     const auto& model = registry.getModel(rexsapi::TRexsVersion{"1.99"}, "es", false);
-    CHECK(model.getVersion() == rexsapi::TRexsVersion{"1.6"});
+    CHECK(model.getVersion() == rexsapi::TRexsVersion{"1.7"});
     CHECK(model.getLanguage() == "en");
   }
 }

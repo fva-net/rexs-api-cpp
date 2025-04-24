@@ -67,7 +67,7 @@ TEST_CASE("XML database model loader test")
     });
 
     CHECK(result);
-    REQUIRE(models.size() == 14);
+    REQUIRE(models.size() == 16);
     std::set<std::string, std::less<>> languages;
     for (const auto& model : models) {
       languages.insert(model.getLanguage());
