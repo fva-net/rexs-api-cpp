@@ -91,25 +91,25 @@ namespace rexsapi::database
         return;
       }
 
-      const auto rexsModel = *doc.select_nodes("/rexsModel").begin();
+      const auto rexsModel = *doc.select_nodes("/rexsSchema").begin();
       TModel model{TRexsVersion{rexsapi::detail::getStringAttribute(rexsModel, "version")},
                    rexsapi::detail::getStringAttribute(rexsModel, "language"),
                    rexsapi::detail::getStringAttribute(rexsModel, "date"),
                    statusFromString(rexsapi::detail::getStringAttribute(rexsModel, "status"))};
 
-      for (const auto& node : doc.select_nodes("/rexsModel/units/unit")) {
+      for (const auto& node : doc.select_nodes("/rexsSchema/units/unit")) {
         auto id = convertToUint64(rexsapi::detail::getStringAttribute(node, "id"));
         auto name = rexsapi::detail::getStringAttribute(node, "name");
         model.addUnit(TUnit{id, name});
       }
 
-      for (const auto& node : doc.select_nodes("/rexsModel/valueTypes/valueType")) {
+      for (const auto& node : doc.select_nodes("/rexsSchema/valueTypes/valueType")) {
         auto id = convertToUint64(rexsapi::detail::getStringAttribute(node, "id"));
         auto name = rexsapi::detail::getStringAttribute(node, "name");
         model.addType(id, typeFromString(name));
       }
 
-      for (const auto& node : doc.select_nodes("/rexsModel/attributes/attribute")) {
+      for (const auto& node : doc.select_nodes("/rexsSchema/attributes/attribute")) {
         auto attributeId = rexsapi::detail::getStringAttribute(node, "attributeId");
         auto name = rexsapi::detail::getStringAttribute(node, "name");
         auto valueType =
@@ -137,14 +137,14 @@ namespace rexsapi::database
       }
 
       std::vector<std::pair<std::string, std::string>> attributeMappings;
-      for (const auto& node : doc.select_nodes("/rexsModel/componentAttributeMappings/componentAttributeMapping")) {
+      for (const auto& node : doc.select_nodes("/rexsSchema/componentAttributeMappings/componentAttributeMapping")) {
         auto componentId = rexsapi::detail::getStringAttribute(node, "componentId");
         auto attributeId = rexsapi::detail::getStringAttribute(node, "attributeId");
         attributeMappings.emplace_back(componentId, attributeId);
       }
       rexsapi::database::detail::TComponentAttributeMapper attributeMapper{model, std::move(attributeMappings)};
 
-      for (const auto& node : doc.select_nodes("/rexsModel/components/component")) {
+      for (const auto& node : doc.select_nodes("/rexsSchema/components/component")) {
         auto id = rexsapi::detail::getStringAttribute(node, "componentId");
         auto name = rexsapi::detail::getStringAttribute(node, "name");
         auto attributes = attributeMapper.getAttributesForComponent(id);

@@ -28,7 +28,7 @@ TEST_CASE("File utils test")
 
   SUBCASE("Load existing file")
   {
-    auto buffer = rexsapi::detail::loadFile(result, projectDir() / "models" / "rexs-schema.json");
+    auto buffer = rexsapi::detail::loadFile(result, projectDir() / "models" / "rexs-file.json");
     CHECK(result);
     CHECK_FALSE(buffer.empty());
   }

@@ -30,7 +30,7 @@ namespace rexsapi
    * @brief Creates a model registry containing all models found in the given filesystem path.
    *
    * The filesystem path should contain REXS database model files for different versions and languages. Additionally,
-   * the XML database model schema file (*rexs-dbmodel.xsd*) has to be available in the path.
+   * the XML database model schema file (*rexs-schema.xsd*) has to be available in the path.
    *
    * @param path The filesystem path to load REXS database model files from.
    * @return database::TModelRegistry containing all available REXS database models
@@ -59,9 +59,9 @@ namespace rexsapi
      *
      * @param databasePath filesystem path containing REXS database model files for different versions and languages and
      * all relevant schema files. The necessary schema files are:
-     * - rexs-dbmodel.xsd
      * - rexs-schema.xsd
-     * - rexs-schema.json
+     * - rexs-file.xsd
+     * - rexs-file.json
      * @param dataSourceResolver Will be used to load external model data sources if set. Triggers an error if not set
      *                           and model has external references.
      * @throws TException if the model registry or the schema validators cannot be created
@@ -80,9 +80,9 @@ namespace rexsapi
      *
      * @param databasePath filesystem path containing REXS database model files for different versions and languages and
      * all relevant schema files. The necessary schema files are:
-     * - rexs-dbmodel.xsd
      * - rexs-schema.xsd
-     * - rexs-schema.json
+     * - rexs-file.xsd
+     * - rexs-file.json
      * @param customExtensionMappings Additional custom extension mappings to respect for REXS model file type detection
      * @param dataSourceResolver Will be used to load external model data sources if set. Triggers an error if not set
      *                           and model has external references.
@@ -199,7 +199,7 @@ namespace rexsapi
 
   static inline database::TModelRegistry createModelRegistry(const std::filesystem::path& path)
   {
-    TFileXsdSchemaLoader schemaLoader{path / "rexs-dbmodel.xsd"};
+    TFileXsdSchemaLoader schemaLoader{path / "rexs-schema.xsd"};
     database::TFileResourceLoader resourceLoader{path};
     database::TXmlModelLoader modelLoader{resourceLoader, schemaLoader};
     return database::TModelRegistry::createModelRegistry(modelLoader).first;
@@ -257,13 +257,13 @@ namespace rexsapi
 
   inline TXSDSchemaValidator TModelLoader::createXMLSchemaValidator(const std::filesystem::path& path)
   {
-    TFileXsdSchemaLoader schemaLoader{path / "rexs-schema.xsd"};
+    TFileXsdSchemaLoader schemaLoader{path / "rexs-file.xsd"};
     return TXSDSchemaValidator{schemaLoader};
   }
 
   inline TJsonSchemaValidator TModelLoader::createJsonSchemaValidator(const std::filesystem::path& path)
   {
-    TFileJsonSchemaLoader schemaLoader{path / "rexs-schema.json"};
+    TFileJsonSchemaLoader schemaLoader{path / "rexs-file.json"};
     return TJsonSchemaValidator{schemaLoader};
   }
 

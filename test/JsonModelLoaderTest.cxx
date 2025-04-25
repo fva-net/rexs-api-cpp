@@ -28,7 +28,7 @@ namespace
                                            const rexsapi::database::TModelRegistry& registry,
                                            rexsapi::TMode mode = rexsapi::TMode::STRICT_MODE)
   {
-    static const rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
+    static const rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-file.json"};
     static const rexsapi::TJsonSchemaValidator jsonValidator{schemaLoader};
 
     rexsapi::detail::TFileModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{jsonValidator,
@@ -210,7 +210,7 @@ namespace
                                                  const rexsapi::database::TModelRegistry& registry,
                                                  rexsapi::TMode mode = rexsapi::TMode::STRICT_MODE)
   {
-    static const rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
+    static const rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-file.json"};
     static const rexsapi::TJsonSchemaValidator validator{schemaLoader};
 
     rexsapi::detail::TBufferModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{validator,

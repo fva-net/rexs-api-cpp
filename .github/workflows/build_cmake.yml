@@ -98,7 +98,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-12]
+        os: [macos-14]
         build_type: [Debug, Release]
         cxx_version: [17, 20]
     steps:

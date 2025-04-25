@@ -45,7 +45,7 @@ namespace
 
   private:
     rexsapi::database::TModelRegistry m_Registry{createModelRegistry()};
-    rexsapi::TFileJsonSchemaLoader m_SchemaLoader{projectDir() / "models" / "rexs-schema.json"};
+    rexsapi::TFileJsonSchemaLoader m_SchemaLoader{projectDir() / "models" / "rexs-file.json"};
     rexsapi::TJsonSchemaValidator m_Validator{m_SchemaLoader};
   };
 }
@@ -88,7 +88,7 @@ TEST_CASE("Json serialize new model")
     modelSerializer.serialize(createModel(dbModel), fileSerializer);
     REQUIRE(std::filesystem::exists(guard.getTempDirectoryPath() / "test_model.rexsj"));
 
-    rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.json"};
+    rexsapi::TFileJsonSchemaLoader schemaLoader{projectDir() / "models" / "rexs-file.json"};
     rexsapi::TJsonSchemaValidator validator{schemaLoader};
 
     rexsapi::detail::TFileModelLoader<rexsapi::TJsonSchemaValidator, rexsapi::TJsonModelLoader> loader{

@@ -54,7 +54,7 @@ namespace
 
 TEST_CASE("XML database model loader test")
 {
-  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-dbmodel.xsd"};
+  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
   std::vector<rexsapi::database::TModel> models;
 
   SUBCASE("Load existing models")
@@ -67,7 +67,7 @@ TEST_CASE("XML database model loader test")
     });
 
     CHECK(result);
-    REQUIRE(models.size() == 14);
+    REQUIRE(models.size() == 16);
     std::set<std::string, std::less<>> languages;
     for (const auto& model : models) {
       languages.insert(model.getLanguage());

@@ -29,7 +29,7 @@ namespace
                                            const rexsapi::database::TModelRegistry& registry,
                                            rexsapi::TMode mode = rexsapi::TMode::STRICT_MODE)
   {
-    const rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
+    const rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-file.xsd"};
     const rexsapi::TXSDSchemaValidator validator{schemaLoader};
 
     rexsapi::detail::TFileModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator, path};
@@ -128,7 +128,7 @@ namespace
 TEST_CASE("XML model loader test")
 {
   const auto registry = createModelRegistry();
-  const rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
+  const rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-file.xsd"};
   const rexsapi::TXSDSchemaValidator validator{schemaLoader};
   rexsapi::TResult result;
 

@@ -24,7 +24,7 @@
 static inline std::vector<rexsapi::database::TModel> loadModels()
 {
   std::vector<rexsapi::database::TModel> models;
-  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-dbmodel.xsd"};
+  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
   rexsapi::database::TFileResourceLoader loader{projectDir() / "models"};
   rexsapi::database::TXmlModelLoader modelLoader{loader, schemaLoader};
   auto result = modelLoader.load([&models](rexsapi::database::TModel&& model) {
@@ -49,7 +49,7 @@ static inline const rexsapi::database::TModel& loadModel(const std::string& vers
 
 static inline rexsapi::database::TModelRegistry createModelRegistry()
 {
-  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-dbmodel.xsd"};
+  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
   rexsapi::database::TFileResourceLoader resourceLoader{projectDir() / "models"};
   rexsapi::database::TXmlModelLoader modelLoader{resourceLoader, schemaLoader};
   return rexsapi::database::TModelRegistry::createModelRegistry(modelLoader).first;

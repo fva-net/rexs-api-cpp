@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0]
+
+### Fixed
+
+- Spelling error in CMakeLists.txt corrected.
+
+### Changed
+
+- REXS 1.7 added (#57)
+- Changed to new schema format on REXS hp
+- Preparation for semantic versioning (major.minor.patch)
+
 ## [2.1.0]
 
 ### Fixed

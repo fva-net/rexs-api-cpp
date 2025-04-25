@@ -63,7 +63,7 @@ TEST_CASE("Component id test")
 TEST_CASE("Component builder test")
 {
   const auto registry = createModelRegistry();
-  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
+  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-file.xsd"};
   rexsapi::TXSDSchemaValidator validator{schemaLoader};
   rexsapi::TComponentBuilder builder{registry.getModel({1, 5}, "de")};
 
@@ -117,7 +117,7 @@ TEST_CASE("Component builder test")
 TEST_CASE("Model builder test")
 {
   const auto registry = createModelRegistry();
-  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-schema.xsd"};
+  rexsapi::TFileXsdSchemaLoader schemaLoader{projectDir() / "models" / "rexs-file.xsd"};
   rexsapi::TXSDSchemaValidator validator{schemaLoader};
   rexsapi::TModelBuilder builder{registry.getModel({1, 4}, "de")};
 
