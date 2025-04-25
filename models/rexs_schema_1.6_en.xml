@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<rexsSchema createdDate="2025-04-09T11:11:12.858967149+02:00" status="RELEASED" version="1.6" language="en">
+<rexsSchema createdDate="2025-04-24T10:06:50.42762093+02:00" status="RELEASED" version="1.6" language="en">
         
     <units>
                 
@@ -17993,7 +17993,7 @@
                                 
                 <allowedCombination>
                                         
-                    <allowedCombinationRole componentId="involute_spline_connection" roleId="assembly"/>
+                    <allowedCombinationRole componentId="involute_spline_gear_shaft" roleId="assembly"/>
                                         
                     <allowedCombinationRole componentId="notch_effect_shaft_hub_connection" roleId="part"/>
                                     
