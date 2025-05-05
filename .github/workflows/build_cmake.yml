@@ -32,7 +32,7 @@ jobs:
         run: sudo apt-get install ${{ matrix.cxx }} ninja-build lcov doxygen
       - name: Check Coverage
         run: |
-          if [[ ${{ matrix.build_type }} == 'Debug' && ${{ matrix.cxx }} == 'g++-11' && ${{ matrix.cxx_version }} == 'g++-17' ]]; then
+          if [[ ${{ matrix.build_type }} == 'Debug' && ${{ matrix.cxx }} == 'g++-11' && ${{ matrix.cxx_version }} == 'CXX-17' ]]; then
             echo "COVERAGE=ON" >> "$GITHUB_ENV"
             echo "Running with coverage"
           else
