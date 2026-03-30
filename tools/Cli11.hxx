@@ -38,6 +38,7 @@
 #include <CLI/App.hpp>
 #include <CLI/Config.hpp>
 #include <CLI/Formatter.hpp>
+#include <CLI/ExtraValidators.hpp>
 
 #if defined(__clang__)
   #pragma clang diagnostic pop
