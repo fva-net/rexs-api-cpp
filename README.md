@@ -288,14 +288,14 @@ The library is header only. A build is only necessary if you want to run the tes
 
 REXSapi uses the following thirdparty open source software
 
-- [cli11 2.5.0](https://github.com/CLIUtils/CLI11)
-- [date 3.0.3](https://github.com/HowardHinnant/date)
-- [doctest 2.4.11](https://github.com/doctest/doctest)
-- [fmt 10.2.1](https://github.com/fmtlib/fmt)
+- [cli11 2.6.2](https://github.com/CLIUtils/CLI11)
+- [date 3.0.4](https://github.com/HowardHinnant/date)
+- [doctest 2.4.12](https://github.com/doctest/doctest)
+- [fmt 12.1.0](https://github.com/fmtlib/fmt)
 - [nlohmann json 3.12.0](https://github.com/nlohmann/json)
-- [miniz 3.0.2](https://github.com/richgel999/miniz)
+- [miniz 3.1.1](https://github.com/richgel999/miniz)
 - [pugixml 1.15](https://github.com/zeux/pugixml)
-- [valijson 1.0.5](https://github.com/tristanpenman/valijson)
+- [valijson 1.1.0](https://github.com/tristanpenman/valijson)
 
 # License
 

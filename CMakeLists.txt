@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(rexsapi VERSION 2.2.0 LANGUAGES CXX)
+project(rexsapi VERSION 3.0.0 LANGUAGES CXX)
 
 include(FetchContent)
 
@@ -52,7 +52,7 @@ if(NOT APPLE AND UNIX)
     message(FATAL_ERROR "unsupported compiler")
   endif()
 elseif(WIN32)
-  set(REXSAPI_COMPILE_OPTIONS /W4 /WX)
+  set(REXSAPI_COMPILE_OPTIONS /W4 /WX /DFMT_UNICODE=0)
 elseif(APPLE)
   set(REXSAPI_COMPILE_OPTIONS -g -Wall -Wheader-hygiene -Wcast-align -Wconversion -Wfloat-equal -Wformat=2 -Wmissing-declarations -Woverlength-strings -Wshadow -Wextra -Wpedantic -Wnon-virtual-dtor -Werror -Wno-nested-anon-types -Wdelete-non-virtual-dtor -Wdeprecated -Wfloat-conversion -Wfloat-overflow-conversion -Wmove -Wredundant-move -Wshadow-all -Wsign-compare -Wsign-conversion -Wunreachable-code -Wunused-value -Wignored-qualifiers -Wno-unused-private-field)
 else()
