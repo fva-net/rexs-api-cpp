@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <unordered_map>
+#include <unordered_set>
 
 namespace rexsapi::detail
 {
@@ -160,12 +161,17 @@ namespace rexsapi::detail
     void process(TResult& result, const detail::TModeAdapter& mode, const rexsapi::TComponents& components,
                  const ComponentMapping& componentMapping) noexcept
     {
+      static const std::unordered_set<std::string> EXCLUDED_REFERENCE_ATTRIBUTES = {
+          "referenced_component_id",
+          "reference_component_for_position"
+      };
       for (const auto& component : components) {
         TAttributes attributes;
         for (const auto& attribute : component.getAttributes()) {
           // TODO: maybe add new value type REFERENCE_EXTERNAL_COMPONENT
-          if (attribute.getValueType() == TValueType::REFERENCE_COMPONENT && attribute.hasValue() &&
-              attribute.getAttributeId() != "referenced_component_id") {
+          if (attribute.getValueType() == TValueType::REFERENCE_COMPONENT &&
+              attribute.hasValue() &&
+              EXCLUDED_REFERENCE_ATTRIBUTES.find(attribute.getAttributeId()) == EXCLUDED_REFERENCE_ATTRIBUTES.end()) {
             auto id = attribute.getValue<TReferenceComponentType>();
             const auto* comp = componentMapping.getComponent(static_cast<uint64_t>(id), components);
             if (comp == nullptr) {
