@@ -398,6 +398,39 @@ TEST_CASE("XML model loader test")
     CHECK(model);
   }
 
+  SUBCASE("Load duplicate relation ids")
+  {
+    const std::string buffer = R"(
+    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <model applicationId="REXSApi Unit Test" applicationVersion="1.0" date="2022-05-05T10:35:00+02:00" version="1.4">
+      <relations>
+        <relation id="1" type="assembly">
+          <ref hint="gear_unit" id="1" role="assembly"/>
+          <ref hint="gear_casing" id="2" role="part"/>
+        </relation>
+        <relation id="1" type="assembly">
+          <ref hint="gear_unit" id="1" role="assembly"/>
+          <ref hint="external_load" id="3" role="part"/>
+        </relation>
+      </relations>
+      <components>
+        <component id="1" type="gear_unit" />
+        <component id="2" type="gear_casing" />
+        <component id="3" type="external_load" />
+      </components>
+    </model>
+    )";
+
+    rexsapi::detail::TBufferModelLoader<rexsapi::TXSDSchemaValidator, rexsapi::TXMLModelLoader> loader{validator,
+                                                                                                        buffer};
+    const auto model = loader.load(rexsapi::TMode::STRICT_MODE, result, registry);
+    CHECK_FALSE(result);
+    CHECK_FALSE(result.isCritical());
+    REQUIRE(model);
+    REQUIRE(result.getErrors().size() == 1);
+    CHECK(result.getErrors()[0].getMessage() == "duplicate relation found for relation id=1");
+  }
+
   SUBCASE("Load invalid reference type")
   {
     const std::string buffer = R"(
