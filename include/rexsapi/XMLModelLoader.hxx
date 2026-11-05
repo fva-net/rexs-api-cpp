@@ -145,9 +145,15 @@ namespace rexsapi
     components = postProcessor.release();
 
     TRelations relations;
+    std::set<std::string, std::less<>> usedRelations;
     for (const auto& relation : doc.select_nodes("/model/relations/relation")) {
       std::string relationId = detail::getStringAttribute(relation, "id");
       try {
+        if (!usedRelations.emplace(relationId).second) {
+          result.addError(
+            TError{m_Mode.adapt(TErrorLevel::ERR), fmt::format("duplicate relation found for relation id={}", relationId)});
+        }
+
         auto relationType = relationTypeFromString(detail::getStringAttribute(relation, "type"));
         std::optional<uint32_t> order;
         if (const auto orderAtt = relation.node().attribute("order"); !orderAtt.empty()) {
@@ -159,8 +165,7 @@ namespace rexsapi
         }
 
         TRelationReferences references;
-        for (const auto& reference :
-             doc.select_nodes(fmt::format("/model/relations/relation[@id = '{}']/ref", relationId).c_str())) {
+        for (const auto& reference : relation.node().children("ref")) {
           std::string referenceId = detail::getStringAttribute(reference, "id");
           try {
             auto role = relationRoleFromString(detail::getStringAttribute(reference, "role"));
